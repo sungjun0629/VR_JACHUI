@@ -6,16 +6,16 @@
 #include "GameFramework/Actor.h"
 #include "Interfaces/IHttpRequest.h"
 #include "Interfaces/IHttpResponse.h"
-#include "FurnitureDetailRequestActor.generated.h"
+#include "MyFavoriteRequestActor.generated.h"
 
 UCLASS()
-class VR_JACHUI_API AFurnitureDetailRequestActor : public AActor
+class VR_JACHUI_API AMyFavoriteRequestActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AFurnitureDetailRequestActor();
+	AMyFavoriteRequestActor();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,8 +25,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void GETFurnitureInfo(int furnitureNo);
+	void GETMyFavoritesFurniture(const int32 furnitureNo);
 
 private:
-	void OnGETFunrintureInfo(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully);
+	void OnGETMyFavoritesFurniture(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully);
+	
+	UPROPERTY()
+	class AMyRoomGameModeBase* RoomGM;
 };
