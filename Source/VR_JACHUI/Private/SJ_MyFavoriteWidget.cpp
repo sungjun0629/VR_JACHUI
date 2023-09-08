@@ -28,43 +28,43 @@ void USJ_MyFavoriteWidget::NativeConstruct()
 
 void USJ_MyFavoriteWidget::GETFavoriteBed()
 {
-	GETFavorite(1);
+	GETFavorite("first");
 }
 
 void USJ_MyFavoriteWidget::GETFavoriteChair()
 {
-	GETFavorite(2);
+	//GETFavorite(2);
 }
 
 void USJ_MyFavoriteWidget::GETFavoriteTable()
 {
-	GETFavorite(3);
+	//GETFavorite(3);
 }
 
 void USJ_MyFavoriteWidget::GETFavoriteCloset()
 {
-	GETFavorite(4);
+	//GETFavorite(4);
 }
 
 void USJ_MyFavoriteWidget::GETFavoriteLight()
 {
-	GETFavorite(5);
+	//GETFavorite(5);
 }
 
 void USJ_MyFavoriteWidget::GETFavoritePartition()
 {
-	GETFavorite(6);
+	//GETFavorite(6);
 }
 
-void USJ_MyFavoriteWidget::GETFavorite(const int32 furnitureNo)
+void USJ_MyFavoriteWidget::GETFavorite(const FString myID)
 {
 	if (MYFavoriteRequestActor != nullptr)
 	{
-		MYFavoriteRequestActor->GETMyFavoritesFurniture(furnitureNo);
-		UE_LOG(LogTemp,Warning,TEXT("TRYING GET FAVORITE %d FURNITURE"), furnitureNo);
+		MYFavoriteRequestActor->GETMyFavoritesFurniture(myID);
+		UE_LOG(LogTemp,Warning,TEXT("TRYING GET FAVORITE %s FURNITURE"), *myID);
 	}
 	else
 	{
-		UE_LOG(LogTemp,Warning,TEXT("CAN'T GET FAVORITE %d FURNITURE. THERE IS NO REQUEST ACTOR"), furnitureNo);
+		UE_LOG(LogTemp,Warning,TEXT("CAN'T GET FAVORITE %s FURNITURE. THERE IS NO REQUEST ACTOR"), *myID);
 	}
 }

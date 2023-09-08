@@ -25,7 +25,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void GETMyFavoritesFurniture(const int32 furnitureNo);
+	void GETMyFavoritesFurniture(const FString myID);
 
 private:
 	void OnGETMyFavoritesFurniture(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully);

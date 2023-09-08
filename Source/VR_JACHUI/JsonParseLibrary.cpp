@@ -13,9 +13,9 @@ TArray<FFurnitureJsonType> UJsonParseLibrary::FavJsonParse(const FString& origin
 
 	if (FJsonSerializer::Deserialize(reader, result))
 	{// Json ÇØµ¶ 
-		const FString fieldName = "FAVfurnitures";
+		const FString fieldName = "furnitureList";
 		TArray<TSharedPtr<FJsonValue>> parsedDataArr = result->GetArrayField(*fieldName);
-		
+
 		for (TSharedPtr<FJsonValue> furnitureInfo : parsedDataArr)
 		{
 			FAVfurnitureInfo.UUID = furnitureInfo->AsObject()->GetStringField("UUID");
@@ -31,7 +31,6 @@ TArray<FFurnitureJsonType> UJsonParseLibrary::FavJsonParse(const FString& origin
 
 			parsedData.Add(FAVfurnitureInfo);
 		}
-		
 	}
 
 	return parsedData;

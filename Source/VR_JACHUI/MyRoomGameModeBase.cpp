@@ -23,6 +23,7 @@ void AMyRoomGameModeBase::SetFAVFurnitureList(const TArray<FFurnitureJsonType> F
 	if (FAVWidget != nullptr)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("change Name"));
+		if(FAVList.Num()>0)
 		FAVWidget->name->SetText(FText::FromString(FAVList[0].name));
 	}
 }

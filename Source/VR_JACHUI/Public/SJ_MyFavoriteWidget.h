@@ -55,6 +55,6 @@ private:
 	UPROPERTY()
 	class AMyFavoriteRequestActor* MYFavoriteRequestActor;
 
-	void GETFavorite(const int32 furnitureNo);
+	void GETFavorite(const FString myID);
 
 };
