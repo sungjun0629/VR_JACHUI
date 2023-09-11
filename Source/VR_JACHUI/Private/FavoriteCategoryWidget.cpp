@@ -5,5 +5,7 @@
 
 void UFavoriteCategoryWidget::NativeConstruct()
 {
+	Super::NativeConstruct();
+
 
 }

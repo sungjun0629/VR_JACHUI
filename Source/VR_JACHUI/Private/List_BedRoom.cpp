@@ -5,5 +5,5 @@
 
 void UList_BedRoom::NativeConstruct()
 {
-
+	Super::NativeConstruct();
 }

@@ -26,4 +26,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UButton* btn_Buy;
+
+	//UPROPERTY(VisibleAnywhere)
+	//void AddFavoriteCategory();
 };

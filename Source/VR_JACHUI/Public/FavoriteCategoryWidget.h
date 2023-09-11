@@ -19,7 +19,7 @@ public:
 
 public:
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
-	class UButton* btn_BedRoom;
+	class UButton* btn_Bed;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UButton* btn_Chairs;
@@ -34,11 +34,14 @@ public:
 	class UButton* btn_Light;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
-	class UButton* btn_Wall;
+	class UButton* btn_Partition;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UButton* btn_Export;
 	
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UButton* btn_Capture;
+
+	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category=MySettings, BlueprintReadWrite)
+	class UWidgetSwitcher* ListSwitch;
 };
