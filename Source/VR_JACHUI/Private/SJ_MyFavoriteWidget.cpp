@@ -3,6 +3,7 @@
 
 #include "SJ_MyFavoriteWidget.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "EngineUtils.h"
 #include "MyFavoriteRequestActor.h"
 

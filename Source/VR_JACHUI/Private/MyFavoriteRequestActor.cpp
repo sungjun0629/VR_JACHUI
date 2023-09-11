@@ -5,6 +5,7 @@
 #include "HttpModule.h"
 #include "../JsonParseLibrary.h"
 #include "../MyRoomGameModeBase.h"
+#include "ImageUtils.h"
 
 // Sets default values
 AMyFavoriteRequestActor::AMyFavoriteRequestActor()
@@ -42,6 +43,20 @@ void AMyFavoriteRequestActor::GETMyFavoritesFurniture(const FString myID)
 	Request->ProcessRequest();
 }
 
+void AMyFavoriteRequestActor::GETFurnitureImage(const FString furnitureName)
+{
+	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
+	FString url = "http://localhost:8181/api/furniture/showImage/";
+	url.Append(FString::Printf(TEXT("%s"), *furnitureName));
+
+	UE_LOG(LogTemp,Warning,TEXT("URL IS : %s "), *url);
+	// GET처리 
+	Request->SetURL(url);
+	Request->SetHeader(TEXT("Content-Type"), TEXT("image/jpg"));
+	Request->OnProcessRequestComplete().BindUObject(this, &AMyFavoriteRequestActor::OnGETFurnitureImage);
+	Request->ProcessRequest();
+}
+
 void AMyFavoriteRequestActor::OnGETMyFavoritesFurniture(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully)
 {
 	if (bConnectedSuccessfully) 
@@ -52,11 +67,28 @@ void AMyFavoriteRequestActor::OnGETMyFavoritesFurniture(TSharedPtr<IHttpRequest>
 		TArray<FFurnitureJsonType> parsedData = UJsonParseLibrary::FavJsonParse(response);
 
 		RoomGM->SetFAVFurnitureList(parsedData);
-
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("DISABLE TO GET MY FAVORITE FURNITURE"));
+	}
+}
+
+void AMyFavoriteRequestActor::OnGETFurnitureImage(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully)
+{
+	if (bConnectedSuccessfully)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("SUCCESS TO GET MY FAVORITE FURNITURE IMAGE"));
+		TArray<uint8> texBites = Response->GetContent();
+		
+		UTexture2D* realTex = FImageUtils::ImportBufferAsTexture2D(texBites);
+		// GameModeBase에서 위젯의 이미지를 변경시켜준다. 
+		RoomGM->SetImageTexture(realTex);
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("FAILED TO GET MY FAVORITE FURNITURE IMAGE"));
+		
 	}
 }
 

@@ -38,6 +38,9 @@ public:
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
 	class UTextBlock* name;
 
+	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
+	class UImage* furniture_image;
+
 private:
 	UFUNCTION()
 	void GETFavoriteBed();

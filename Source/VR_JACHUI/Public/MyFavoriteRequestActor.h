@@ -26,9 +26,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void GETMyFavoritesFurniture(const FString myID);
+	void GETFurnitureImage(const FString furnitureName);
 
 private:
 	void OnGETMyFavoritesFurniture(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully);
+	void OnGETFurnitureImage(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully);
 	
 	UPROPERTY()
 	class AMyRoomGameModeBase* RoomGM;

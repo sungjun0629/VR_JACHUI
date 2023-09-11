@@ -24,8 +24,9 @@ public:
 	TSubclassOf<class USJ_MyFavoriteWidget> FAVFurnitureWidget;
 
 	void SetFAVFurnitureList(const TArray<FFurnitureJsonType> FAVList);
+	void SetImageTexture(class UTexture2D* tex);
 
 private:
 	class USJ_MyFavoriteWidget* FAVWidget;
-
+	class AMyFavoriteRequestActor* FAVRequestActor; 
 };
