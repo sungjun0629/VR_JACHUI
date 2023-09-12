@@ -5,9 +5,11 @@
 #include "SJ_MyFavoriteWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
+#include "Components/ListView.h"
 #include <UMG/Public/Blueprint/UserWidget.h>
 #include "MyFavoriteRequestActor.h"
 #include "EngineUtils.h"
+#include "FurnitureList_Bed.h"
 
 void AMyRoomGameModeBase::BeginPlay()
 {
@@ -30,9 +32,24 @@ void AMyRoomGameModeBase::SetFAVFurnitureList(const TArray<FFurnitureJsonType> F
 {
 	if (FAVWidget != nullptr)
 	{
-		if(FAVList.Num()>0)
-		FAVWidget->name->SetText(FText::FromString(FAVList[0].name));
-		FAVRequestActor->GETFurnitureImage(FAVList[0].name);
+		if (FAVList.Num() > 0)
+		{
+			for (FFurnitureJsonType F : FAVList)
+			{// FAVList에 있는 만큼 Addchild를 통하여 위젯에 넣어준다. 
+				FAVListEntity = CreateWidget<UFurnitureList_Bed>(GetWorld(), FAVFurnitureListEntity);
+				//FAVListEntity2 = CreateWidget<UFurnitureList_Bed>(GetWorld(), FAVFurnitureListEntity);
+				UE_LOG(LogTemp,Warning,TEXT("name : %s"), *F.name);
+				UE_LOG(LogTemp,Warning,TEXT("num : %d"), ret++);
+				FAVListEntity->changeText();
+				FAVWidget->AddListView(FAVListEntity);
+				//FAVRequestActor->GETFurnitureImage(F.name);
+				
+				//FAVWidget->List_FAV->AddItem(FAVListEntity2);
+			}
+		}
+
+		//FAVWidget->name->SetText(FText::FromString(FAVList[0].name));
+		//FAVRequestActor->GETFurnitureImage("ikea_sofa");
 
 	}
 	

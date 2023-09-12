@@ -49,7 +49,7 @@ void AMyFavoriteRequestActor::GETFurnitureImage(const FString furnitureName)
 	FString url = "http://localhost:8181/api/furniture/showImage/";
 	url.Append(FString::Printf(TEXT("%s"), *furnitureName));
 
-	UE_LOG(LogTemp,Warning,TEXT("URL IS : %s "), *url);
+	UE_LOG(LogTemp,Warning,TEXT("Trying to GetFurniture Image : %s "), *furnitureName);
 	// GETÃ³¸® 
 	Request->SetURL(url);
 	Request->SetHeader(TEXT("Content-Type"), TEXT("image/jpg"));

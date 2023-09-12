@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "FurnitureList_Bed.h"
 #include "SJ_MyFavoriteWidget.generated.h"
 
 /**
@@ -40,6 +41,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
 	class UImage* furniture_image;
+
+	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
+	class UListView* List_FAV;
+
+	UFUNCTION()
+	void AddListView(class UFurnitureList_Bed* entity);
 
 private:
 	UFUNCTION()

@@ -13,5 +13,15 @@ UCLASS()
 class VR_JACHUI_API UFurnitureList_Bed : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void NativeConstruct() override;
+
+	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
+	class UTextBlock* text_furniture;
+
+	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
+	class UImage* img_furniture;
+
+	void changeText();
 };
