@@ -27,7 +27,7 @@ TArray<FFurnitureJsonType> UJsonParseLibrary::FavJsonParse(const FString& origin
 			FAVfurnitureInfo.link = furnitureInfo->AsObject()->GetStringField("link");
 			FAVfurnitureInfo.furnitureNo = furnitureInfo->AsObject()->GetIntegerField("furnitureNo");
 			FAVfurnitureInfo.price = furnitureInfo->AsObject()->GetNumberField("price");
-			FAVfurnitureInfo.isFD = furnitureInfo->AsObject()->GetBoolField("isFD");
+			FAVfurnitureInfo.isFD = furnitureInfo->AsObject()->GetBoolField("FD");
 
 			parsedData.Add(FAVfurnitureInfo);
 		}

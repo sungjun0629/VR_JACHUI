@@ -30,11 +30,11 @@ void AMyFavoriteRequestActor::Tick(float DeltaTime)
 
 }
 
-void AMyFavoriteRequestActor::GETMyFavoritesFurniture(const FString myID)
+void AMyFavoriteRequestActor::GETMyFavoritesFurniture(const FString myID, const int32 FurnitureNo)
 {
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-	FString url = "http://localhost:8181/api/furniture/favorite/sungjun1";
-	//url.Append(FString::Printf(TEXT("%s"), "sungjun1"));
+	FString url = "http://localhost:8181/api/furniture/favorite/";
+	url.Append(FString::Printf(TEXT("%s/%d"), *myID, FurnitureNo));
 
 	// GETÃ³¸® 
 	Request->SetURL(url);

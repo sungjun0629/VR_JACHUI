@@ -21,17 +21,28 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere, Category=MySettings)
-	TSubclassOf<class USJ_MyFavoriteWidget> FAVFurnitureWidget;
+	TSubclassOf<class UFavoriteCategoryWidget> FAVFurnitureWidget;
 	UPROPERTY(EditAnywhere, Category=MySettings)
 	TSubclassOf<class UFurnitureList_Bed> FAVFurnitureListEntity;
+	UPROPERTY(EditAnywhere, Category=MySettings)
+	TSubclassOf<class UList_BedRoom> ListBedRoomWidget;
+
 
 	void SetFAVFurnitureList(const TArray<FFurnitureJsonType> FAVList);
 	void SetImageTexture(class UTexture2D* tex);
 	int32 ret; 
 
 private:
-	class USJ_MyFavoriteWidget* FAVWidget;
+	UPROPERTY()
+	class UFavoriteCategoryWidget* FAVWidget;
+	
+	UPROPERTY()
 	class AMyFavoriteRequestActor* FAVRequestActor; 
+	
+	UPROPERTY()
+	class UList_BedRoom* ListBedRoom;
+
+
 	UPROPERTY()
 	class UFurnitureList_Bed* FAVListEntity;
 };
