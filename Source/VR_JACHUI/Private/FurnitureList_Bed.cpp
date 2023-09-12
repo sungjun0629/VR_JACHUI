@@ -10,5 +10,5 @@ void UFurnitureList_Bed::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	text_furniture->SetText(FText::FromString(TEXT("ho")));
+	text_furniture->SetText(FText::FromString(TEXT("Blank")));
 }

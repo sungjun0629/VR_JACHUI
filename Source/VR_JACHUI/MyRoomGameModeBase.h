@@ -30,7 +30,7 @@ public:
 
 	void SetFAVFurnitureList(const TArray<FFurnitureJsonType> FAVList);
 	void SetImageTexture(class UTexture2D* tex);
-	int32 ret; 
+	int32 cnt; 
 
 private:
 	UPROPERTY()
@@ -42,7 +42,8 @@ private:
 	UPROPERTY()
 	class UList_BedRoom* ListBedRoom;
 
-
 	UPROPERTY()
 	class UFurnitureList_Bed* FAVListEntity;
+
+	TArray<class UFurnitureList_Bed*> FAVListEntities;
 };

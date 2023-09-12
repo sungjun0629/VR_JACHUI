@@ -44,8 +44,9 @@ void AMyRoomGameModeBase::SetFAVFurnitureList(const TArray<FFurnitureJsonType> F
 				FAVListEntity = CreateWidget<UFurnitureList_Bed>(GetWorld(), FAVFurnitureListEntity);
 				UE_LOG(LogTemp,Warning,TEXT("add to child"));
 				FAVWidget->BP_ListBed->box->AddChild(FAVListEntity);
-				//FAVWidget->AddListView(FAVListEntity);
-				//FAVRequestActor->GETFurnitureImage(F.name);
+				FAVListEntity->text_furniture->SetText(FText::FromString(F.name));
+				FAVListEntities.Add(FAVListEntity);
+				FAVRequestActor->GETFurnitureImage(F.name);
 				
 				//FAVWidget->List_FAV->AddItem(FAVListEntity2);
 			}
@@ -69,7 +70,7 @@ void AMyRoomGameModeBase::SetImageTexture(class UTexture2D* tex)
 {
 	if (FAVWidget != nullptr)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("SET IMAGE TEXTURE"));
-		//FAVWidget->furniture_image->SetBrushFromTexture(tex);
+		UE_LOG(LogTemp,Warning,TEXT("SET %s IMAGE TEXTURE"), *(FAVListEntities[cnt]->text_furniture->GetText().ToString()));
+		FAVListEntities[cnt++]->img_furniture->SetBrushFromTexture(tex);
 	}
 }
