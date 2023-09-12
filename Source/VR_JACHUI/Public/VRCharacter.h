@@ -50,8 +50,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings|Components")
 	class UTextRenderComponent* rightLog;
 
-	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
-	class UMoveComponent* moveComp;
+	//UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+	//class UMoveComponent* moveComp;
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	class UInputMappingContext* imc_VRmap;
