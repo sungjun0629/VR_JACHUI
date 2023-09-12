@@ -4,8 +4,10 @@
 #include "SJ_MyFavoriteWidget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "Components/ListView.h"
 #include "EngineUtils.h"
 #include "MyFavoriteRequestActor.h"
+#include "FurnitureList_Bed.h"
 
 
 
@@ -55,6 +57,11 @@ void USJ_MyFavoriteWidget::GETFavoriteLight()
 void USJ_MyFavoriteWidget::GETFavoritePartition()
 {
 	//GETFavorite(6);
+}
+
+void USJ_MyFavoriteWidget::AddListView(class UFurnitureList_Bed* entity)
+{
+	List_FAV->AddItem(entity);
 }
 
 void USJ_MyFavoriteWidget::GETFavorite(const FString myID)
