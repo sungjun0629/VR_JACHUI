@@ -11,7 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "MoveComponent.h"
+//#include "MoveComponent.h"
 
 // Sets default values
 AVRCharacter::AVRCharacter()
@@ -113,7 +113,7 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AVRCharacter::Move(const struct FInputActionValue& value)
 {
-	FVector2D controllerInput = value.get<FVector2D>();
+	FVector2D controllerInput = value.Get<FVector2D>();
 
 	FVector forwardVec = FRotationMatrix(GetController()->GetControlRotation()).GetUnitAxis(EAxis::X);
 	FVector rightVec = FRotationMatrix(GetController()->GetControlRotation()).GetUnitAxis(EAxis::Y);
