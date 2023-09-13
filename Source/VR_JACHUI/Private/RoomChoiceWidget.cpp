@@ -13,13 +13,8 @@ void URoomChoiceWidget::NativeConstruct()
 	btn_DeskRoom->OnClicked.AddDynamic(this, &URoomChoiceWidget::GoDeskRoom);
 	btn_ClosetRoom->OnClicked.AddDynamic(this, &URoomChoiceWidget::GoClosetRoom);
 	btn_LightRoom->OnClicked.AddDynamic(this, &URoomChoiceWidget::GoLightRoom);
-	btn_PartitionRoom->OnHovered.AddDynamic(this, &URoomChoiceWidget::GoPartitionRoom);
-	btn_BedRoom->OnHovered.AddDynamic(this, &URoomChoiceWidget::GoBedRoom);
-	btn_ChairRoom->OnHovered.AddDynamic(this, &URoomChoiceWidget::GoChairRoom);
-	btn_DeskRoom->OnHovered.AddDynamic(this, &URoomChoiceWidget::GoDeskRoom);
-	btn_ClosetRoom->OnHovered.AddDynamic(this, &URoomChoiceWidget::GoClosetRoom);
-	btn_LightRoom->OnHovered.AddDynamic(this, &URoomChoiceWidget::GoLightRoom);
-	btn_PartitionRoom->OnHovered.AddDynamic(this, &URoomChoiceWidget::GoPartitionRoom);
+	btn_PartitionRoom->OnClicked.AddDynamic(this, &URoomChoiceWidget::GoPartitionRoom);
+
 }
 
 void URoomChoiceWidget::GoBedRoom()
