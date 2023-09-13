@@ -33,7 +33,7 @@ void AFurnitureDetailRequestActor::GETFurnitureInfo(int furnitureNo)
 	FString url = "";
 	url.Append(FString::Printf(TEXT("%d"), furnitureNo));
 
-	// GETÃ³¸® 
+	// GETÃ³ï¿½ï¿½ 
 	Request->SetURL(url);
 	Request->SetVerb("GET");
 	Request->OnProcessRequestComplete().BindUObject(this, &AFurnitureDetailRequestActor::OnGETFunrintureInfo);
@@ -46,11 +46,11 @@ void AFurnitureDetailRequestActor::OnGETFunrintureInfo(TSharedPtr<IHttpRequest> 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("GET Furnitures Info"));
 		
-		// Response °ª Parsing
+		// Response ï¿½ï¿½ Parsing
 		FString res = Response->GetContentAsString();
 		//TArray<FString> parsedData = UJsonParseLibrary::JsonPRParse(res);
 		
-		// GameInstance¸¦ ÅëÇØ UI¿¡ ³ªÅ¸³ª°Ô ÇÑ´Ù. 
+		// GameInstanceï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ UIï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½. 
 		// gm2->SetPRText(parsedData);
 	}
 	else
