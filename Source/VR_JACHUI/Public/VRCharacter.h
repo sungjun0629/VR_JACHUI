@@ -53,6 +53,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
 	class UMoveComponent* moveComp;
 
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+	class UWidgetInteractionComponent* rightWidgetPointer;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+	class UWidgetPointerComponent* widgetPointerComp;
+
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	class UInputMappingContext* imc_VRmap;
 
