@@ -56,4 +56,10 @@ public:
 	UFUNCTION()
 	void GoPartitionRoom();
 
+	UPROPERTY()
+	class ATelepoartDest_BedRoom* BedRoom;
+
+	//UPROPERTY()
+	//class AVRCharacter* Player;
+
 };

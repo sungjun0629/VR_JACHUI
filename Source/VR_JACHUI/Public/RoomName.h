@@ -26,4 +26,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	UTextBlock* DeskRoom;
+
+	class ARoomNameWidgetActor* nameActor;
 };
