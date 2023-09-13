@@ -39,8 +39,8 @@ private:
 	UPROPERTY()
 	class AMyFavoriteRequestActor* FAVRequestActor; 
 	
-	UPROPERTY()
-	class UList_BedRoom* ListBedRoom;
+	/*UPROPERTY()
+	class UList_BedRoom* ListBedRoom;*/
 
 	UPROPERTY()
 	class UFurnitureList_Bed* FAVListEntity;
