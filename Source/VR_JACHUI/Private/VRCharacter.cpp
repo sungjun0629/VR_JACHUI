@@ -12,6 +12,8 @@
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MoveComponent.h"
+#include "Components/WidgetInteractionComponent.h"
+#include "WidgetPointerComponent.h"
 
 // Sets default values
 AVRCharacter::AVRCharacter()
@@ -55,12 +57,20 @@ AVRCharacter::AVRCharacter()
 	rightLog->SetHorizontalAlignment(EHTA_Center);
 	rightLog->SetVerticalAlignment(EVRTA_TextCenter);
 
+	rightWidgetPointer = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("Right Widget Pointer"));
+	rightWidgetPointer->SetupAttachment(rightHand);
+	rightWidgetPointer->SetRelativeRotation(FRotator(0,90,0));
+
+
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationPitch = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 
 	moveComp = CreateDefaultSubobject<UMoveComponent>(TEXT("Move Component"));
+	widgetPointerComp = CreateDefaultSubobject<UWidgetPointerComponent>(TEXT("Widget Pointer Component"));
+
+
 
 
 }
@@ -106,6 +116,7 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	if (enhancedInputComponent != nullptr)
 	{
 		moveComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions); 
+		widgetPointerComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
 	}
 
 
