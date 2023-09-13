@@ -30,7 +30,7 @@ public:
 
 	void SetFAVFurnitureList(const TArray<FFurnitureJsonType> FAVList);
 	void SetImageTexture(class UTexture2D* tex);
-	int32 cnt; 
+	int32 cnt = 0; 
 
 private:
 	UPROPERTY()

@@ -21,6 +21,9 @@ public:
 	class UTextBlock* text_furniture;
 
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
+	class UTextBlock* text_assetDir;
+
+	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
 	class UImage* img_furniture;
 
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)

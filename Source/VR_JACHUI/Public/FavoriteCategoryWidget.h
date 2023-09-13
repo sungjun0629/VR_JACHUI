@@ -72,4 +72,6 @@ private:
 
 	UPROPERTY()
 	 class UMyGameInstance* GI;
+
+	void SwitchCanvas(int32 index);
 };

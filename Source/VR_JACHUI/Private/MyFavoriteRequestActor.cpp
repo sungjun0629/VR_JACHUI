@@ -80,7 +80,7 @@ void AMyFavoriteRequestActor::OnGETFurnitureImage(TSharedPtr<IHttpRequest> Reque
 	{
 		UE_LOG(LogTemp,Warning,TEXT("SUCCESS TO GET MY FAVORITE FURNITURE IMAGE"));
 		TArray<uint8> texBites = Response->GetContent();
-		
+
 		UTexture2D* realTex = FImageUtils::ImportBufferAsTexture2D(texBites);
 		// GameModeBase에서 위젯의 이미지를 변경시켜준다. 
 		RoomGM->SetImageTexture(realTex);

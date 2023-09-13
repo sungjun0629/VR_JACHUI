@@ -45,32 +45,22 @@ void AMyRoomGameModeBase::SetFAVFurnitureList(const TArray<FFurnitureJsonType> F
 				UE_LOG(LogTemp,Warning,TEXT("add to child"));
 				FAVWidget->BP_ListBed->box->AddChild(FAVListEntity);
 				FAVListEntity->text_furniture->SetText(FText::FromString(F.name));
+				FAVListEntity->text_assetDir->SetText(FText::FromString(F.assetDir));
 				FAVListEntities.Add(FAVListEntity);
 				FAVRequestActor->GETFurnitureImage(F.name);
-				
-				//FAVWidget->List_FAV->AddItem(FAVListEntity2);
+			
 			}
 		}
 
-		//FAVWidget->name->SetText(FText::FromString(FAVList[0].name));
-		//FAVRequestActor->GETFurnitureImage("ikea_sofa");
-
 	}
-	
-	// List일 때
-	//for (FFurnitureJsonType Furni : FAVList)
-	//{
-	//	// 이미지 GET을 요청한다. 
-	//	FAVRequestActor->GETFurnitureImage(Furni.name);
-
-	//}
 }
 
 void AMyRoomGameModeBase::SetImageTexture(class UTexture2D* tex)
 {
 	if (FAVWidget != nullptr)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("SET %s IMAGE TEXTURE"), *(FAVListEntities[cnt]->text_furniture->GetText().ToString()));
+		UE_LOG(LogTemp,Warning,TEXT("SET IMAGE TEXTURE"));
 		FAVListEntities[cnt++]->img_furniture->SetBrushFromTexture(tex);
+
 	}
 }

@@ -4,6 +4,7 @@
 #include "FavoriteCategoryWidget.h"
 #include "Components/Button.h"
 #include "MyFavoriteRequestActor.h"
+#include "Components/WidgetSwitcher.h"
 #include "EngineUtils.h"
 #include "../MyGameInstance.h"
 
@@ -30,33 +31,36 @@ void UFavoriteCategoryWidget::NativeConstruct()
 
 void UFavoriteCategoryWidget::GETFavoriteBed()
 {
+	SwitchCanvas(0);
 	GETFavorite(userId, 1);
 	UE_LOG(LogTemp,Warning,TEXT("%s"), *userId)
 }
 
 void UFavoriteCategoryWidget::GETFavoriteChair()
 {
+	SwitchCanvas(1);
 	GETFavorite(userId, 2);
 
 }
 
 void UFavoriteCategoryWidget::GETFavoriteTable()
 {
-
+	SwitchCanvas(2);
 }
 
 void UFavoriteCategoryWidget::GETFavoriteCloset()
 {
-
+	SwitchCanvas(3);
 }
 
 void UFavoriteCategoryWidget::GETFavoriteLight()
 {
-
+	SwitchCanvas(4);
 }
 
 void UFavoriteCategoryWidget::GETFavoritePartition()
 {
+	SwitchCanvas(5);
 
 }
 
@@ -70,4 +74,9 @@ void UFavoriteCategoryWidget::GETFavorite(const FString myID, const int32 Furnit
 	{
 		UE_LOG(LogTemp, Warning, TEXT("CAN'T GET FAVORITE %s FURNITURE. THERE IS NO REQUEST ACTOR"), *myID);
 	}
+}
+
+void UFavoriteCategoryWidget::SwitchCanvas(int32 index)
+{
+	ListSwitch->SetActiveWidgetIndex(index);
 }

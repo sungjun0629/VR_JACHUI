@@ -28,7 +28,10 @@ void UFurnitureList_Bed::SpawnFurniture()
 	AMyFurnitureActor* spawnedActor =  GetWorld()->SpawnActor<AMyFurnitureActor>(furnitureAsset, FVector(1200,390,0), FRotator());
 	if(spawnedActor!=nullptr)
 	{
-		spawnedActor->assetDir = "/Game/Furniture/Chair/SM_Chair_2";
+		FString dir = "/Game/Furniture";
+		dir.Append(FString::Printf(TEXT("%s"), *(text_assetDir->GetText()).ToString()));
+		spawnedActor->assetDir = dir;
+		UE_LOG(LogTemp,Warning,TEXT("dirAsset : %s"), *dir);
 		spawnedActor->changeAsset();
 	}
 }
