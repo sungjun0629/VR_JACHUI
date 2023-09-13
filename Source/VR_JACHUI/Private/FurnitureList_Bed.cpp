@@ -3,6 +3,9 @@
 
 #include "FurnitureList_Bed.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
+#include "EngineUtils.h"
+#include "MyFurnitureActor.h"
 
 
 
@@ -10,13 +13,25 @@ void UFurnitureList_Bed::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	text_furniture->SetText(FText::FromString(TEXT("ho")));
-	UE_LOG(LogTemp, Warning, TEXT("entity starts"));
+	btn_spawn->OnClicked.AddDynamic(this, &UFurnitureList_Bed::SpawnFurniture);
+	
+
+	text_furniture->SetText(FText::FromString(TEXT("Blank")));
+	//furnitureActor = CreateDefaultSubobject<AMyFurnitureActor>(TEXT("furnitureActor"));
+	
 }
 
-void UFurnitureList_Bed::changeText()
+void UFurnitureList_Bed::SpawnFurniture()
 {
-	UE_LOG(LogTemp,Warning,TEXT("before text : %s"), *(text_furniture->GetText()).ToString())
-	text_furniture->SetText(FText::FromString(TEXT("ho2")));
-	UE_LOG(LogTemp,Warning,TEXT("after text : %s"), *(text_furniture->GetText()).ToString())
+	UE_LOG(LogTemp,Warning,TEXT("Clicked button : %s"), *(this->text_furniture->GetText()).ToString());
+
+	AMyFurnitureActor* spawnedActor =  GetWorld()->SpawnActor<AMyFurnitureActor>(furnitureAsset, FVector(1200,390,0), FRotator());
+	if(spawnedActor!=nullptr)
+	{
+		FString dir = "/Game/Furniture";
+		dir.Append(FString::Printf(TEXT("%s"), *(text_assetDir->GetText()).ToString()));
+		spawnedActor->assetDir = dir;
+		UE_LOG(LogTemp,Warning,TEXT("dirAsset : %s"), *dir);
+		spawnedActor->changeAsset();
+	}
 }

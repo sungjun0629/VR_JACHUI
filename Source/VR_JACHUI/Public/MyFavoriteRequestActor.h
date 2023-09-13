@@ -25,7 +25,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void GETMyFavoritesFurniture(const FString myID);
+	void GETMyFavoritesFurniture(const FString myID, const int32 FurnitureNo);
 	void GETFurnitureImage(const FString furnitureName);
 
 private:

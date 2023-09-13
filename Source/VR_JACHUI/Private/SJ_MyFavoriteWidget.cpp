@@ -68,7 +68,7 @@ void USJ_MyFavoriteWidget::GETFavorite(const FString myID)
 {
 	if (MYFavoriteRequestActor != nullptr)
 	{
-		MYFavoriteRequestActor->GETMyFavoritesFurniture(myID);
+		//MYFavoriteRequestActor->GETMyFavoritesFurniture(myID);
 		UE_LOG(LogTemp,Warning,TEXT("TRYING GET FAVORITE %s FURNITURE"), *myID);
 	}
 	else

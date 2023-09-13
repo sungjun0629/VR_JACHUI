@@ -44,4 +44,34 @@ public:
 
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category=MySettings, BlueprintReadWrite)
 	class UWidgetSwitcher* ListSwitch;
+
+	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category=MySettings, BlueprintReadWrite)
+	class UList_BedRoom* BP_ListBed;
+
+	FString userId; 
+
+private:
+
+	UFUNCTION()
+	void GETFavoriteBed();
+	UFUNCTION()
+	void GETFavoriteChair();
+	UFUNCTION()
+	void GETFavoriteTable();
+	UFUNCTION()
+	void GETFavoriteCloset();
+	UFUNCTION()
+	void GETFavoriteLight();
+	UFUNCTION()
+	void GETFavoritePartition();
+
+	UPROPERTY()
+	class AMyFavoriteRequestActor* MYFavoriteRequestActor;
+
+	void GETFavorite(const FString myID, const int32 FurnitureNo);
+
+	UPROPERTY()
+	 class UMyGameInstance* GI;
+
+	void SwitchCanvas(int32 index);
 };

@@ -30,11 +30,11 @@ void AMyFavoriteRequestActor::Tick(float DeltaTime)
 
 }
 
-void AMyFavoriteRequestActor::GETMyFavoritesFurniture(const FString myID)
+void AMyFavoriteRequestActor::GETMyFavoritesFurniture(const FString myID, const int32 FurnitureNo)
 {
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-	FString url = "http://localhost:8181/api/furniture/favorite/sungjun1";
-	//url.Append(FString::Printf(TEXT("%s"), "sungjun1"));
+	FString url = "http://localhost:8181/api/furniture/favorite/";
+	url.Append(FString::Printf(TEXT("%s/%d"), *myID, FurnitureNo));
 
 	// GET처리 
 	Request->SetURL(url);
@@ -80,7 +80,7 @@ void AMyFavoriteRequestActor::OnGETFurnitureImage(TSharedPtr<IHttpRequest> Reque
 	{
 		UE_LOG(LogTemp,Warning,TEXT("SUCCESS TO GET MY FAVORITE FURNITURE IMAGE"));
 		TArray<uint8> texBites = Response->GetContent();
-		
+
 		UTexture2D* realTex = FImageUtils::ImportBufferAsTexture2D(texBites);
 		// GameModeBase에서 위젯의 이미지를 변경시켜준다. 
 		RoomGM->SetImageTexture(realTex);

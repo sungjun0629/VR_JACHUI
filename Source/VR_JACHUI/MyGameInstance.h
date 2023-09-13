@@ -27,5 +27,9 @@ UCLASS()
 class VR_JACHUI_API UMyGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-	
+
+public:
+	UMyGameInstance();
+	FUserInfo userInfo;
+
 };
