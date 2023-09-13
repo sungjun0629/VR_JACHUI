@@ -23,4 +23,18 @@ public:
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
 	class UImage* img_furniture;
 
+	UPROPERTY(VisibleAnywhere, meta=(BindWidget), Category = MySettings)
+	class UButton* btn_spawn;
+
+	UPROPERTY(EditAnywhere, Category=MySettings)
+	TSubclassOf<class AMyFurnitureActor> furnitureAsset;
+
+	UPROPERTY(EditAnywhere, Category = MySettings)
+	class AMyFurnitureActor* furnitureActor;
+
+private:
+	UFUNCTION()
+	void SpawnFurniture();
+	
+
 };
