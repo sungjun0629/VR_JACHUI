@@ -50,8 +50,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings|Components")
 	class UTextRenderComponent* rightLog;
 
-	//UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
-	//class UMoveComponent* moveComp;
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+	class UMoveComponent* moveComp;
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	class UInputMappingContext* imc_VRmap;
@@ -63,9 +63,5 @@ public:
 	bool bIsTesting = true;
 
 	class APlayerController* pc;
-
-private:
-	void Move(const struct FInputActionValue& value);
-	void Rotate(const struct FInputActionValue& value);
 
 };
