@@ -21,11 +21,28 @@ public:
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UCheckBox* box_Favorite;
 
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
+	class UImage* img_furniture;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
+	class UTextBlock* text_brandName;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
+	class UTextBlock* text_furnitureName;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
+	class UTextBlock* text_furniturePrice;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
+	class UTextBlock* text_furnitureRank;
+
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UButton* btn_Basket;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UButton* btn_Buy;
+
 
 	//UPROPERTY(VisibleAnywhere)
 	//void AddFavoriteCategory();

@@ -25,8 +25,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void GETFurnitureInfo(int furnitureNo);
+	void GETFurnitureInfo(FString furnitureUUID);
+
 
 private:
 	void OnGETFunrintureInfo(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully);
+	
+	UPROPERTY()
+	class AShowRoomGameModeBase* showRoomGM;
 };

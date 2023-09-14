@@ -4,6 +4,7 @@
 #include "FurnitureDetailRequestActor.h"
 #include "HttpModule.h"
 #include "JsonParseLibrary.h"
+#include "ShowRoomGameModeBase.h"
 
 // Sets default values
 AFurnitureDetailRequestActor::AFurnitureDetailRequestActor()
@@ -18,6 +19,7 @@ void AFurnitureDetailRequestActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	showRoomGM = GetWorld()->GetAuthGameMode<AShowRoomGameModeBase>();
 }
 
 // Called every frame
@@ -27,11 +29,11 @@ void AFurnitureDetailRequestActor::Tick(float DeltaTime)
 
 }
 
-void AFurnitureDetailRequestActor::GETFurnitureInfo(int furnitureNo)
+void AFurnitureDetailRequestActor::GETFurnitureInfo(FString UUID)
 {
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-	FString url = "";
-	url.Append(FString::Printf(TEXT("%d"), furnitureNo));
+	FString url = "http://192.168.0.80:8181/api/furniture/detail/";
+	url.Append(FString::Printf(TEXT("%s"), *UUID));
 
 	// GETó�� 
 	Request->SetURL(url);
@@ -48,7 +50,7 @@ void AFurnitureDetailRequestActor::OnGETFunrintureInfo(TSharedPtr<IHttpRequest> 
 		
 		// Response �� Parsing
 		FString res = Response->GetContentAsString();
-		//TArray<FString> parsedData = UJsonParseLibrary::JsonPRParse(res);
+		TArray<FFurnitureJsonType> parsedData = UJsonParseLibrary::FavJsonParse(res);
 		
 		// GameInstance�� ���� UI�� ��Ÿ���� �Ѵ�. 
 		// gm2->SetPRText(parsedData);

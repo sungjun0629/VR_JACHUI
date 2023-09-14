@@ -34,4 +34,6 @@ private:
 	
 	UPROPERTY()
 	class AMyRoomGameModeBase* RoomGM;
+
+	FString localhost = "http://192.168.0.80:8181";
 };
