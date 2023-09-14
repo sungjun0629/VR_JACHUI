@@ -21,7 +21,6 @@ public:
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UCheckBox* box_Favorite;
 
-
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UImage* img_furniture;
 
