@@ -38,16 +38,21 @@ void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* enhancedInputComponent, TArray<class UInputAction*> inputActions)
 {
+	FString str = FString::Printf(TEXT("SetupPlayerInputComponent"));
+	GEngine->AddOnScreenDebugMessage(0, 10, FColor::Red, str);
 	enhancedInputComponent->BindAction(inputActions[0], ETriggerEvent::Triggered, this, &UMoveComponent::Move);
 	enhancedInputComponent->BindAction(inputActions[0], ETriggerEvent::Completed, this, &UMoveComponent::Move);
 	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Triggered, this, &UMoveComponent::Rotate);
 	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Completed, this, &UMoveComponent::Rotate);
+
 }
 
-void UMoveComponent::Move(const struct FInputActionValue& value)
+void UMoveComponent::Move(const FInputActionValue& value)
 {
 	FVector2D controllerInput = value.Get<FVector2D>();
-	UE_LOG(LogTemp, Warning, TEXT("x: %.2f\r\ny: %.2f"), controllerInput.X, controllerInput.Y);
+	
+	FString str = FString::Printf(TEXT("x : %.2f, y : %.2f"), controllerInput.X, controllerInput.Y);
+	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, str);
 
 	FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
 	FVector rightVec = FRotationMatrix(player->pc ->GetControlRotation()).GetUnitAxis(EAxis::Y);
@@ -56,7 +61,7 @@ void UMoveComponent::Move(const struct FInputActionValue& value)
 	player->AddMovementInput(rightVec, controllerInput.Y);
 }
 
-void UMoveComponent::Rotate(const struct FInputActionValue& value)
+void UMoveComponent::Rotate(const FInputActionValue& value)
 {
 	FVector2D rightConInput = value.Get<FVector2D>();
 
