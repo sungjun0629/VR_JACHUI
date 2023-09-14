@@ -44,10 +44,10 @@ void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Completed, this, &UMoveComponent::Rotate);
 }
 
-void UMoveComponent::Move(const struct FInputActionValue& value)
+void UMoveComponent::Move(const FInputActionValue& value)
 {
 	FVector2D controllerInput = value.Get<FVector2D>();
-	UE_LOG(LogTemp, Warning, TEXT("x: %.2f\r\ny: %.2f"), controllerInput.X, controllerInput.Y);
+	
 
 	FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
 	FVector rightVec = FRotationMatrix(player->pc ->GetControlRotation()).GetUnitAxis(EAxis::Y);
@@ -56,7 +56,7 @@ void UMoveComponent::Move(const struct FInputActionValue& value)
 	player->AddMovementInput(rightVec, controllerInput.Y);
 }
 
-void UMoveComponent::Rotate(const struct FInputActionValue& value)
+void UMoveComponent::Rotate(const FInputActionValue& value)
 {
 	FVector2D rightConInput = value.Get<FVector2D>();
 
