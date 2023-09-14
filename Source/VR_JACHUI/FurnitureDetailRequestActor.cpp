@@ -32,7 +32,7 @@ void AFurnitureDetailRequestActor::Tick(float DeltaTime)
 void AFurnitureDetailRequestActor::GETFurnitureInfo(FString UUID)
 {
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-	FString url = "http://localhost:8181/api/furniture/detail/";
+	FString url = "http://192.168.0.80:8181/api/furniture/detail/";
 	url.Append(FString::Printf(TEXT("%s"), *UUID));
 
 	// GETó�� 
