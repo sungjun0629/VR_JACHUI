@@ -68,6 +68,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Movement")
 	bool bIsTesting = true;
 
+	UFUNCTION(BlueprintCallable)
+	void TeleportDestination();
+
+    UPROPERTY(VisibleAnywhere)
+    class ATelepoartDest_BedRoom* BedRoom;
+
+
 	class APlayerController* pc;
 
 };

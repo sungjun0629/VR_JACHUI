@@ -98,6 +98,10 @@ void AVRCharacter::BeginPlay()
 			subSys->AddMappingContext(imc_VRmap, 0);
 		}
 	}
+
+	BedRoom = Cast<ATelepoartDest_BedRoom>(UGameplayStatics::GetActorOfClass(GetWorld(), ATelepoartDest_BedRoom::StaticClass()));
+
+
 }
 
 // Called every frame
@@ -119,6 +123,23 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		widgetPointerComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
 	}
 
+
+}
+
+void AVRCharacter::TeleportDestination()
+{
+	//지정된 위치로 텔레포트할거임
+	if (BedRoom)
+	{
+		FVector TpLoc = BedRoom->GetActorLocation();
+
+		this->SetActorLocation(TpLoc);
+	}
+
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Here is Not"));
+	}
 
 }
 
