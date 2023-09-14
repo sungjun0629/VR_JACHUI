@@ -8,7 +8,7 @@
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class VR_PROJECT_API UGrabComponent : public UActorComponent
+class VR_JACHUI_API UGrabComponent : public UActorComponent
 {
 	GENERATED_BODY()
 

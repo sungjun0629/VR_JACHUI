@@ -21,9 +21,9 @@ void AMyRoomGameModeBase::BeginPlay()
 
 	if (FAVWidget != nullptr)
 	{
-		FAVWidget->AddToViewport();
- 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
- 		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+		//FAVWidget->AddToViewport();
+ 		//GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+ 		//GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	}
 
 	for (TActorIterator<AMyFavoriteRequestActor> it(GetWorld()); it; ++it)
@@ -40,7 +40,7 @@ void AMyRoomGameModeBase::SetFAVFurnitureList(const TArray<FFurnitureJsonType> F
 		if (FAVList.Num() > 0)
 		{
 			for (FFurnitureJsonType F : FAVList)
-			{// FAVList¿¡ ÀÖ´Â ¸¸Å­ Addchild¸¦ ÅëÇÏ¿© À§Á¬¿¡ ³Ö¾îÁØ´Ù. 
+			{// FAVListï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Å­ Addchildï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½Ø´ï¿½. 
 				FAVListEntity = CreateWidget<UFurnitureList_Bed>(GetWorld(), FAVFurnitureListEntity);
 				UE_LOG(LogTemp,Warning,TEXT("add to child"));
 				FAVWidget->BP_ListBed->box->AddChild(FAVListEntity);

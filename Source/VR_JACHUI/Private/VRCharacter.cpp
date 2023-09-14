@@ -14,6 +14,8 @@
 #include "MoveComponent.h"
 #include "Components/WidgetInteractionComponent.h"
 #include "WidgetPointerComponent.h"
+#include <Kismet/GameplayStatics.h>
+#include "TelepoartDest_BedRoom.h"
 
 // Sets default values
 AVRCharacter::AVRCharacter()
@@ -80,11 +82,11 @@ void AVRCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	// ¾ç¼Õ ·Î±× ÃÊ±âÈ­
+	// ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ ï¿½Ê±ï¿½È­
 	leftLog->SetText(FText::FromString("Left Log..."));
 	rightLog->SetText(FText::FromString("Right Log..."));
 
-	// ¸Ó¸® Àåºñ ±âÁØÁ¡ ¼³Á¤
+	// ï¿½Ó¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UHeadMountedDisplayFunctionLibrary::SetTrackingOrigin(EHMDTrackingOrigin::Stage);
 
 	pc = GetController<APlayerController>();
@@ -128,7 +130,7 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AVRCharacter::TeleportDestination()
 {
-	//ÁöÁ¤µÈ À§Ä¡·Î ÅÚ·¹Æ÷Æ®ÇÒ°ÅÀÓ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ú·ï¿½ï¿½ï¿½Æ®ï¿½Ò°ï¿½ï¿½ï¿½
 	if (BedRoom)
 	{
 		FVector TpLoc = BedRoom->GetActorLocation();
