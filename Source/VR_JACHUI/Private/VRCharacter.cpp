@@ -168,20 +168,20 @@ void AVRCharacter::TeleportDeskRoom()
 }
 
 
-// void AVRCharacter::TeleportDestination()
-// {
-// 	//지정된 위치로 텔레포트할거임
-// 	if (BedRoom)
-// 	{
-// 		FVector TpLoc = BedRoom->GetActorLocation();
-// 
-// 		this->SetActorLocation(TpLoc);
-// 	}
-// 
-// 	else
-// 	{
-// 		UE_LOG(LogTemp, Warning, TEXT("Here is Not"));
-// 	}
-// 
-// }
+ void AVRCharacter::TeleportBedRoom()
+ {
+ 	//지정된 위치로 텔레포트할거임
+ 	if (BedRoom)
+ 	{
+ 		FVector TpLoc = BedRoom->GetActorLocation();
+ 
+ 		this->SetActorLocation(TpLoc);
+ 	}
+ 
+ 	else
+ 	{
+ 		UE_LOG(LogTemp, Warning, TEXT("Here is Not"));
+ 	}
+ 
+ }
 
