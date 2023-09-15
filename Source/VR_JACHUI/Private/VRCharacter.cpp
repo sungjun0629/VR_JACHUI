@@ -14,13 +14,19 @@
 #include "MoveComponent.h"
 #include "Components/WidgetInteractionComponent.h"
 #include "WidgetPointerComponent.h"
-#include <Kismet/GameplayStatics.h>
 #include "TelepoartDest_BedRoom.h"
+#include "TeleportDest_ChairRoom.h"
+#include "TeleportDest_DeskRoom.h"
+#include <Kismet/GameplayStatics.h>
+#include "GrabComponent.h"
+
+
+
 
 // Sets default values
 AVRCharacter::AVRCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	hmdCam = CreateDefaultSubobject<UCameraComponent>(TEXT("HMD Camera"));
@@ -61,7 +67,7 @@ AVRCharacter::AVRCharacter()
 
 	rightWidgetPointer = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("Right Widget Pointer"));
 	rightWidgetPointer->SetupAttachment(rightHand);
-	rightWidgetPointer->SetRelativeRotation(FRotator(0,90,0));
+	rightWidgetPointer->SetRelativeRotation(FRotator(0, 90, 0));
 
 
 	bUseControllerRotationYaw = true;
@@ -71,6 +77,7 @@ AVRCharacter::AVRCharacter()
 
 	moveComp = CreateDefaultSubobject<UMoveComponent>(TEXT("Move Component"));
 	widgetPointerComp = CreateDefaultSubobject<UWidgetPointerComponent>(TEXT("Widget Pointer Component"));
+	grabComp = CreateDefaultSubobject<UGrabComponent>(TEXT("Grab Component"));
 
 
 
@@ -81,12 +88,12 @@ AVRCharacter::AVRCharacter()
 void AVRCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	// ��� �α� �ʱ�ȭ
+
+	// 양손 로그 초기화
 	leftLog->SetText(FText::FromString("Left Log..."));
 	rightLog->SetText(FText::FromString("Right Log..."));
 
-	// �Ӹ� ��� ������ ����
+	// 머리 장비 기준점 설정
 	UHeadMountedDisplayFunctionLibrary::SetTrackingOrigin(EHMDTrackingOrigin::Stage);
 
 	pc = GetController<APlayerController>();
@@ -102,6 +109,9 @@ void AVRCharacter::BeginPlay()
 	}
 
 	BedRoom = Cast<ATelepoartDest_BedRoom>(UGameplayStatics::GetActorOfClass(GetWorld(), ATelepoartDest_BedRoom::StaticClass()));
+	ChairRoom = Cast<ATeleportDest_ChairRoom>(UGameplayStatics::GetActorOfClass(GetWorld(), ATeleportDest_ChairRoom::StaticClass()));
+	DeskRoom = Cast<ATeleportDest_DeskRoom>(UGameplayStatics::GetActorOfClass(GetWorld(), ATeleportDest_DeskRoom::StaticClass()));
+
 
 
 }
@@ -121,21 +131,18 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (enhancedInputComponent != nullptr)
 	{
-		moveComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions); 
+		moveComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
 		widgetPointerComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
+		grabComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
 	}
-
-
 }
 
-void AVRCharacter::TeleportDestination()
+void AVRCharacter::TeleportChairRoom()
 {
-	//������ ��ġ�� �ڷ���Ʈ�Ұ���
-	if (BedRoom)
+	if (ChairRoom)
 	{
-		FVector TpLoc = BedRoom->GetActorLocation();
-
-		this->SetActorLocation(TpLoc);
+		FVector Loc = ChairRoom->GetActorLocation();
+		this->SetActorLocation(Loc);
 	}
 
 	else
@@ -144,4 +151,37 @@ void AVRCharacter::TeleportDestination()
 	}
 
 }
+
+void AVRCharacter::TeleportDeskRoom()
+{
+	if (DeskRoom)
+	{
+		FVector DeskLoc = DeskRoom->GetActorLocation();
+		this->SetActorLocation(DeskLoc);
+	}
+
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Here is Not"));
+	}
+
+}
+
+
+// void AVRCharacter::TeleportDestination()
+// {
+// 	//지정된 위치로 텔레포트할거임
+// 	if (BedRoom)
+// 	{
+// 		FVector TpLoc = BedRoom->GetActorLocation();
+// 
+// 		this->SetActorLocation(TpLoc);
+// 	}
+// 
+// 	else
+// 	{
+// 		UE_LOG(LogTemp, Warning, TEXT("Here is Not"));
+// 	}
+// 
+// }
 

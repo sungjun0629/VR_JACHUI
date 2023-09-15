@@ -34,7 +34,7 @@ public:
 
 private:
 	class AVRCharacter* player;
-	class APickUpActor* grabbedObejct;
+	class ATestPickUp* grabbedObejct;
 
 	FVector prevLoc;
 	FVector deltaLoc;
