@@ -27,7 +27,7 @@ void URoomChoiceWidget::GoBedRoom()
 		AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
 		if (Player)
 		{
-			Player->TeleportDestination();
+			Player->TeleportBedRoom();
 		}
 	}
 }
@@ -39,7 +39,7 @@ void URoomChoiceWidget::GoChairRoom()
 		AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
 		if (Player)
 		{
-			Player->TeleportDestination();
+			Player->TeleportChairRoom();
 		}
 	}
 }
@@ -51,21 +51,21 @@ void URoomChoiceWidget::GoDeskRoom()
 		AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
 		if (Player)
 		{
-			Player->TeleportDestination();
+			Player->TeleportDeskRoom();
 		}
 	}
 }
 
 void URoomChoiceWidget::GoClosetRoom()
 {
-	if (GetOwningPlayer())
-	{
-		AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
-		if (Player)
-		{
-			Player->TeleportDestination();
-		}
-	}
+	//if (GetOwningPlayer())
+	//{
+	//	AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
+	//	if (Player)
+	//	{
+	//		Player->TeleportDestination();
+	//	}
+	//}
 }
 
 void URoomChoiceWidget::GoLightRoom()
