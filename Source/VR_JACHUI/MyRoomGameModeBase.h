@@ -24,8 +24,8 @@ public:
 	TSubclassOf<class UFavoriteCategoryWidget> FAVFurnitureWidget;
 	UPROPERTY(EditAnywhere, Category=MySettings)
 	TSubclassOf<class UFurnitureList_Bed> FAVFurnitureListEntity;
-	UPROPERTY(EditAnywhere, Category=MySettings)
-	TSubclassOf<class UList_BedRoom> ListBedRoomWidget;
+	/*UPROPERTY(EditAnywhere, Category=MySettings)
+	TSubclassOf<class UList_BedRoom> ListBedRoomWidget;*/
 
 
 	void SetFAVFurnitureList(const TArray<FFurnitureJsonType> FAVList);

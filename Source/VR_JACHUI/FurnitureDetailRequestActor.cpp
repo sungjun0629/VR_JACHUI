@@ -5,6 +5,9 @@
 #include "HttpModule.h"
 #include "JsonParseLibrary.h"
 #include "ShowRoomGameModeBase.h"
+#include "ImageUtils.h"
+
+
 
 // Sets default values
 AFurnitureDetailRequestActor::AFurnitureDetailRequestActor()
@@ -52,8 +55,9 @@ void AFurnitureDetailRequestActor::OnGETFunrintureInfo(TSharedPtr<IHttpRequest> 
 		FString res = Response->GetContentAsString();
 		TArray<FFurnitureJsonType> parsedData = UJsonParseLibrary::FavJsonParse(res);
 		
-		// GameInstance�� ���� UI�� ��Ÿ���� �Ѵ�. 
-		// gm2->SetPRText(parsedData);
+		// Change UI From Get Data 
+		if(showRoomGM!=nullptr)
+		showRoomGM->SetFurnitureDetailInfo(parsedData);
 	}
 	else
 	{
@@ -61,3 +65,35 @@ void AFurnitureDetailRequestActor::OnGETFunrintureInfo(TSharedPtr<IHttpRequest> 
 	}
 }
 
+void AFurnitureDetailRequestActor::GETFurnitureImage(const FString furnitureName)
+{
+	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
+	FString url = "http://192.168.0.80:8181/api/furniture/showImage/";
+	url.Append(FString::Printf(TEXT("%s"), *furnitureName));
+
+	UE_LOG(LogTemp, Warning, TEXT("Trying to GetFurniture Image : %s "), *furnitureName);
+	// GET처리 
+	Request->SetURL(url);
+	Request->SetHeader(TEXT("Content-Type"), TEXT("image/jpg"));
+	Request->OnProcessRequestComplete().BindUObject(this, &AFurnitureDetailRequestActor::OnGETFurnitureImage);
+	Request->ProcessRequest();
+}
+
+
+void AFurnitureDetailRequestActor::OnGETFurnitureImage(TSharedPtr<IHttpRequest> Request, TSharedPtr<IHttpResponse> Response, bool bConnectedSuccessfully)
+{
+	if (bConnectedSuccessfully)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SUCCESS TO GET MY FAVORITE FURNITURE IMAGE"));
+		TArray<uint8> texBites = Response->GetContent();
+
+		UTexture2D* realTex = FImageUtils::ImportBufferAsTexture2D(texBites);
+		// GameModeBase에서 위젯의 이미지를 변경시켜준다. 
+		showRoomGM->SetImageTexture(realTex);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FAILED TO GET MY FAVORITE FURNITURE IMAGE"));
+
+	}
+}
