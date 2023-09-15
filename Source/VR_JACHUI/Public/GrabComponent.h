@@ -4,34 +4,44 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "MoveComponent.generated.h"
+#include "GrabComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class VR_JACHUI_API UMoveComponent : public UActorComponent
+class VR_JACHUI_API UGrabComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	UMoveComponent();
+	UGrabComponent();
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	void SetupPlayerInputComponent(class UEnhancedInputComponent* enhancedInputComponent, TArray<class UInputAction*> inputActions);
+	
+	UPROPERTY(EditDefaultsOnly, Category=MySettings)
+	float throwPower = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category=MySettings)
+	float rotSpeed = 100.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category=MySettings)
+	class UHapticFeedbackEffect_Base* grab_Haptic;
 
 private:
 	class AVRCharacter* player;
-	
-	void Move(const struct FInputActionValue& value);
-	void Rotate(const struct FInputActionValue& value);
-	void RoomChoiceUIKey(const struct FInputActionValue& value);
+	class ATestPickUp* grabbedObejct;
 
-		
+	FVector prevLoc;
+	FVector deltaLoc;
+	FQuat prevRot;
+	FQuat deltaRot;
+
+	void GrabObject();
+	void ReleaseObject();
+	void RightHandMove(const struct FInputActionValue& value);
 };

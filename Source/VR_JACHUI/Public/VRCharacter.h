@@ -54,6 +54,9 @@ public:
 	class UMoveComponent* moveComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+	class UGrabComponent* grabComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
 	class UWidgetInteractionComponent* rightWidgetPointer;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
@@ -68,6 +71,29 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Movement")
 	bool bIsTesting = true;
 
+// 	UFUNCTION(BlueprintCallable)
+// 	void TeleportDestination();
+
+    UPROPERTY(VisibleAnywhere)
+    class ATelepoartDest_BedRoom* BedRoom;
+
+
 	class APlayerController* pc;
+
+	UFUNCTION(BlueprintCallable)
+   void TeleportBedRoom();
+
+   UFUNCTION(BlueprintCallable)
+   void TeleportChairRoom();
+
+   UFUNCTION(BlueprintCallable)
+   void TeleportDeskRoom();
+
+UPROPERTY(VisibleAnywhere)
+   class ATeleportDest_ChairRoom* ChairRoom;
+
+   UPROPERTY(VisibleAnywhere)
+   class ATeleportDest_DeskRoom* DeskRoom;
+
 
 };

@@ -22,35 +22,50 @@ void URoomChoiceWidget::NativeConstruct()
 
 void URoomChoiceWidget::GoBedRoom()
 {
-	if (btn_BedRoom)
+	if (GetOwningPlayer())
 	{
-		ACharacter* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-
+		AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
 		if (Player)
 		{
-			AVRCharacter* VRPlayer = static_cast<AVRCharacter*>(Player);
-			if(VRPlayer)
-			{
-				FVector TeleportLocation = BedRoom->GetActorLocation();
-				Player->SetActorLocation(TeleportLocation);
-			}
+			Player->TeleportBedRoom();
 		}
 	}
 }
 
 void URoomChoiceWidget::GoChairRoom()
 {
-
+	if (GetOwningPlayer())
+	{
+		AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
+		if (Player)
+		{
+			Player->TeleportChairRoom();
+		}
+	}
 }
 
 void URoomChoiceWidget::GoDeskRoom()
 {
-
+	if (GetOwningPlayer())
+	{
+		AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
+		if (Player)
+		{
+			Player->TeleportDeskRoom();
+		}
+	}
 }
 
 void URoomChoiceWidget::GoClosetRoom()
 {
-
+	//if (GetOwningPlayer())
+	//{
+	//	AVRCharacter* Player = Cast<AVRCharacter>(GetOwningPlayer()->GetPawn());
+	//	if (Player)
+	//	{
+	//		Player->TeleportDestination();
+	//	}
+	//}
 }
 
 void URoomChoiceWidget::GoLightRoom()
