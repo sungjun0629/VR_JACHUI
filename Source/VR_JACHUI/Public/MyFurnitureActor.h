@@ -23,8 +23,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditDefaultsOnly, Category=MySetting)
-	class UBoxComponent* boxComp;
+	//UPROPERTY(EditDefaultsOnly, Category=MySetting)
+	//class UBoxComponent* boxComp;
 
 	UPROPERTY(EditDefaultsOnly, Category=MySetting)
 	class UStaticMeshComponent* furnitureMesh;

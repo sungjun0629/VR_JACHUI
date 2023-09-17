@@ -6,6 +6,7 @@
 #include "Components/Button.h"
 #include "EngineUtils.h"
 #include "MyFurnitureActor.h"
+#include "VRCharacter.h"
 
 
 
@@ -21,11 +22,29 @@ void UFurnitureList_Bed::NativeConstruct()
 	
 }
 
+FVector UFurnitureList_Bed::GetPlayerLocation()
+{
+	APlayerController* PlayerController = GetOwningPlayer();
+	if (PlayerController)
+	{
+		APawn* PlayerPawn = PlayerController->GetPawn();
+		if (PlayerPawn)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("GETACTORLOCATION"))
+			return PlayerPawn->GetActorLocation() + PlayerPawn->GetActorForwardVector() * 300;
+		}
+	}
+
+	// Return an invalid location if the player's location cannot be retrieved.
+	return FVector::ZeroVector;
+}
+
 void UFurnitureList_Bed::SpawnFurniture()
 {
 	UE_LOG(LogTemp,Warning,TEXT("Clicked button : %s"), *(this->text_furniture->GetText()).ToString());
+	FVector playerLocation = GetPlayerLocation();
 
-	AMyFurnitureActor* spawnedActor =  GetWorld()->SpawnActor<AMyFurnitureActor>(furnitureAsset, FVector(1200,390,0), FRotator());
+	AMyFurnitureActor* spawnedActor =  GetWorld()->SpawnActor<AMyFurnitureActor>(furnitureAsset,  playerLocation  , FRotator());
 	if(spawnedActor!=nullptr)
 	{
 		FString dir = "/Game/Furniture";

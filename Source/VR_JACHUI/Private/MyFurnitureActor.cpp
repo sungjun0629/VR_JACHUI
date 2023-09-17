@@ -12,13 +12,13 @@ AMyFurnitureActor::AMyFurnitureActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	/*boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("boxComp"));
-	RootComponent = boxComp;*/
+	//boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("boxComp"));
+	//RootComponent = boxComp;
 
 
 	furnitureMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("furnitureMesh"));
 	furnitureMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	//furnitureMesh->SetupAttachment(boxComp);
+	furnitureMesh->SetupAttachment(RootComponent);
 
 	ConstructorHelpers::FObjectFinder<UStaticMesh> TempObject(*assetDir);
 	if (TempObject.Succeeded())

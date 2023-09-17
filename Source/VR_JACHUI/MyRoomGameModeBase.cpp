@@ -21,9 +21,9 @@ void AMyRoomGameModeBase::BeginPlay()
 
 	if (FAVWidget != nullptr)
 	{
-		//FAVWidget->AddToViewport();
- 		//GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
- 		//GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+		FAVWidget->AddToViewport();
+ 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+ 		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	}
 
 	for (TActorIterator<AMyFavoriteRequestActor> it(GetWorld()); it; ++it)

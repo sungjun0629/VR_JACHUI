@@ -24,11 +24,11 @@ void AShowRoomGameModeBase::BeginPlay()
 		FurDetailRequestActor = *it;
 	}
 
-	if (FurDetailRequestActor != nullptr)
+	/*if (FurDetailRequestActor != nullptr)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("Request Detail Info"));
 		FurDetailRequestActor->GETFurnitureInfo("SM_Armchair");
-	}
+	}*/
 }
 
 

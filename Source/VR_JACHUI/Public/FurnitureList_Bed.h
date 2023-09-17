@@ -35,6 +35,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = MySettings)
 	class AMyFurnitureActor* furnitureActor;
 
+	UFUNCTION()
+	FVector GetPlayerLocation();
+
 private:
 	UFUNCTION()
 	void SpawnFurniture();
