@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "VRCharacter.h" 
+#include <UMG/Public/Components/WidgetComponent.h>
 
 // Sets default values for this component's properties
 UMoveComponent::UMoveComponent()
@@ -44,7 +45,8 @@ void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 	enhancedInputComponent->BindAction(inputActions[0], ETriggerEvent::Completed, this, &UMoveComponent::Move);
 	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Triggered, this, &UMoveComponent::Rotate);
 	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Completed, this, &UMoveComponent::Rotate);
-	//enhancedInputComponent->BindAction(inputActions[4], ETriggerEvent::Started, this, &UMoveComponent::RoomChoiceUIKey);
+	enhancedInputComponent->BindAction(inputActions[4], ETriggerEvent::Started, this, &UMoveComponent::RoomChoiceUIKey);
+	enhancedInputComponent->BindAction(inputActions[5], ETriggerEvent::Started, this, &UMoveComponent::FavoriteUIKey);
 
 }
 
@@ -73,21 +75,19 @@ void UMoveComponent::Rotate(const FInputActionValue& value)
 	}
 }
 
-
-void UMoveComponent::RoomChoiceUIKey(const struct FInputActionValue& value)
+//roomchoice ui 온오프 함수
+void UMoveComponent::RoomChoiceUIKey(const FInputActionValue& value)
 {
-	// 	bool isOpen = false;
-	// 	if (isOpen)
-	// 	{
-	// 		// ui켜기
-	// 		SetVisibility(ESlateVisibility::Visible);
-	// 		isOpen = true;
-	// 	}
-	// 	else
-	// 	{
-	// 		// UI끄기
-	// 		ui어디서나옴?->SetVisibility(ESlateVisibility::Collapsed);
-	// 		isOpen = false;
-	// 	}
+	bool isRUIVisible = player->RoomChoiceUI->IsVisible();
+
+	player->RoomChoiceUI->SetVisibility(!isRUIVisible);
+}
+
+//favorite ui 온오프 함수
+void UMoveComponent::FavoriteUIKey(const struct FInputActionValue& value)
+{
+	bool isFUIVisible = player->FavoriteUI->IsVisible();
+
+	player->FavoriteUI->SetVisibility(!isFUIVisible);
 }
 

@@ -19,6 +19,9 @@
 #include "TeleportDest_DeskRoom.h"
 #include <Kismet/GameplayStatics.h>
 #include "GrabComponent.h"
+#include <UMG/Public/Components/WidgetComponent.h>
+#include "RoomChoiceWidget.h"
+#include "FavoriteCategoryWidget.h"
 
 
 
@@ -68,6 +71,17 @@ AVRCharacter::AVRCharacter()
 	rightWidgetPointer = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("Right Widget Pointer"));
 	rightWidgetPointer->SetupAttachment(rightHand);
 	rightWidgetPointer->SetRelativeRotation(FRotator(0, 90, 0));
+	
+	RoomChoiceUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("RoomChoiceUI"));
+	RoomChoiceUI->SetupAttachment(RootComponent); 
+	RoomChoiceUI->SetWidgetClass(URoomChoiceWidget::StaticClass()); 
+	RoomChoiceUI->SetRelativeLocation(FVector(0));
+
+	FavoriteUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("FavoriteUI"));
+	FavoriteUI->SetupAttachment(RootComponent);
+	FavoriteUI->SetWidgetClass(UFavoriteCategoryWidget::StaticClass());
+	FavoriteUI->SetRelativeLocation(FVector(0));
+
 
 
 	bUseControllerRotationYaw = true;
@@ -78,8 +92,6 @@ AVRCharacter::AVRCharacter()
 	moveComp = CreateDefaultSubobject<UMoveComponent>(TEXT("Move Component"));
 	widgetPointerComp = CreateDefaultSubobject<UWidgetPointerComponent>(TEXT("Widget Pointer Component"));
 	grabComp = CreateDefaultSubobject<UGrabComponent>(TEXT("Grab Component"));
-
-
 
 
 }
@@ -120,6 +132,8 @@ void AVRCharacter::BeginPlay()
 void AVRCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
 
 }
 

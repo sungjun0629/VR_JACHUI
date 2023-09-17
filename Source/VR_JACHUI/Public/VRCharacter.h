@@ -80,6 +80,13 @@ public:
 
 	class APlayerController* pc;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+	class UWidgetComponent* RoomChoiceUI;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+	class UWidgetComponent* FavoriteUI;
+
+
 	UFUNCTION(BlueprintCallable)
    void TeleportBedRoom();
 
@@ -89,11 +96,12 @@ public:
    UFUNCTION(BlueprintCallable)
    void TeleportDeskRoom();
 
-UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere)
    class ATeleportDest_ChairRoom* ChairRoom;
 
    UPROPERTY(VisibleAnywhere)
    class ATeleportDest_DeskRoom* DeskRoom;
+
 
 
 };
