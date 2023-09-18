@@ -29,7 +29,7 @@ void UItemCheckForDetailComponent::BeginPlay()
 	Super::BeginPlay();
 
 	player = GetOwner<AVRCharacter>();
-	FurInfoUI = CreateWidget<UFurnitureInformationUI>(GetWorld(), FurniutreInfoUI);
+	//FurInfoUI = CreateWidget<UFurnitureInformationUI>(GetWorld(), FurniutreInfoUI);
 	ShowRoomGM = GetWorld()->GetAuthGameMode<AShowRoomGameModeBase>();
 
 
@@ -64,7 +64,7 @@ void UItemCheckForDetailComponent::CheckItem()
 		const TArray<AActor*> IgnoreActor;
 		FHitResult hitInfo;
 
-		bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false, IgnoreActor, EDrawDebugTrace::ForDuration, hitInfo, true);
+		bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false, IgnoreActor, EDrawDebugTrace::None, hitInfo, true);
 
 		if (isHit)
 		{
@@ -75,7 +75,16 @@ void UItemCheckForDetailComponent::CheckItem()
 			{
 				UE_LOG(LogTemp,Warning,TEXT("furnitureName : %s"), *hitObject->GetActorNameOrLabel());
 				FurDetailRequestActor->GETFurnitureInfo(*hitObject->GetActorNameOrLabel());
-				ShowRoomGM->FurInfoUI->AddToViewport();
+				//ShowRoomGM->FurInfoUI->AddToViewport();
+				if (ShowRoomGM->DetailActor)
+				{
+					DetailUI = ShowRoomGM->DetailActor;
+					DetailUI->SetActorHiddenInGame(false);
+					DetailUI->SetActorLocation(hitInfo.Location + FVector(0,0,100));
+					DetailUI->SetActorRotation(player->GetActorRotation());
+					DetailUI->AddActorLocalRotation(FRotator(0, 180,0));
+		
+				}
 			}
 		}
 	}
@@ -85,5 +94,9 @@ void UItemCheckForDetailComponent::CheckItem()
 		// click 중인 Object를 nullptr로 변경해준다. 
 		hitObject = nullptr;
 		if(ShowRoomGM && ShowRoomGM->FurInfoUI !=nullptr) ShowRoomGM->FurInfoUI->RemoveFromParent();
+		if (ShowRoomGM->DetailActor)
+		{
+			ShowRoomGM->DetailActor->SetActorHiddenInGame(true);
+		}
 	}
 }

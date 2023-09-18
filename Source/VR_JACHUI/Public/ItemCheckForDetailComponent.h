@@ -26,8 +26,11 @@ public:
 
 	void SetupPlayerInputComponent(class UEnhancedInputComponent* enhancedInputComponent, TArray<class UInputAction*> inputActions);
 
-	UPROPERTY(EditAnywhere, Category=MySettings)
-	TSubclassOf<class UFurnitureInformationUI> FurniutreInfoUI;
+	/*UPROPERTY(EditAnywhere, Category=MySettings)
+	TSubclassOf<class UFurnitureInformationUI> FurniutreInfoUI;*/
+
+	UPROPERTY()
+	class ADetailUIActor* DetailUI;
 
 private:
 	bool isHavingObject = false;
