@@ -9,6 +9,7 @@
 #include "FurnitureInformationUI.h"
 #include "../FurnitureDetailRequestActor.h"
 #include "EngineUtils.h"
+#include "../ShowRoomGameModeBase.h"
 
 
 // Sets default values for this component's properties
@@ -29,6 +30,8 @@ void UItemCheckForDetailComponent::BeginPlay()
 
 	player = GetOwner<AVRCharacter>();
 	FurInfoUI = CreateWidget<UFurnitureInformationUI>(GetWorld(), FurniutreInfoUI);
+	ShowRoomGM = GetWorld()->GetAuthGameMode<AShowRoomGameModeBase>();
+
 
 	for (TActorIterator<AFurnitureDetailRequestActor> it(GetWorld()); it; ++it)
 	{
@@ -61,17 +64,18 @@ void UItemCheckForDetailComponent::CheckItem()
 		const TArray<AActor*> IgnoreActor;
 		FHitResult hitInfo;
 
-		bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, TraceTypeQuery1, false, IgnoreActor, EDrawDebugTrace::ForDuration, hitInfo, true);
+		bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false, IgnoreActor, EDrawDebugTrace::ForDuration, hitInfo, true);
 
 		if (isHit)
 		{
 			isHavingObject = true;
 			hitObject = hitInfo.GetActor();
 
-			if (FurDetailRequestActor != nullptr && FurInfoUI != nullptr)
+			if (FurDetailRequestActor != nullptr && ShowRoomGM && ShowRoomGM->FurInfoUI != nullptr)
 			{
+				UE_LOG(LogTemp,Warning,TEXT("furnitureName : %s"), *hitObject->GetActorNameOrLabel());
 				FurDetailRequestActor->GETFurnitureInfo(*hitObject->GetActorNameOrLabel());
-				FurInfoUI->AddToViewport();
+				ShowRoomGM->FurInfoUI->AddToViewport();
 			}
 		}
 	}
@@ -80,6 +84,6 @@ void UItemCheckForDetailComponent::CheckItem()
 		isHavingObject = false;
 		// click 중인 Object를 nullptr로 변경해준다. 
 		hitObject = nullptr;
-		if(FurInfoUI!=nullptr) FurInfoUI->RemoveFromParent();
+		if(ShowRoomGM && ShowRoomGM->FurInfoUI !=nullptr) ShowRoomGM->FurInfoUI->RemoveFromParent();
 	}
 }

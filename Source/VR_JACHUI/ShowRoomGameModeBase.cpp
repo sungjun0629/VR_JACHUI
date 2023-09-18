@@ -40,6 +40,7 @@ void AShowRoomGameModeBase::SetFurnitureDetailInfo(const TArray<FFurnitureJsonTy
 		{
 			FurInfoUI->text_brandName->SetText(FText::FromString(Info[0].brand));
 			FurInfoUI->text_furnitureName->SetText(FText::FromString(Info[0].name));
+			FurInfoUI->text_description->SetText(FText::FromString(Info[0].description));
 			FurInfoUI->text_furniturePrice->SetText(FText::FromString(FString::Printf(TEXT("%f"), Info[0].price)));
 			//FurInfoUI->text_furnitureRank->SetText(FText::FromString(Info.price));
 			FurDetailRequestActor->GETFurnitureImage(Info[0].name);

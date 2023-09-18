@@ -24,9 +24,9 @@ public:
 	void SetFurnitureDetailInfo(const TArray<FFurnitureJsonType> Info);
 	void SetImageTexture(class UTexture2D* tex);
 
-private:
 	UPROPERTY()
 	class UFurnitureInformationUI* FurInfoUI;
+private:
 
 	UPROPERTY()
 	class AFurnitureDetailRequestActor* FurDetailRequestActor; 
