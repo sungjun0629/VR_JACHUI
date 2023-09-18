@@ -12,12 +12,12 @@ void AShowRoomGameModeBase::BeginPlay()
 {
 	FurInfoUI = CreateWidget<UFurnitureInformationUI>(GetWorld(), FurniutreInfoUI);
 
-	if (FurInfoUI != nullptr)
+	/*if (FurInfoUI != nullptr)
 	{
 		FurInfoUI->AddToViewport();
 		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
-	}
+	}*/
 	
 	for (TActorIterator<AFurnitureDetailRequestActor> it(GetWorld()); it; ++it)
 	{

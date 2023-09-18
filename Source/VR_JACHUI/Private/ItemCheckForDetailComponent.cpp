@@ -47,7 +47,7 @@ void UItemCheckForDetailComponent::TickComponent(float DeltaTime, ELevelTick Tic
 
 void UItemCheckForDetailComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* enhancedInputComponent, TArray<class UInputAction*> inputActions)
 {
-	enhancedInputComponent->BindAction(inputActions[0], ETriggerEvent::Started, this, &UItemCheckForDetailComponent::CheckItem);
+	enhancedInputComponent->BindAction(inputActions[2], ETriggerEvent::Started, this, &UItemCheckForDetailComponent::CheckItem);
 
 }
 
@@ -80,5 +80,6 @@ void UItemCheckForDetailComponent::CheckItem()
 		isHavingObject = false;
 		// click 중인 Object를 nullptr로 변경해준다. 
 		hitObject = nullptr;
+		if(FurInfoUI!=nullptr) FurInfoUI->RemoveFromParent();
 	}
 }
