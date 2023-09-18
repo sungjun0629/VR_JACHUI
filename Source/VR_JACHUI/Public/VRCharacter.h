@@ -92,17 +92,10 @@ public:
     UPROPERTY(EditAnywhere, Category="MySettings|Components")
     class UArrowComponent* GoingRoomWidgetSpawn;
 
-	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
-    class UItemCheckForDetailComponent* itemCheckComp;
+// 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+//     class UItemCheckForDetailComponent* itemCheckComp;
 
-	UFUNCTION(BlueprintCallable)
-    void GoingInteriorSpawn();
-   
-    UPROPERTY(EditAnywhere)
-    TSubclassOf<class ARoomTransferActor> room;
-
-    UPROPERTY(EditAnywhere)
-    TSubclassOf<class AGoingMyRoomActor> GoingWidget;
+	
 
 
 

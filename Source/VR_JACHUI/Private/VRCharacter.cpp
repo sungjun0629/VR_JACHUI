@@ -24,11 +24,6 @@
 #include "FavoriteCategoryWidget.h"
 #include <Components/ArrowComponent.h>
 #include "ItemCheckForDetailComponent.h"
-#include "RoomTransferActor.h"
-#include "GoingMyRoomActor.h"
-
-
-
 
 
 // Sets default values
@@ -161,7 +156,8 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		moveComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
 		widgetPointerComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
 		grabComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
-		itemCheckComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
+		//itemCheckComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
+
 	}
 }
 
@@ -213,12 +209,3 @@ void AVRCharacter::TeleportDeskRoom()
  
  }
 
- void AVRCharacter::GoingInteriorSpawn()
- {
-	 //키 누른거에 바인딩 하기
-	 UWorld* World = GetWorld();
-	 FActorSpawnParameters Param;
-	 Param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	 ARoomTransferActor* house = World->SpawnActor<ARoomTransferActor>(room, HouseSpawnSpot->GetComponentTransform(), Param);
-	 AGoingMyRoomActor* goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, GoingRoomWidgetSpawn->GetComponentTransform(), Param);
- }

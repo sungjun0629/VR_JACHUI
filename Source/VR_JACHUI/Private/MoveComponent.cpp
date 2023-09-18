@@ -7,6 +7,9 @@
 #include "Components/TextRenderComponent.h"
 #include "VRCharacter.h" 
 #include <UMG/Public/Components/WidgetComponent.h>
+#include "RoomTransferActor.h"
+#include "GoingMyRoomActor.h"
+#include <Components/ArrowComponent.h>
 
 // Sets default values for this component's properties
 UMoveComponent::UMoveComponent()
@@ -47,6 +50,7 @@ void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Completed, this, &UMoveComponent::Rotate);
 	enhancedInputComponent->BindAction(inputActions[4], ETriggerEvent::Started, this, &UMoveComponent::RoomChoiceUIKey);
 	enhancedInputComponent->BindAction(inputActions[5], ETriggerEvent::Started, this, &UMoveComponent::FavoriteUIKey);
+	enhancedInputComponent->BindAction(inputActions[6], ETriggerEvent::Started, this, &UMoveComponent::GoingInteriorSpawn);
 
 }
 
@@ -91,3 +95,12 @@ void UMoveComponent::FavoriteUIKey(const struct FInputActionValue& value)
 	player->FavoriteUI->SetVisibility(!isFUIVisible);
 }
 
+void UMoveComponent::GoingInteriorSpawn()
+{
+	//키 누른거에 바인딩 하기
+	UWorld* World = GetWorld();
+	FActorSpawnParameters Param;
+	Param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ARoomTransferActor* house = World->SpawnActor<ARoomTransferActor>(room, player->HouseSpawnSpot->GetComponentTransform(), Param);
+	AGoingMyRoomActor* goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, player->GoingRoomWidgetSpawn->GetComponentTransform(), Param);
+}

@@ -26,6 +26,16 @@ public:
 	
 	void SetupPlayerInputComponent(class UEnhancedInputComponent* enhancedInputComponent, TArray<class UInputAction*> inputActions);
 
+	UFUNCTION(BlueprintCallable)
+    void GoingInteriorSpawn();
+   
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<class ARoomTransferActor> room;
+
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<class AGoingMyRoomActor> GoingWidget;
+
+
 private:
 	class AVRCharacter* player;
 	
