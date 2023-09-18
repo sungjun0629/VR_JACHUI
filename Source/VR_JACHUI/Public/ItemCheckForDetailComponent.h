@@ -43,4 +43,7 @@ private:
 
 	UPROPERTY()
 	class AFurnitureDetailRequestActor* FurDetailRequestActor; 
+
+	UPROPERTY()
+	class AShowRoomGameModeBase* ShowRoomGM;
 };

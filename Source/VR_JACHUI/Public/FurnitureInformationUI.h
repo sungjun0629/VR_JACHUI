@@ -37,6 +37,9 @@ public:
 	class UTextBlock* text_furnitureRank;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
+	class UTextBlock* text_description;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
 	class UButton* btn_Basket;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = MySettings)
