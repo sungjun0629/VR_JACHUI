@@ -57,8 +57,8 @@ void UMoveComponent::Move(const FInputActionValue& value)
 {
 	FVector2D controllerInput = value.Get<FVector2D>();
 
-	FString str = FString::Printf(TEXT("x : %.2f, y : %.2f"), controllerInput.X, controllerInput.Y);
-	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, str);
+	//FString str = FString::Printf(TEXT("x : %.2f, y : %.2f"), controllerInput.X, controllerInput.Y);
+	//GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, str);
 
 	FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
 	FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
