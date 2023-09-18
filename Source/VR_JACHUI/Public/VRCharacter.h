@@ -86,6 +86,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
 	class UWidgetComponent* FavoriteUI;
 
+	UPROPERTY(EditAnywhere, Category="MySettings|Components")
+    class UArrowComponent* HouseSpawnSpot;
+
+    UPROPERTY(EditAnywhere, Category="MySettings|Components")
+    class UArrowComponent* GoingRoomWidgetSpawn;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+    class UItemCheckForDetailComponent* itemCheckComp;
+
+
 
 	UFUNCTION(BlueprintCallable)
    void TeleportBedRoom();
