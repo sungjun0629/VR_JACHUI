@@ -86,6 +86,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
 	class UWidgetComponent* FavoriteUI;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+	class UWidgetComponent* RoomChangeUI;
+
+// 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+// 	class UActorComponent* HologramHouse;
+// 
+// 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+// 	class UActorComponent* GoingRoomWidget;
+
+
 	UPROPERTY(EditAnywhere, Category="MySettings|Components")
     class UArrowComponent* HouseSpawnSpot;
 

@@ -26,6 +26,7 @@
 #include "ItemCheckForDetailComponent.h"
 #include "RoomTransferActor.h"
 #include "GoingMyRoomActor.h"
+#include "GoingMyRoomWidget.h"
 
 
 
@@ -87,12 +88,18 @@ AVRCharacter::AVRCharacter()
 	FavoriteUI->SetWidgetClass(UFavoriteCategoryWidget::StaticClass());
 	FavoriteUI->SetRelativeLocation(FVector(0));
 
+// 	RoomChangeUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("RoomChangeUI"));
+// 	RoomChangeUI->SetupAttachment(RootComponent);
+// 	RoomChangeUI->SetWidgetClass(UGoingMyRoomWidget::StaticClass());
+// 	RoomChangeUI->SetRelativeLocation(FVector(0));
+
 	HouseSpawnSpot = CreateDefaultSubobject<UArrowComponent>(TEXT("HouseSpawnSpot"));
 	HouseSpawnSpot->SetRelativeLocation(FVector(300, 0, -60));
 
 	GoingRoomWidgetSpawn = CreateDefaultSubobject<UArrowComponent>(TEXT("WidgetSpawnSpot"));
 	GoingRoomWidgetSpawn->SetRelativeLocation(FVector(640, 0, 110));
 	GoingRoomWidgetSpawn->SetRelativeRotation(FRotator(0, 180, 0));
+	
 
 	itemCheckComp = CreateDefaultSubobject<UItemCheckForDetailComponent>(TEXT("ItemCheck Component"));
 	
@@ -214,11 +221,11 @@ void AVRCharacter::TeleportDeskRoom()
  }
 
  void AVRCharacter::GoingInteriorSpawn()
- {
-	 //키 누른거에 바인딩 하기
-	 UWorld* World = GetWorld();
-	 FActorSpawnParameters Param;
-	 Param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	 ARoomTransferActor* house = World->SpawnActor<ARoomTransferActor>(room, HouseSpawnSpot->GetComponentTransform(), Param);
-	 AGoingMyRoomActor* goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, GoingRoomWidgetSpawn->GetComponentTransform(), Param);
- }
+    {
+      	 //키 누른거에 바인딩 하기
+     	 UWorld* World = GetWorld();
+      	 FActorSpawnParameters Param;
+      	 Param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+      	 ARoomTransferActor* house = World->SpawnActor<ARoomTransferActor>(room, HouseSpawnSpot->GetComponentTransform(), Param);
+      	 AGoingMyRoomActor* goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, GoingRoomWidgetSpawn->GetComponentTransform(), Param);
+    }

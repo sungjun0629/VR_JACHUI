@@ -33,6 +33,7 @@ private:
 	void Rotate(const struct FInputActionValue& value);
 	void RoomChoiceUIKey(const struct FInputActionValue& value);
 	void FavoriteUIKey(const struct FInputActionValue& value);
+	void RoomChangeUIKey(const struct FInputActionValue& value);
 
 		
 };

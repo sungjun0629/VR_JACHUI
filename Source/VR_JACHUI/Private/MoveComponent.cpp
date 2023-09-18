@@ -47,6 +47,7 @@ void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Completed, this, &UMoveComponent::Rotate);
 	enhancedInputComponent->BindAction(inputActions[4], ETriggerEvent::Started, this, &UMoveComponent::RoomChoiceUIKey);
 	enhancedInputComponent->BindAction(inputActions[5], ETriggerEvent::Started, this, &UMoveComponent::FavoriteUIKey);
+	enhancedInputComponent->BindAction(inputActions[6], ETriggerEvent::Started, this, &UMoveComponent::RoomChangeUIKey);
 
 }
 
@@ -89,5 +90,13 @@ void UMoveComponent::FavoriteUIKey(const struct FInputActionValue& value)
 	bool isFUIVisible = player->FavoriteUI->IsVisible();
 
 	player->FavoriteUI->SetVisibility(!isFUIVisible);
+}
+
+void UMoveComponent::RoomChangeUIKey(const struct FInputActionValue& value)
+{
+	bool isRCUIVisible = player->RoomChangeUI->IsVisible();
+
+	player->RoomChangeUI->SetVisibility(!isRCUIVisible);
+	//player->
 }
 
