@@ -13,5 +13,24 @@ UCLASS()
 class VR_JACHUI_API UGoingMyRoomWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	virtual void NativeConstruct() override;
+
+public:
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = RoomChoice)
+	class UButton* CircleButton;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = RoomChoice)
+	class UButton* btn_Yes;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = RoomChoice)
+	class UButton* btn_No;
+
+	UFUNCTION()
+	void TransferLevel();
+
+	UFUNCTION()
+	void DestroyActor();
 	
 };

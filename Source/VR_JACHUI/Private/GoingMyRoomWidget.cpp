@@ -2,4 +2,36 @@
 
 
 #include "GoingMyRoomWidget.h"
+#include <UMG/Public/Components/Button.h>
+#include "VRCharacter.h"
+#include <Kismet/GameplayStatics.h>
+#include "RoomTransferActor.h"
+#include "GoingMyRoomActor.h"
 
+void UGoingMyRoomWidget::NativeConstruct()
+{
+	btn_Yes->OnClicked.AddDynamic(this, &UGoingMyRoomWidget::TransferLevel);
+	btn_No->OnClicked.AddDynamic(this, &UGoingMyRoomWidget::DestroyActor);
+}
+
+void UGoingMyRoomWidget::TransferLevel()
+{
+	FName LevelName = "InteriorMap";
+	UGameplayStatics::OpenLevel(GetWorld(),LevelName);
+}
+
+void UGoingMyRoomWidget::DestroyActor()
+{
+	UWorld* world = GetWorld();
+	if (world)
+	{
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(world, ARoomTransferActor::StaticClass(), FoundActors);
+		UGameplayStatics::GetAllActorsOfClass(world, AGoingMyRoomActor::StaticClass(), FoundActors);
+
+		for (AActor* Actor : FoundActors)
+		{
+			Actor->Destroy();
+		}
+	}
+}
