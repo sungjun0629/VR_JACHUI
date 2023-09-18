@@ -8,6 +8,7 @@
 #include "VRCharacter.h" 
 #include <UMG/Public/Components/WidgetComponent.h>
 #include <Components/ArrowComponent.h>
+#include "RoomTransferActor.h"
 
 // Sets default values for this component's properties
 UMoveComponent::UMoveComponent()
@@ -107,7 +108,10 @@ void UMoveComponent::GoingInteriorSpawn(const struct FInputActionValue& value)
 	UWorld* World = GetWorld();
 	FActorSpawnParameters Param;
 	Param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	ARoomTransferActor* house = World->SpawnActor<ARoomTransferActor>(room, player->HouseSpawnSpot->GetComponentTransform(), Param);
-	AGoingMyRoomActor* goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, player->GoingRoomWidgetSpawn->GetComponentTransform(), Param);
+	FVector spawnPoint1 = player->GetTransform().TransformPosition(player->HouseSpawnSpot->GetComponentLocation());
+	FVector spawnPoint2 = player->GetTransform().TransformPosition(player->GoingRoomWidgetSpawn->GetComponentLocation());
+
+	ARoomTransferActor* house = World->SpawnActor<ARoomTransferActor>(room,spawnPoint1, FRotator::ZeroRotator, Param);
+	AGoingMyRoomActor* goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, spawnPoint2, FRotator::ZeroRotator, Param);
 }
 
