@@ -74,7 +74,7 @@ void UGrabComponent::GrabObject()
 		}
 	}
 
-	DrawDebugSphere(GetWorld(), startLoc, 20, 30, FColor::Green, false, 1.0f);
+	//DrawDebugSphere(GetWorld(), startLoc, 20, 30, FColor::Green, false, 1.0f);
 }
 
 void UGrabComponent::ReleaseObject()
@@ -86,11 +86,11 @@ void UGrabComponent::ReleaseObject()
 		grabbedObject->boxcomp->SetSimulatePhysics(true);
 
 		// 물체의 던지는 방향에 따른 힘(선형, 회전력)을 가한다.
-		if (!deltaLoc.IsNearlyZero())
-		{
-			grabbedObject->boxcomp->AddImpulse(deltaLoc.GetSafeNormal() * throwPower);
-			grabbedObject->boxcomp->AddTorqueInRadians(deltaRot.GetRotationAxis() * rotSpeed);
-		}
+// 		if (!deltaLoc.IsNearlyZero())
+// 		{
+// 			grabbedObject->boxcomp->AddImpulse(deltaLoc.GetSafeNormal() * throwPower);
+// 			grabbedObject->boxcomp->AddTorqueInRadians(deltaRot.GetRotationAxis() * rotSpeed);
+// 		}
 
 		grabbedObject = nullptr;
 	}
@@ -98,6 +98,7 @@ void UGrabComponent::ReleaseObject()
 
 void UGrabComponent::RightHandMove(const struct FInputActionValue& value)
 {
-
+	FVector direction = value.Get<FVector>();
+	player->rightMotionController->SetRelativeLocation(player->rightMotionController->GetRelativeLocation() + direction.GetSafeNormal());
 }
 
