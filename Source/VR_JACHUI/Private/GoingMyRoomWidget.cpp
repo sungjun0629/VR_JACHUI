@@ -16,8 +16,10 @@ void UGoingMyRoomWidget::NativeConstruct()
 
 void UGoingMyRoomWidget::TransferLevel()
 {
-	FName LevelName = "InteriorMap";
-	UGameplayStatics::OpenLevel(GetWorld(),LevelName);
+	//FName LevelName =TEXT("InteriorMap");
+	//UGameplayStatics::OpenLevel(GetWorld(),LevelName);
+	GetWorld()->GetFirstPlayerController()->ClientTravel("/Script/Engine.World'/Game/Maps/InteriorMap.InteriorMap'", ETravelType::TRAVEL_Absolute);
+
 }
 
 void UGoingMyRoomWidget::DestroyActor()
