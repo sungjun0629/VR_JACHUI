@@ -26,6 +26,9 @@ public:
 
 	UPROPERTY()
 	class UFurnitureInformationUI* FurInfoUI;
+	UPROPERTY()
+		class ADetailUIActor* DetailActor;
+
 private:
 
 	UPROPERTY()
