@@ -7,6 +7,7 @@
 #include "MotionControllerComponent.h"
 #include "TestPickUp.h"
 #include "Components/TextRenderComponent.h"
+#include <Components/BoxComponent.h>
 
 
 UGrabComponent::UGrabComponent()
@@ -31,42 +32,68 @@ void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if (grabbedObject != nullptr)
+	{
+		deltaLoc = player->rightMotionController->GetComponentLocation() - prevLoc;
+		prevLoc = player->rightMotionController->GetComponentLocation();
+
+		deltaRot = player->rightMotionController->GetComponentQuat() - prevRot.Inverse();
+		prevRot = player->rightMotionController->GetComponentQuat();
+	}
 
 }
 
 void UGrabComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* enhancedInputComponent, TArray<class UInputAction*> inputActions)
 {
 	enhancedInputComponent->BindAction(inputActions[3], ETriggerEvent::Started, this, &UGrabComponent::GrabObject);
+	enhancedInputComponent->BindAction(inputActions[3], ETriggerEvent::Completed, this, &UGrabComponent::ReleaseObject);
 }
 
 void UGrabComponent::GrabObject()
 {
-	// 1. 라인트레이스 이용시
-	FHitResult hitInfo;
-	FVector startLoc = player->rightMotionController->GetComponentLocation();
-	FVector endLoc = startLoc + player->rightMotionController->GetUpVector() * -50.0f;
-
-	if (GetWorld()->LineTraceSingleByProfile(hitInfo, startLoc, endLoc, FName("PickUp")))
+	if (grabbedObject != nullptr)
 	{
-		ATestPickUp* pickObject = Cast<ATestPickUp>(hitInfo.GetActor());
-		if (pickObject != nullptr)
+		return;
+	}	
+	// 3. Overlap 방식을 사용할 때
+	TArray<FOverlapResult> hitInfos;
+	FVector startLoc = player->rightHand->GetComponentLocation();
+
+	if (GetWorld()->OverlapMultiByProfile(hitInfos, startLoc, FQuat::Identity, FName("PickUp"), FCollisionShape::MakeSphere(20)))
+	{
+		for (const FOverlapResult& hitInfo : hitInfos)
 		{
-			pickObject->Grabbed(player->rightHand);
-		}
+			if (ATestPickUp* pickObj = Cast<ATestPickUp>(hitInfo.GetActor()))
+			{
+				pickObj->Grabbed(player->rightHand);
+				grabbedObject = pickObj;
 
-		player->rightLog->SetText(FText::FromString(FString::Printf(TEXT("Grab object: %s"), *hitInfo.GetActor()->GetName())));
-		UE_LOG(LogTemp, Warning, TEXT("Grab object: %s"), *hitInfo.GetActor()->GetName());
+				player->pc->PlayHapticEffect(grab_Haptic, EControllerHand::Right, 1.0f, false);
+				break;
+			}
+		}
 	}
-	else
-	{
-		player->rightLog->SetText(FText::FromString(FString::Printf(TEXT("No Hit"))));
-		UE_LOG(LogTemp, Warning, TEXT("No Hit"));
-	}
+
+	DrawDebugSphere(GetWorld(), startLoc, 20, 30, FColor::Green, false, 1.0f);
 }
 
 void UGrabComponent::ReleaseObject()
 {
+	if (grabbedObject != nullptr)
+	{
+		// 물체를 손에서 분리하고, 물리 능력을 활성화한다.
+		grabbedObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		grabbedObject->boxcomp->SetSimulatePhysics(true);
 
+		// 물체의 던지는 방향에 따른 힘(선형, 회전력)을 가한다.
+		if (!deltaLoc.IsNearlyZero())
+		{
+			grabbedObject->boxcomp->AddImpulse(deltaLoc.GetSafeNormal() * throwPower);
+			grabbedObject->boxcomp->AddTorqueInRadians(deltaRot.GetRotationAxis() * rotSpeed);
+		}
+
+		grabbedObject = nullptr;
+	}
 }
 
 void UGrabComponent::RightHandMove(const struct FInputActionValue& value)
