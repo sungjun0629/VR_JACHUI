@@ -26,6 +26,15 @@ public:
 	
 	void SetupPlayerInputComponent(class UEnhancedInputComponent* enhancedInputComponent, TArray<class UInputAction*> inputActions);
 
+	UFUNCTION(BlueprintCallable)
+    void GoingInteriorSpawn(const struct FInputActionValue& value);
+   
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<class ARoomTransferActor> room;
+
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<class AGoingMyRoomActor> GoingWidget;
+
 private:
 	class AVRCharacter* player;
 	
@@ -34,6 +43,7 @@ private:
 	void RoomChoiceUIKey(const struct FInputActionValue& value);
 	void FavoriteUIKey(const struct FInputActionValue& value);
 	void RoomChangeUIKey(const struct FInputActionValue& value);
+	
 
 		
 };

@@ -86,12 +86,14 @@ AVRCharacter::AVRCharacter()
 	FavoriteUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("FavoriteUI"));
 	FavoriteUI->SetupAttachment(RootComponent);
 	FavoriteUI->SetWidgetClass(UFavoriteCategoryWidget::StaticClass());
-	FavoriteUI->SetRelativeLocation(FVector(0));
+	FavoriteUI->SetRelativeLocation(FVector(35,-95,60));
+	FavoriteUI->SetRelativeRotation(FRotator(0,170,0));
+	FavoriteUI->SetRelativeScale3D(FVector(0.1f));
 
-// 	RoomChangeUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("RoomChangeUI"));
-// 	RoomChangeUI->SetupAttachment(RootComponent);
-// 	RoomChangeUI->SetWidgetClass(UGoingMyRoomWidget::StaticClass());
-// 	RoomChangeUI->SetRelativeLocation(FVector(0));
+ 	//RoomChangeUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("RoomChangeUI"));
+ 	//RoomChangeUI->SetupAttachment(RootComponent);
+ 	//RoomChangeUI->SetWidgetClass(UGoingMyRoomWidget::StaticClass());
+ 	//RoomChangeUI->SetRelativeLocation(FVector(0));
 
 	HouseSpawnSpot = CreateDefaultSubobject<UArrowComponent>(TEXT("HouseSpawnSpot"));
 	HouseSpawnSpot->SetRelativeLocation(FVector(300, 0, -60));
@@ -220,12 +222,3 @@ void AVRCharacter::TeleportDeskRoom()
  
  }
 
- void AVRCharacter::GoingInteriorSpawn()
-    {
-      	 //키 누른거에 바인딩 하기
-     	 UWorld* World = GetWorld();
-      	 FActorSpawnParameters Param;
-      	 Param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-      	 ARoomTransferActor* house = World->SpawnActor<ARoomTransferActor>(room, HouseSpawnSpot->GetComponentTransform(), Param);
-      	 AGoingMyRoomActor* goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, GoingRoomWidgetSpawn->GetComponentTransform(), Param);
-    }

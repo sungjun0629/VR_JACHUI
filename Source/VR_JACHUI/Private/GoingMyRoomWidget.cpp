@@ -18,7 +18,7 @@ void UGoingMyRoomWidget::TransferLevel()
 {
 	//FName LevelName =TEXT("InteriorMap");
 	//UGameplayStatics::OpenLevel(GetWorld(),LevelName);
-	GetWorld()->GetFirstPlayerController()->ClientTravel("/Script/Engine.World'/Game/Maps/InteriorMap.InteriorMap'", ETravelType::TRAVEL_Absolute);
+	GetWorld()->GetFirstPlayerController()->ClientTravel("/Game/Maps/InteriorMap", ETravelType::TRAVEL_Absolute);
 
 }
 
