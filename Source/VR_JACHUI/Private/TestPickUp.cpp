@@ -41,7 +41,8 @@ void ATestPickUp::Tick(float DeltaTime)
 
 void ATestPickUp::Grabbed(USkeletalMeshComponent* handMesh)
 {
-	meshcomp->SetSimulatePhysics(false);
-	AttachToComponent(handMesh, FAttachmentTransformRules::KeepWorldTransform);
+	boxcomp->SetSimulatePhysics(false);
+	AttachToComponent(handMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("GrabPoint"));
+
 }
 

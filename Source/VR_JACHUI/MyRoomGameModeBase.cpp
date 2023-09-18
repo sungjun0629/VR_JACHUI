@@ -19,12 +19,12 @@ void AMyRoomGameModeBase::BeginPlay()
 	FAVWidget = CreateWidget<UFavoriteCategoryWidget>(GetWorld(), FAVFurnitureWidget);
 	//ListBedRoom = CreateWidget<UList_BedRoom>(GetWorld(), ListBedRoomWidget);
 
-	if (FAVWidget != nullptr)
-	{
-		FAVWidget->AddToViewport();
-		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
-		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
-	}
+	//if (FAVWidget != nullptr)
+	//{
+	//	FAVWidget->AddToViewport();
+	//	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+	//	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+	//}
 
 	for (TActorIterator<AMyFavoriteRequestActor> it(GetWorld()); it; ++it)
 	{
