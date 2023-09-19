@@ -29,7 +29,19 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category=MySetting)
 	class UStaticMeshComponent* furnitureMesh;
 
+	UPROPERTY(EditDefaultsOnly, Category=MySetting)
+	class ACameraPawn* CameraPawn;
+
+	UPROPERTY(EditAnywhere, Category = MySettings)
+	TSubclassOf<class ACameraPawn> CameraPawnClass;
+
+	class APlayerController* pc;
+
 	FString assetDir = "/Game/Furniture/Bed/SM_Bed";
 
 	void changeAsset();
+	void setFurnitureLoc();
+
+	bool belayed = false;
+
 };

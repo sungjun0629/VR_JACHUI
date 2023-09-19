@@ -38,6 +38,12 @@ public:
 	UFUNCTION()
 	FVector GetPlayerLocation();
 
+	UPROPERTY(EditAnywhere, Category = MySettings)
+	TSubclassOf<class ACameraPawn> cameraPawnClass;
+
+	UPROPERTY(EditAnywhere, Category = MySettings)
+	class ACameraPawn* cameraPawn;
+
 private:
 	UFUNCTION()
 	void SpawnFurniture();
