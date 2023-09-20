@@ -41,7 +41,13 @@ private:
 	FQuat prevRot;
 	FQuat deltaRot;
 
+	UFUNCTION()
 	void GrabObject();
+	UFUNCTION()
 	void ReleaseObject();
-	void RightHandMove(const struct FInputActionValue& value);
+	UFUNCTION()
+	void RightHandMove();
+
+	UPROPERTY(VisibleAnywhere, Category = MySettings)
+	bool IsGrab = false;
 };

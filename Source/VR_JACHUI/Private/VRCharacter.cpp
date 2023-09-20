@@ -27,6 +27,7 @@
 #include "RoomTransferActor.h"
 #include "GoingMyRoomActor.h"
 #include "GoingMyRoomWidget.h"
+#include <PhysicsEngine/PhysicsHandleComponent.h>
 
 
 
@@ -115,7 +116,7 @@ AVRCharacter::AVRCharacter()
 	widgetPointerComp = CreateDefaultSubobject<UWidgetPointerComponent>(TEXT("Widget Pointer Component"));
 	grabComp = CreateDefaultSubobject<UGrabComponent>(TEXT("Grab Component"));
 
-
+	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 }
 
 // Called when the game starts or when spawned

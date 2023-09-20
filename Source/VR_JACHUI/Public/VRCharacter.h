@@ -26,7 +26,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere, Category="MySettings|Components")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings|Components")
 	class UCameraComponent* hmdCam;
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Components")
@@ -71,6 +71,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Movement")
 	bool bIsTesting = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings|Components")
+	class UPhysicsHandleComponent* PhysicsHandle;
+
 // 	UFUNCTION(BlueprintCallable)
 // 	void TeleportDestination();
 
@@ -110,19 +113,19 @@ public:
 
 
 	UFUNCTION(BlueprintCallable)
-   void TeleportBedRoom();
+	void TeleportBedRoom();
 
-   UFUNCTION(BlueprintCallable)
-   void TeleportChairRoom();
-
-   UFUNCTION(BlueprintCallable)
-   void TeleportDeskRoom();
+	UFUNCTION(BlueprintCallable)
+	void TeleportChairRoom();
+	
+	UFUNCTION(BlueprintCallable)
+	void TeleportDeskRoom();
 
 	UPROPERTY(VisibleAnywhere)
-   class ATeleportDest_ChairRoom* ChairRoom;
+	class ATeleportDest_ChairRoom* ChairRoom;
 
-   UPROPERTY(VisibleAnywhere)
-   class ATeleportDest_DeskRoom* DeskRoom;
+	UPROPERTY(VisibleAnywhere)
+	class ATeleportDest_DeskRoom* DeskRoom;
 
 
 
