@@ -7,6 +7,8 @@
 #include "EngineUtils.h"
 #include "MyFurnitureActor.h"
 #include "VRCharacter.h"
+#include "CameraPawn.h"
+#include <Kismet/GameplayStatics.h>
 
 
 
@@ -19,7 +21,7 @@ void UFurnitureList_Bed::NativeConstruct()
 
 	text_furniture->SetText(FText::FromString(TEXT("Blank")));
 	//furnitureActor = CreateDefaultSubobject<AMyFurnitureActor>(TEXT("furnitureActor"));
-	
+	//cameraPawn = Cast<ACameraPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), cameraPawnClass));
 }
 
 FVector UFurnitureList_Bed::GetPlayerLocation()
@@ -45,6 +47,7 @@ void UFurnitureList_Bed::SpawnFurniture()
 	FVector playerLocation = GetPlayerLocation();
 
 	AMyFurnitureActor* spawnedActor =  GetWorld()->SpawnActor<AMyFurnitureActor>(furnitureAsset,  playerLocation  , FRotator());
+	//if(cameraPawn) cameraPawn->isGetFurniture = true;
 	if(spawnedActor!=nullptr)
 	{
 		FString dir = "/Game/Furniture";
