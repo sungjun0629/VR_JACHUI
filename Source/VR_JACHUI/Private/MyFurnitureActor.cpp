@@ -7,6 +7,7 @@
 #include <Components/BoxComponent.h>
 #include <Kismet/GameplayStatics.h>
 #include "CameraPawn.h"
+#include <PhysicsEngine/PhysicsConstraintComponent.h>
 
 // Sets default values
 AMyFurnitureActor::AMyFurnitureActor()
@@ -28,6 +29,8 @@ AMyFurnitureActor::AMyFurnitureActor()
 		furnitureMesh->SetStaticMesh(TempObject.Object);
 	}
 
+	PhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("PhysicsConstraint"));
+	PhysicsConstraint->SetupAttachment(RootComponent);
 
 }
 

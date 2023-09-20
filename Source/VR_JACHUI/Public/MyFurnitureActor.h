@@ -35,6 +35,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = MySettings)
 	TSubclassOf<class ACameraPawn> CameraPawnClass;
 
+	UPROPERTY(EditDefaultsOnly, Category=MySetting)
+   class UPhysicsConstraintComponent* PhysicsConstraint;
+
 	class APlayerController* pc;
 
 	FString assetDir = "/Game/Furniture/Bed/SM_Bed";
