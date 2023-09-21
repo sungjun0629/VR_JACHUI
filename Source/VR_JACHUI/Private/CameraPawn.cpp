@@ -5,6 +5,8 @@
 #include <../Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h>
 #include <Kismet/KismetSystemLibrary.h>
 #include <Kismet/GameplayStatics.h>
+#include <../Plugins/FX/Niagara/Source/Niagara/Classes/NiagaraSystem.h>
+#include <../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
 
 // Sets default values
 ACameraPawn::ACameraPawn()
@@ -12,6 +14,11 @@ ACameraPawn::ACameraPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	ConstructorHelpers::FObjectFinder<UNiagaraSystem> TempParticle(TEXT("/Script/Niagara.NiagaraSystem'/Game/LSJ/Material/FX_DustRun.FX_DustRun'"));
+	if (TempParticle.Succeeded())
+	{
+		dustEffect = TempParticle.Object;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -70,8 +77,12 @@ void ACameraPawn::DragNDrop()
 	if (havingObject != nullptr && !isRotate)
 	{
 		havingObject->belayed = true;
+		if(havingObject)
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation(), FRotator(0,1,180), FVector(15));
+		//havingObject->furnitureMesh->SetRenderCustomDepth(false);
 		havingObject = nullptr;
 		isGetFurniture = false; 
+
 	}
 	else
 	{// 아무것도 잡히지 않은 상태라면 lineTrace를 통해서 다시 object를 잡아준다. 
@@ -81,6 +92,7 @@ void ACameraPawn::DragNDrop()
 			havingObject->belayed =false;
 			isGetFurniture = true;
 			isRotate = false;
+			havingObject->furnitureMesh->SetRenderCustomDepth(true);
 		}
 
 		// 만약 회전중이라면 클릭 시, 회전을 꺼준다. -> UX적인 요소(사용자 경험)

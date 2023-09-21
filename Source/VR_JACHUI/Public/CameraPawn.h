@@ -52,6 +52,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	bool isGetFurniture = false;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class UNiagaraSystem* dustEffect;
 	
 	class AMyFurnitureActor* havingObject;
 
