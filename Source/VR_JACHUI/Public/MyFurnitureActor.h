@@ -26,17 +26,20 @@ public:
 	//UPROPERTY(EditDefaultsOnly, Category=MySetting)
 	//class UBoxComponent* boxComp;
 
-	UPROPERTY(EditDefaultsOnly, Category=MySetting)
+	UPROPERTY(BlueprintReadWrite, Category=MySetting)
 	class UStaticMeshComponent* furnitureMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category=MySetting)
 	class ACameraPawn* CameraPawn;
 
+	UPROPERTY(EditDefaultsOnly, Category=MySetting)
+	class UWidgetComponent* RotateWidget;
+	
 	UPROPERTY(EditAnywhere, Category = MySettings)
 	TSubclassOf<class ACameraPawn> CameraPawnClass;
 
 	UPROPERTY(EditDefaultsOnly, Category=MySetting)
-   class UPhysicsConstraintComponent* PhysicsConstraint;
+    class UPhysicsConstraintComponent* PhysicsConstraint;
 
 	class APlayerController* pc;
 
@@ -44,7 +47,10 @@ public:
 
 	void changeAsset();
 	void setFurnitureLoc();
+	void RotateFurniture();
 
 	bool belayed = false;
+	bool isRotate = false;
 
+	bool movable = false;
 };

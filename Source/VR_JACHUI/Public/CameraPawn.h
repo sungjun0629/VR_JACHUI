@@ -30,6 +30,10 @@ protected:
 
 	void DragNDrop();
 
+	bool CatchFurniture();
+
+	void Rotate();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -51,9 +55,12 @@ public:
 	
 	class AMyFurnitureActor* havingObject;
 
+	class APlayerController* pc;
+
 private:	
 	FVector Direction;
 
+	bool isRotate = false;
 
 
 };
