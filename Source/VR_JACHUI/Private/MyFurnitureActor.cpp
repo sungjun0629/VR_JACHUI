@@ -8,6 +8,8 @@
 #include <Kismet/GameplayStatics.h>
 #include "CameraPawn.h"
 #include <PhysicsEngine/PhysicsConstraintComponent.h>
+#include <Kismet/KismetMathLibrary.h>
+#include <UMG/Public/Blueprint/WidgetLayoutLibrary.h>
 
 // Sets default values
 AMyFurnitureActor::AMyFurnitureActor()
@@ -31,6 +33,9 @@ AMyFurnitureActor::AMyFurnitureActor()
 
 	PhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("PhysicsConstraint"));
 	PhysicsConstraint->SetupAttachment(RootComponent);
+
+	RotateWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Rotate Widget"));
+	RotateWidget->SetupAttachment(furnitureMesh);
 
 }
 
@@ -61,15 +66,14 @@ void AMyFurnitureActor::Tick(float DeltaTime)
 	{
 		setFurnitureLoc();
 	}
-	else {
-		//belayed = true;
-	}
+	
+	if(isRotate) RotateFurniture();
 
 }
 
 void AMyFurnitureActor::changeAsset()
 {
-	UStaticMesh* newStaticMesh =  LoadObject<UStaticMesh>(nullptr, *assetDir);
+	UStaticMesh* newStaticMesh = LoadObject<UStaticMesh>(nullptr, *assetDir);
 	if (newStaticMesh)
 	{
 		furnitureMesh->SetStaticMesh(newStaticMesh);
@@ -101,5 +105,17 @@ void AMyFurnitureActor::setFurnitureLoc()
 	}
 
 
+}
+
+void AMyFurnitureActor::RotateFurniture()
+{
+	float mouseX, mouseY;
+	UGameplayStatics::GetPlayerController(GetWorld(),0)->GetMousePosition(mouseX, mouseY);
+	FVector2D viewportSize = UWidgetLayoutLibrary::GetViewportSize(GetWorld())/2;
+	FVector Start = UKismetMathLibrary::MakeVector(mouseX, mouseY, 0);
+	FVector End = UKismetMathLibrary::MakeVector(viewportSize.X, viewportSize.Y, 0);
+	
+	FRotator newRotation = UKismetMathLibrary::FindLookAtRotation(Start, End);
+	furnitureMesh->SetWorldRotation(newRotation);
 }
 
