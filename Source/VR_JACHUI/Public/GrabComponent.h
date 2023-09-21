@@ -41,13 +41,27 @@ private:
 	FQuat prevRot;
 	FQuat deltaRot;
 
-	UFUNCTION()
-	void GrabObject();
-	UFUNCTION()
-	void ReleaseObject();
-	UFUNCTION()
-	void RightHandMove();
+	//UFUNCTION()
+	//void GrabObject();
+	//UFUNCTION()
+	//void ReleaseObject();
+	//UFUNCTION()
+	//void RightHandMove();
+	//
+	//UPROPERTY(VisibleAnywhere, Category = MySettings)
+	//bool IsGrab = false;
 
-	UPROPERTY(VisibleAnywhere, Category = MySettings)
-	bool IsGrab = false;
+private:
+	bool isHavingObject = false;
+
+	void GetOrDeleteObject();
+
+	UFUNCTION(BlueprintCallable)
+	void TargetingFurniture();
+
+	void MoveObjectForward(const struct FInputActionValue& value);
+
+	void MoveObjectBackward(const struct FInputActionValue& value);
+
+	AActor* hitObject;
 };
