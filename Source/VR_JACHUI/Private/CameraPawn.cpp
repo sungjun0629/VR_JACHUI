@@ -78,8 +78,10 @@ void ACameraPawn::DragNDrop()
 	{
 		havingObject->belayed = true;
 		if(havingObject)
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation(), FRotator(0,1,180), FVector(15));
-		//havingObject->furnitureMesh->SetRenderCustomDepth(false);
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation(), FRotator(0,1,180), FVector(15));
+			havingObject->furnitureMesh->SetRenderCustomDepth(false);
+		}
 		havingObject = nullptr;
 		isGetFurniture = false; 
 
@@ -147,8 +149,11 @@ void ACameraPawn::Rotate()
 		// Rotate Widget을 꺼져있다면 킨다.
 		if(havingObject->isRotate) havingObject->RotateWidget->SetVisibility(true);
 		// Rotate Widget을 켜져있다면 끈다.
-		else havingObject->RotateWidget->SetVisibility(false);
-		
+		else {
+			havingObject->RotateWidget->SetVisibility(false);
+			havingObject->furnitureMesh->SetRenderCustomDepth(false);
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation(), FRotator(0, 1, 180), FVector(15));
+		}
 
 	}
 }
