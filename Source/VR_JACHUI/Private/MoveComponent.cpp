@@ -89,13 +89,6 @@ void UMoveComponent::FavoriteUIKey(const struct FInputActionValue& value)
 	player->FavoriteUI->SetVisibility(!isFUIVisible);
 }
 
-//void UMoveComponent::RoomChangeUIKey(const struct FInputActionValue& value)
-//{
-//	bool isRCUIVisible = player->RoomChangeUI->IsVisible();
-//
-//	player->RoomChangeUI->SetVisibility(!isRCUIVisible);
-//	//player->
-//}
 
 void UMoveComponent::GoingInteriorSpawn(const struct FInputActionValue& value)
 {
