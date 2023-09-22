@@ -44,43 +44,37 @@ void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	//	deltaRot = player->rightMotionController->GetComponentQuat() - prevRot.Inverse();
 	//	prevRot = player->rightMotionController->GetComponentQuat();
 	//}
-
+	
 	//RightHandMove();
 }
 
 void UGrabComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* enhancedInputComponent, TArray<class UInputAction*> inputActions)
 {
 	enhancedInputComponent->BindAction(inputActions[3], ETriggerEvent::Started, this, &UGrabComponent::TargetingFurniture);
-	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Triggered, this, &UGrabComponent::MoveObjectForward);
-	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Triggered, this, &UGrabComponent::MoveObjectBackward);
 
+	enhancedInputComponent->BindAction(inputActions[7], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveForward);
+	enhancedInputComponent->BindAction(inputActions[7], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveForward);
+
+	enhancedInputComponent->BindAction(inputActions[8], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveBackward);
+	enhancedInputComponent->BindAction(inputActions[8], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveBackward);
+
+	enhancedInputComponent->BindAction(inputActions[9], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveRight);
+	enhancedInputComponent->BindAction(inputActions[9], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveRight);
+
+	enhancedInputComponent->BindAction(inputActions[10], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveLeft);
+	enhancedInputComponent->BindAction(inputActions[10], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveLeft);
+
+	enhancedInputComponent->BindAction(inputActions[11], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveUp);
+	enhancedInputComponent->BindAction(inputActions[11], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveUp);
+
+	enhancedInputComponent->BindAction(inputActions[12], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveDown);
+	enhancedInputComponent->BindAction(inputActions[12], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveDown);
 }
 
 void UGrabComponent::GetOrDeleteObject()
 {
-	//if (!isHavingObject)
-	//{
-	//	FVector startLoc = player->hmdCam->GetComponentLocation();
-	//	FVector endLoc = startLoc + player->hmdCam->GetForwardVector() * 1000;
-	//	const TArray<AActor*> IgnoreActor;
-	//	FHitResult hitInfo;
-	//
-	//	bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, TraceTypeQuery1, false, IgnoreActor, EDrawDebugTrace::ForDuration, hitInfo, true);
-	//
-	//	if (isHit)
-	//	{
-	//		isHavingObject = true;
-	//		hitObject = hitInfo.GetActor();
-	//		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitObject->GetActorNameOrLabel());
-	//	}
-	//}
-	//// 무언가를 잡고 있을 때, 해당 물체를 unclick 한다. 
-	//else 
-	//{
-	//	isHavingObject = false;
-	//	// click 중인 Object를 nullptr로 변경해준다. 
-	//	hitObject = nullptr;
-	//}
+
+
 }
 
 void UGrabComponent::TargetingFurniture()
@@ -93,7 +87,6 @@ void UGrabComponent::TargetingFurniture()
 	FCollisionQueryParams param;
 	param.AddIgnoredActor(GetOwner());
 	int HitCount = 0;
-
 	//라인을 두번 맞으면 furniture의 movable이 false가 된다.
 	//movable이 true면
 	//MoveObject를 활성화하고
@@ -102,41 +95,36 @@ void UGrabComponent::TargetingFurniture()
 
 	//맞은 액터가 FurnitureActor인지 확인한다.
 	//FurnitureActor가 맞았다면
-	//bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, TraceTypeQuery1, false, IgnoreActor, EDrawDebugTrace::ForDuration, hitInfo ,true);
 	bool isHit = GetWorld()->LineTraceSingleByChannel(hitInfo, startLoc, endLoc, ECC_Visibility, param);
 	DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Red, true, 2.0f, 0, 2.0f);
 
-
 	if (isHit)
 	{
-
-
 		AMyFurnitureActor* furniture = Cast<AMyFurnitureActor>(hitInfo.GetActor());
+		hitObject = furniture;
 		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Cyan, FString::Printf(TEXT("%s"), *hitInfo.GetActor()->GetName()));
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitInfo.GetActor()->GetName());
+		HitCount++;
+
 		if (furniture)
 		{
-
 			//FurnitureActor의 스태틱메쉬에 있는 RenderCustomDepth를 true로 바꾼다.
-			if (!furniture->movable)
+			if (HitCount == 1 && !furniture->movable)
 			{
 				//라인을 한번 맞으면 furniture의 movable을 true로 바꾸고
 				furniture->furnitureMesh->SetRenderCustomDepth(true);
 				furniture->movable = true;
-				HitCount++;
+				bFurnitureInputEnabled = true;
+			}
+			else
+			{
+				furniture->furnitureMesh->SetRenderCustomDepth(false);
+				furniture->movable = false;
+				HitCount = 0;
+				bFurnitureInputEnabled = false;
 			}
 		}
-		else if (HitCount == 2)
-		{
-			furniture->furnitureMesh->SetRenderCustomDepth(false);
-			furniture->movable = false;
-			HitCount = 0;
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No Hit"));
-		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Cyan, FString("No Hit"));
+		
 	}
 }
 
@@ -156,6 +144,54 @@ void UGrabComponent::MoveObjectBackward(const struct FInputActionValue& value)
 	//	UE_LOG(LogTemp, Warning, TEXT("backward"));
 	//	hitObject->AddActorWorldOffset(player->GetActorForwardVector() * -30);
 	//}
+}
+
+void UGrabComponent::FurnitureMoveForward(const struct FInputActionValue& value)
+{
+	if (bFurnitureInputEnabled)
+	{
+		hitObject->AddActorWorldOffset(player->GetActorForwardVector() * 30);
+	}
+}
+
+void UGrabComponent::FurnitureMoveBackward(const struct FInputActionValue& value)
+{
+	if (bFurnitureInputEnabled)
+	{
+		hitObject->AddActorWorldOffset(player->GetActorForwardVector() * -30);
+	}
+}
+
+void UGrabComponent::FurnitureMoveRight(const struct FInputActionValue& value)
+{
+	if (bFurnitureInputEnabled)
+	{
+		hitObject->AddActorWorldOffset(player->GetActorRightVector() * 30);
+	}
+}
+
+void UGrabComponent::FurnitureMoveLeft(const struct FInputActionValue& value)
+{
+	if (bFurnitureInputEnabled)
+	{
+		hitObject->AddActorWorldOffset(player->GetActorRightVector() * -30);
+	}
+}
+
+void UGrabComponent::FurnitureMoveUp(const struct FInputActionValue& value)
+{
+	if (bFurnitureInputEnabled)
+	{
+		hitObject->AddActorWorldOffset(player->GetActorUpVector() * 30);
+	}
+}
+
+void UGrabComponent::FurnitureMoveDown(const struct FInputActionValue& value)
+{
+	if (bFurnitureInputEnabled)
+	{
+		hitObject->AddActorWorldOffset(player->GetActorUpVector() * -30);
+	}
 }
 
 //void UGrabComponent::GrabObject()

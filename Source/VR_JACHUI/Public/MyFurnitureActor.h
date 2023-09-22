@@ -26,7 +26,7 @@ public:
 	//UPROPERTY(EditDefaultsOnly, Category=MySetting)
 	//class UBoxComponent* boxComp;
 
-	UPROPERTY(BlueprintReadWrite, Category=MySetting)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=MySetting)
 	class UStaticMeshComponent* furnitureMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category=MySetting)
