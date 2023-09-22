@@ -53,6 +53,7 @@ private:
 
 private:
 	bool isHavingObject = false;
+	bool bFurnitureInputEnabled = false;
 
 	void GetOrDeleteObject();
 
@@ -62,6 +63,19 @@ private:
 	void MoveObjectForward(const struct FInputActionValue& value);
 
 	void MoveObjectBackward(const struct FInputActionValue& value);
+
+	UFUNCTION(BlueprintCallable)
+	void FurnitureMoveForward(const struct FInputActionValue& value);
+	UFUNCTION(BlueprintCallable)
+	void FurnitureMoveBackward(const struct FInputActionValue& value);
+	UFUNCTION(BlueprintCallable)
+	void FurnitureMoveRight(const struct FInputActionValue& value);
+	UFUNCTION(BlueprintCallable)
+	void FurnitureMoveLeft(const struct FInputActionValue& value);
+	UFUNCTION(BlueprintCallable)
+	void FurnitureMoveUp(const struct FInputActionValue& value);
+	UFUNCTION(BlueprintCallable)
+	void FurnitureMoveDown(const struct FInputActionValue& value);
 
 	AActor* hitObject;
 };
