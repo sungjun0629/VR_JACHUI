@@ -53,8 +53,6 @@ void AMyFurnitureActor::BeginPlay()
 		CameraPawn->isGetFurniture = true;
 		CameraPawn->havingObject = this;
 	}
-
-	furnitureMesh->SetRenderCustomDepth(true);
 }
 
 // Called every frame
