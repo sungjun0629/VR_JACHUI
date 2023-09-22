@@ -7,6 +7,8 @@
 #include <Kismet/GameplayStatics.h>
 #include <../Plugins/FX/Niagara/Source/Niagara/Classes/NiagaraSystem.h>
 #include <../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
+#include "PlayerSpawnActor.h"
+#include "VRCharacter.h"
 
 // Sets default values
 ACameraPawn::ACameraPawn()
@@ -27,6 +29,8 @@ void ACameraPawn::BeginPlay()
 	Super::BeginPlay();
 	
 	pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	spawnActor = Cast<APlayerSpawnActor>(UGameplayStatics::GetActorOfClass(GetWorld(), playerSpawnActor));
+	player = Cast<AVRCharacter>(UGameplayStatics::GetActorOfClass(GetWorld(), VRCharacter));
 }
 
 
@@ -40,7 +44,8 @@ void ACameraPawn::Tick(float DeltaTime)
 	FVector P = P0 + vt;
 	SetActorLocation(P, true);
 
-	if(havingObject!=nullptr) UE_LOG(LogTemp,Warning,TEXT("%s"), *(havingObject->GetName()));
+
+	//if(havingObject!=nullptr) UE_LOG(LogTemp,Warning,TEXT("%s"), *(havingObject->GetName()));
 }
 
 // Called to bind functionality to input
@@ -53,6 +58,7 @@ void ACameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis(TEXT("Distance"), this, &ACameraPawn::MakeDistance);
 	PlayerInputComponent->BindAction(TEXT("DragNDrop"), IE_Pressed,  this, &ACameraPawn::DragNDrop);
 	PlayerInputComponent->BindAction(TEXT("Rotate"), IE_Pressed,  this, &ACameraPawn::Rotate);
+	PlayerInputComponent->BindAction(TEXT("ChangeSpawnLoc"), IE_Pressed,  this, &ACameraPawn::ChangeSpawnLoc);
 
 }
 
@@ -74,16 +80,25 @@ void ACameraPawn::MakeDistance(float value)
 
 void ACameraPawn::DragNDrop()
 {
-	if (havingObject != nullptr && !isRotate)
+	if (havingObject != nullptr)
 	{
-		havingObject->belayed = true;
-		if(havingObject)
+		if(!isRotate)
 		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation(), FRotator(0,1,180), FVector(15));
-			havingObject->furnitureMesh->SetRenderCustomDepth(false);
+			havingObject->belayed = true;
+			if (havingObject)
+			{
+				// Drop한다. 
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation(), FRotator(0, 1, 180), FVector(15));
+				havingObject->furnitureMesh->SetRenderCustomDepth(false);
+			}
+			havingObject = nullptr;
+			isGetFurniture = false;
 		}
-		havingObject = nullptr;
-		isGetFurniture = false; 
+		else {
+			// 만약 회전중이라면 클릭 시, 회전을 꺼준다. -> UX적인 요소(사용자 경험)
+			Rotate();
+			havingObject = nullptr;
+		}
 
 	}
 	else
@@ -92,15 +107,12 @@ void ACameraPawn::DragNDrop()
 		if (CatchFurniture() && havingObject)
 		{
 			havingObject->belayed =false;
-			isGetFurniture = true;
-			isRotate = false;
 			havingObject->furnitureMesh->SetRenderCustomDepth(true);
 		}
 
-		// 만약 회전중이라면 클릭 시, 회전을 꺼준다. -> UX적인 요소(사용자 경험)
-		if(havingObject!=nullptr && isRotate) Rotate();
-
-
+		isGetFurniture = true;
+		isRotate = false;
+	
 	}
 	UE_LOG(LogTemp,Warning,TEXT("Drop"));
 }
@@ -139,21 +151,60 @@ void ACameraPawn::Rotate()
 {
 	if (havingObject != nullptr)
 	{// 현재 가구가 클릭된 상태 
-		isRotate =true;
 
 		// 가구를 위치시킨다. 
 		havingObject->belayed = true;
+		
 
+		isRotate =true;
 
 		havingObject->isRotate = havingObject->isRotate ? false : true;
+		if(havingObject->isRotate) {
 		// Rotate Widget을 꺼져있다면 킨다.
-		if(havingObject->isRotate) havingObject->RotateWidget->SetVisibility(true);
-		// Rotate Widget을 켜져있다면 끈다.
+			havingObject->RotateWidget->SetVisibility(true);
+			UE_LOG(LogTemp,Warning,TEXT("visibility True"))
+		}
 		else {
+		// Rotate Widget을 켜져있다면 끈다.
 			havingObject->RotateWidget->SetVisibility(false);
 			havingObject->furnitureMesh->SetRenderCustomDepth(false);
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation(), FRotator(0, 1, 180), FVector(15));
+			UE_LOG(LogTemp,Warning,TEXT("visibility False"))
+
 		}
 
 	}
+}
+
+void ACameraPawn::ChangeSpawnLoc()
+{
+	if (spawnActor)
+	{
+		spawnActor->isClicked = spawnActor->isClicked ? false : true ;
+		UE_LOG(LogTemp,Warning,TEXT("change Spawn Loc"))
+		if(player && spawnActor->isClicked == false) {
+			UE_LOG(LogTemp,Warning,TEXT("set player loc"))	
+			player->SetLoc();
+		}
+	}
+	else {
+		UE_LOG(LogTemp,Warning,TEXT("change Spawn Loc but no SpawnActor"))
+		//만약 spawnActor가 없다면 스폰시킨다.
+		spawnActor = GetWorld()->SpawnActor<APlayerSpawnActor>(playerSpawnActor);
+		spawnActor->isClicked = true;
+	}
+}
+
+
+bool ACameraPawn::CanDrop()
+{
+	if (havingObject)
+	{// 물체를 갖고 있다면
+	 // 물체와 다른 물체가 충돌하는지 확인을 한다. 
+
+
+
+	}
+
+	return false;
 }

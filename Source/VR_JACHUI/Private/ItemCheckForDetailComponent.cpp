@@ -94,7 +94,7 @@ void UItemCheckForDetailComponent::CheckItem()
 		// click 중인 Object를 nullptr로 변경해준다. 
 		hitObject = nullptr;
 		if(ShowRoomGM && ShowRoomGM->FurInfoUI !=nullptr) ShowRoomGM->FurInfoUI->RemoveFromParent();
-		if (ShowRoomGM->DetailActor)
+		if (ShowRoomGM && ShowRoomGM->DetailActor)
 		{
 			ShowRoomGM->DetailActor->SetActorHiddenInGame(true);
 		}

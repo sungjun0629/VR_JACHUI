@@ -34,6 +34,10 @@ protected:
 
 	void Rotate();
 
+	void ChangeSpawnLoc();
+
+	bool CanDrop();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -56,9 +60,20 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="MySettings")
 	class UNiagaraSystem* dustEffect;
 	
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	TSubclassOf<class APlayerSpawnActor> playerSpawnActor;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	TSubclassOf<class AVRCharacter> VRCharacter;
+
 	class AMyFurnitureActor* havingObject;
 
 	class APlayerController* pc;
+
+	class APlayerSpawnActor* spawnActor; 
+
+	class AVRCharacter* player; 
+
 
 private:	
 	FVector Direction;

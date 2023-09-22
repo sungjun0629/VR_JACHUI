@@ -80,8 +80,9 @@ public:
     UPROPERTY(VisibleAnywhere)
     class ATelepoartDest_BedRoom* BedRoom;
 
-
 	class APlayerController* pc;
+
+	class ACameraPawn* cameraPawn;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
 	class UWidgetComponent* RoomChoiceUI;
@@ -110,7 +111,8 @@ public:
 
 
 
-
+	UFUNCTION(BlueprintCallable)
+	void SetLoc();
 
 	UFUNCTION(BlueprintCallable)
 	void TeleportBedRoom();

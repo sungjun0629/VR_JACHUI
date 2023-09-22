@@ -39,8 +39,9 @@ private:
 	UPROPERTY()
 	class AMyFavoriteRequestActor* FAVRequestActor; 
 	
-	/*UPROPERTY()
-	class UList_BedRoom* ListBedRoom;*/
+	// 버튼 클릭 시 여러 actor가 스폰되지 않도록
+	UPROPERTY()
+	class AMyFurnitureActor* furActor;
 
 	UPROPERTY()
 	class UFurnitureList_Bed* FAVListEntity;

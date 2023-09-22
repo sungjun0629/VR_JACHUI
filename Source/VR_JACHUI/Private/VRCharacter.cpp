@@ -28,6 +28,7 @@
 #include "GoingMyRoomActor.h"
 #include "GoingMyRoomWidget.h"
 #include <PhysicsEngine/PhysicsHandleComponent.h>
+#include "CameraPawn.h"
 
 
 
@@ -147,8 +148,7 @@ void AVRCharacter::BeginPlay()
 	ChairRoom = Cast<ATeleportDest_ChairRoom>(UGameplayStatics::GetActorOfClass(GetWorld(), ATeleportDest_ChairRoom::StaticClass()));
 	DeskRoom = Cast<ATeleportDest_DeskRoom>(UGameplayStatics::GetActorOfClass(GetWorld(), ATeleportDest_DeskRoom::StaticClass()));
 
-
-
+	
 }
 
 // Called every frame
@@ -206,7 +206,24 @@ void AVRCharacter::TeleportDeskRoom()
 }
 
 
- void AVRCharacter::TeleportBedRoom()
+void AVRCharacter::SetLoc()
+{
+
+	UE_LOG(LogTemp,Warning,TEXT("SetLoc Called"))
+	if (pc != nullptr)
+	{
+		cameraPawn = Cast<ACameraPawn>(pc->GetPawn());
+		if (cameraPawn)
+		{
+			FVector newLoc = cameraPawn->spawnActor->GetActorLocation();
+			SetActorLocation(newLoc);
+			cameraPawn->spawnActor->Destroy();
+			cameraPawn->spawnActor = nullptr;
+		}
+	}
+}
+
+void AVRCharacter::TeleportBedRoom()
  {
  	//지정된 위치로 텔레포트할거임
  	if (BedRoom)
