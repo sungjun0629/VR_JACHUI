@@ -12,6 +12,7 @@
 #include <PhysicsEngine/PhysicsHandleComponent.h>
 #include "Camera/CameraComponent.h"
 #include <Kismet/KismetSystemLibrary.h>
+#include <Kismet/GameplayStatics.h>
 
 
 UGrabComponent::UGrabComponent()
@@ -28,7 +29,7 @@ void UGrabComponent::BeginPlay()
 	Super::BeginPlay();
 
 	player = GetOwner<AVRCharacter>();
-
+	
 }
 
 
@@ -52,30 +53,15 @@ void UGrabComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 {
 	enhancedInputComponent->BindAction(inputActions[3], ETriggerEvent::Started, this, &UGrabComponent::TargetingFurniture);
 
-	enhancedInputComponent->BindAction(inputActions[7], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveForward);
-	enhancedInputComponent->BindAction(inputActions[7], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveForward);
+	enhancedInputComponent->BindAction(inputActions[0], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveXY);
+	enhancedInputComponent->BindAction(inputActions[0], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveXY);
 
-	enhancedInputComponent->BindAction(inputActions[8], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveBackward);
-	enhancedInputComponent->BindAction(inputActions[8], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveBackward);
+	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveUpDown);
+	enhancedInputComponent->BindAction(inputActions[1], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveUpDown);
 
-	enhancedInputComponent->BindAction(inputActions[9], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveRight);
-	enhancedInputComponent->BindAction(inputActions[9], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveRight);
-
-	enhancedInputComponent->BindAction(inputActions[10], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveLeft);
-	enhancedInputComponent->BindAction(inputActions[10], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveLeft);
-
-	enhancedInputComponent->BindAction(inputActions[11], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveUp);
-	enhancedInputComponent->BindAction(inputActions[11], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveUp);
-
-	enhancedInputComponent->BindAction(inputActions[12], ETriggerEvent::Triggered, this, &UGrabComponent::FurnitureMoveDown);
-	enhancedInputComponent->BindAction(inputActions[12], ETriggerEvent::Completed, this, &UGrabComponent::FurnitureMoveDown);
+	enhancedInputComponent->BindAction(inputActions[7], ETriggerEvent::Started, this, &UGrabComponent::FurnitureRotate);
 }
 
-void UGrabComponent::GetOrDeleteObject()
-{
-
-
-}
 
 void UGrabComponent::TargetingFurniture()
 {
@@ -96,11 +82,11 @@ void UGrabComponent::TargetingFurniture()
 	//맞은 액터가 FurnitureActor인지 확인한다.
 	//FurnitureActor가 맞았다면
 	bool isHit = GetWorld()->LineTraceSingleByChannel(hitInfo, startLoc, endLoc, ECC_Visibility, param);
-	DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Red, true, 2.0f, 0, 2.0f);
+	DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Green, true, 1, 0, 2);
 
 	if (isHit)
 	{
-		AMyFurnitureActor* furniture = Cast<AMyFurnitureActor>(hitInfo.GetActor());
+		furniture = Cast<AMyFurnitureActor>(hitInfo.GetActor());
 		hitObject = furniture;
 		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Cyan, FString::Printf(TEXT("%s"), *hitInfo.GetActor()->GetName()));
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitInfo.GetActor()->GetName());
@@ -114,83 +100,74 @@ void UGrabComponent::TargetingFurniture()
 				//라인을 한번 맞으면 furniture의 movable을 true로 바꾸고
 				furniture->furnitureMesh->SetRenderCustomDepth(true);
 				furniture->movable = true;
-				bFurnitureInputEnabled = true;
 			}
 			else
 			{
 				furniture->furnitureMesh->SetRenderCustomDepth(false);
 				furniture->movable = false;
 				HitCount = 0;
-				bFurnitureInputEnabled = false;
 			}
 		}
 		
 	}
 }
 
-void UGrabComponent::MoveObjectForward(const struct FInputActionValue& value)
+void UGrabComponent::FurnitureMoveXY(const struct FInputActionValue& value)
 {
-	//if ()
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Forward"));
-	//	hitObject->AddActorWorldOffset(player->GetActorForwardVector() * 30);
-	//}
-}
-
-void UGrabComponent::MoveObjectBackward(const struct FInputActionValue& value)
-{
-	//if (hitObject)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("backward"));
-	//	hitObject->AddActorWorldOffset(player->GetActorForwardVector() * -30);
-	//}
-}
-
-void UGrabComponent::FurnitureMoveForward(const struct FInputActionValue& value)
-{
-	if (bFurnitureInputEnabled)
+	FVector2D controllerInput = value.Get<FVector2D>();
+	FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
+	FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
+	furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(),AMyFurnitureActor::StaticClass()));
+	if(furniture->movable)
 	{
-		hitObject->AddActorWorldOffset(player->GetActorForwardVector() * 30);
+		if (hitObject)
+		{
+			FVector moveDirection = (forwardVec * controllerInput.X + rightVec * controllerInput.Y).GetSafeNormal();
+			moveDirection.Z = 0.0f;
+			if (FMath::Abs(moveDirection.X) > FMath::Abs(moveDirection.Y))
+			{
+				moveDirection.Y = 0.0f;
+			}
+			else
+			{
+				moveDirection.X = 0.0f;
+			}
+			moveDirection.Normalize();
+			hitObject->AddActorWorldOffset(moveDirection * 5.f);
+		}
 	}
 }
 
-void UGrabComponent::FurnitureMoveBackward(const struct FInputActionValue& value)
+void UGrabComponent::FurnitureMoveUpDown(const struct FInputActionValue& value)
 {
-	if (bFurnitureInputEnabled)
+	FVector2D controllerInput = value.Get<FVector2D>();
+	FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
+	FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
+	furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AMyFurnitureActor::StaticClass()));
+	if(furniture->movable)
 	{
-		hitObject->AddActorWorldOffset(player->GetActorForwardVector() * -30);
+		if (hitObject)
+		{
+			//FVector moveDirection = forwardVec * controllerInput.Y;
+			//moveDirection.Z = 0.0f;
+			//FVector perPendicularDirection = FVector::CrossProduct(moveDirection, hitObject->GetActorForwardVector()).GetSafeNormal();
+			FVector moveDirection = FVector(0.0f,0.0f,-controllerInput.Y);
+			hitObject->AddActorWorldOffset(moveDirection * 5.f);
+		}
 	}
 }
 
-void UGrabComponent::FurnitureMoveRight(const struct FInputActionValue& value)
+void UGrabComponent::FurnitureRotate(const struct FInputActionValue& value)
 {
-	if (bFurnitureInputEnabled)
+	furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AMyFurnitureActor::StaticClass()));
+	if (furniture->movable)
 	{
-		hitObject->AddActorWorldOffset(player->GetActorRightVector() * 30);
-	}
-}
-
-void UGrabComponent::FurnitureMoveLeft(const struct FInputActionValue& value)
-{
-	if (bFurnitureInputEnabled)
-	{
-		hitObject->AddActorWorldOffset(player->GetActorRightVector() * -30);
-	}
-}
-
-void UGrabComponent::FurnitureMoveUp(const struct FInputActionValue& value)
-{
-	if (bFurnitureInputEnabled)
-	{
-		hitObject->AddActorWorldOffset(player->GetActorUpVector() * 30);
-	}
-}
-
-void UGrabComponent::FurnitureMoveDown(const struct FInputActionValue& value)
-{
-	if (bFurnitureInputEnabled)
-	{
-		hitObject->AddActorWorldOffset(player->GetActorUpVector() * -30);
+		if (hitObject)
+		{
+			FRotator currnetRotation = hitObject->GetActorRotation();
+			FRotator newRotation = currnetRotation + FRotator(0.f,90.f,0.f);
+			hitObject->SetActorRotation(newRotation);
+		}
 	}
 }
 

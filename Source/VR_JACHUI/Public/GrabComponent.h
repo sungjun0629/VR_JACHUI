@@ -35,6 +35,7 @@ public:
 private:
 	class AVRCharacter* player;
 	class ATestPickUp* grabbedObject;
+	class AMyFurnitureActor* furniture;
 
 	FVector prevLoc;
 	FVector deltaLoc;
@@ -53,29 +54,19 @@ private:
 
 private:
 	bool isHavingObject = false;
-	bool bFurnitureInputEnabled = false;
-
-	void GetOrDeleteObject();
 
 	UFUNCTION(BlueprintCallable)
 	void TargetingFurniture();
 
-	void MoveObjectForward(const struct FInputActionValue& value);
+	UFUNCTION(BlueprintCallable)
+	void FurnitureMoveXY(const struct FInputActionValue& value);
+	UFUNCTION(BlueprintCallable)
+	void FurnitureMoveUpDown(const struct FInputActionValue& value);
+	UFUNCTION(BlueprintCallable)
+	void FurnitureRotate(const struct FInputActionValue& value);
 
-	void MoveObjectBackward(const struct FInputActionValue& value);
 
-	UFUNCTION(BlueprintCallable)
-	void FurnitureMoveForward(const struct FInputActionValue& value);
-	UFUNCTION(BlueprintCallable)
-	void FurnitureMoveBackward(const struct FInputActionValue& value);
-	UFUNCTION(BlueprintCallable)
-	void FurnitureMoveRight(const struct FInputActionValue& value);
-	UFUNCTION(BlueprintCallable)
-	void FurnitureMoveLeft(const struct FInputActionValue& value);
-	UFUNCTION(BlueprintCallable)
-	void FurnitureMoveUp(const struct FInputActionValue& value);
-	UFUNCTION(BlueprintCallable)
-	void FurnitureMoveDown(const struct FInputActionValue& value);
+
 
 	AActor* hitObject;
 };

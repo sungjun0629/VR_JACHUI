@@ -37,7 +37,8 @@ public:
 
 private:
 	class AVRCharacter* player;
-	
+	class AMyFurnitureActor* furniture;
+
 	void Move(const struct FInputActionValue& value);
 	void Rotate(const struct FInputActionValue& value);
 	void RoomChoiceUIKey(const struct FInputActionValue& value);

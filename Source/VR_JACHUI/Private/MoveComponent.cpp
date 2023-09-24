@@ -9,6 +9,8 @@
 #include <UMG/Public/Components/WidgetComponent.h>
 #include <Components/ArrowComponent.h>
 #include "RoomTransferActor.h"
+#include <Kismet/GameplayStatics.h>
+#include "MyFurnitureActor.h"
 
 // Sets default values for this component's properties
 UMoveComponent::UMoveComponent()
@@ -27,6 +29,7 @@ void UMoveComponent::BeginPlay()
 	Super::BeginPlay();
 
 	player = GetOwner<AVRCharacter>();
+	furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(),AMyFurnitureActor::StaticClass()));
 
 }
 
@@ -53,23 +56,28 @@ void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 
 void UMoveComponent::Move(const FInputActionValue& value)
 {
-	FVector2D controllerInput = value.Get<FVector2D>();
+	if(!furniture->movable)
+	{
+		FVector2D controllerInput = value.Get<FVector2D>();
 
-	FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
-	FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
+		FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
+		FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
 
-	player->AddMovementInput(forwardVec, controllerInput.X);
-	player->AddMovementInput(rightVec, controllerInput.Y);
+		player->AddMovementInput(forwardVec, controllerInput.X);
+		player->AddMovementInput(rightVec, controllerInput.Y);
+	}
 }
 
 void UMoveComponent::Rotate(const FInputActionValue& value)
 {
 	FVector2D rightConInput = value.Get<FVector2D>();
-
-	if (player->pc != nullptr)
+	if(!furniture->movable)
 	{
-		player->pc->AddYawInput(rightConInput.X);
-		player->pc->AddPitchInput(rightConInput.Y);
+		if (player->pc != nullptr)
+		{
+			player->pc->AddYawInput(rightConInput.X);
+			player->pc->AddPitchInput(rightConInput.Y);
+		}
 	}
 }
 
