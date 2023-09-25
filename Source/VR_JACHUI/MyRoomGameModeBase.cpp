@@ -13,6 +13,9 @@
 #include "FurnitureList_Bed.h"
 #include "FavoriteCategoryWidget.h"
 #include "List_BedRoom.h"
+#include <Kismet/GameplayStatics.h>
+#include "MapSaveGame.h"
+#include "MyFurnitureActor.h"
 
 void AMyRoomGameModeBase::BeginPlay()
 {
@@ -30,6 +33,8 @@ void AMyRoomGameModeBase::BeginPlay()
 	{
 		FAVRequestActor = *it;
 	}
+
+	InitLevelSaveData();
 }
 
 void AMyRoomGameModeBase::SetFAVFurnitureList(const TArray<FFurnitureJsonType> FAVList)
@@ -63,4 +68,53 @@ void AMyRoomGameModeBase::SetImageTexture(class UTexture2D* tex)
 		FAVListEntities[cnt++]->img_furniture->SetBrushFromTexture(tex);
 
 	}
+}
+
+void AMyRoomGameModeBase::InitLevelSaveData()
+{
+	FString slotName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	bool isSaved = UGameplayStatics::DoesSaveGameExist(slotName, 0);
+	if (isSaved) 
+	{
+		SG = Cast<UMapSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName,0));
+		UE_LOG(LogTemp,Warning,TEXT("have level data size : %d "), SG->LevelSaveStorage.Num());
+		UE_LOG(LogTemp,Warning,TEXT("age: %d "), SG->age);
+		
+		for (FSaveInfo e : SG->LevelSaveStorage)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("furniture Name : %s "), *e.dir);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("doesn't have level data"));
+		SG = Cast<UMapSaveGame>(UGameplayStatics::CreateSaveGameObject(MapSaveGame));
+		UGameplayStatics::SaveGameToSlot(SG, UGameplayStatics::GetCurrentLevelName(GetWorld()), 0);
+	}
+}
+
+void AMyRoomGameModeBase::SaveLevelData()
+{
+	FString slotName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	for (AMyFurnitureActor* e : SG->FurnitureInfo)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("%s"), *e->assetDir);
+		//SG->saveInfo.Set("", e->GetActorLocation());
+		// Furniture에 대한 정보를 입력해준다. 
+		SG->LevelSaveStorage.Add(SG->saveInfo);
+	}
+	//if(SG) SG->LevelSaveStorage.Empty();
+	//SG->age = 8;
+	UGameplayStatics::SaveGameToSlot(SG, slotName, 0);
+
+	
+	{
+		//SG = Cast<UMapSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName, 0));
+		for (FSaveInfo e : SG->LevelSaveStorage)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Array Info : %s "), *e.dir);
+		}
+			UE_LOG(LogTemp, Warning, TEXT("Array Info : %d "), SG->LevelSaveStorage.Num());
+	}
+
 }

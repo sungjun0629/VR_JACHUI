@@ -59,7 +59,6 @@ void ACameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction(TEXT("DragNDrop"), IE_Pressed,  this, &ACameraPawn::DragNDrop);
 	PlayerInputComponent->BindAction(TEXT("Rotate"), IE_Pressed,  this, &ACameraPawn::Rotate);
 	PlayerInputComponent->BindAction(TEXT("ChangeSpawnLoc"), IE_Pressed,  this, &ACameraPawn::ChangeSpawnLoc);
-
 }
 
 

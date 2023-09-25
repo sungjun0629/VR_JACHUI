@@ -47,6 +47,8 @@ public:
 private:
 	UFUNCTION()
 	void SpawnFurniture();
+
+	class AMyRoomGameModeBase* RoomGM; 
 	
 
 };

@@ -9,6 +9,9 @@
 #include "VRCharacter.h"
 #include "CameraPawn.h"
 #include <Kismet/GameplayStatics.h>
+#include "MapSaveGame.h"
+#include <GameFramework/SaveGame.h>
+#include "../MyRoomGameModeBase.h"
 
 
 
@@ -20,6 +23,8 @@ void UFurnitureList_Bed::NativeConstruct()
 	
 
 	text_furniture->SetText(FText::FromString(TEXT("Blank")));
+	RoomGM = GetWorld()->GetAuthGameMode<AMyRoomGameModeBase>();
+	//saveGame = CreateDefaultSubobject<USaveGame>(TEXT("Save Game"));
 	//furnitureActor = CreateDefaultSubobject<AMyFurnitureActor>(TEXT("furnitureActor"));
 	//cameraPawn = Cast<ACameraPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), cameraPawnClass));
 }
@@ -50,10 +55,16 @@ void UFurnitureList_Bed::SpawnFurniture()
 	//if(cameraPawn) cameraPawn->isGetFurniture = true;
 	if(spawnedActor!=nullptr)
 	{
+
 		FString dir = "/Game/Furniture";
 		dir.Append(FString::Printf(TEXT("%s"), *(text_assetDir->GetText()).ToString()));
 		spawnedActor->assetDir = dir;
 		UE_LOG(LogTemp,Warning,TEXT("dirAsset : %s"), *dir);
 		spawnedActor->changeAsset();
+
+		if(RoomGM!=nullptr && RoomGM->SG) {
+			RoomGM->SG->FurnitureInfo.Add(spawnedActor);
+			UE_LOG(LogTemp,Warning,TEXT("add SpawnedActor"))
+		}
 	}
 }

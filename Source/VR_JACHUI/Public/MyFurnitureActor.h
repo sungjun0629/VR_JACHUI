@@ -44,6 +44,7 @@ public:
 
 	class APlayerController* pc;
 
+	UPROPERTY()
 	FString assetDir = "/Game/Furniture/Bed/SM_Bed";
 
 	void changeAsset();
