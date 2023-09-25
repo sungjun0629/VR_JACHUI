@@ -18,22 +18,22 @@ void UGoingMyRoomWidget::TransferLevel()
 {
 	//FName LevelName =TEXT("InteriorMap");
 	//UGameplayStatics::OpenLevel(GetWorld(),LevelName);
-	GetWorld()->GetFirstPlayerController()->ClientTravel("/Game/Maps/InteriorMap", ETravelType::TRAVEL_Absolute);
+	//GetWorld()->GetFirstPlayerController()->ClientTravel("/Game/Maps/InteriorMap", ETravelType::TRAVEL_Absolute);
 
 }
 
 void UGoingMyRoomWidget::DestroyActor()
 {
-	UWorld* world = GetWorld();
-	if (world)
-	{
-		TArray<AActor*> FoundActors;
-		UGameplayStatics::GetAllActorsOfClass(world, ARoomTransferActor::StaticClass(), FoundActors);
-		UGameplayStatics::GetAllActorsOfClass(world, AGoingMyRoomActor::StaticClass(), FoundActors);
-
-		for (AActor* Actor : FoundActors)
-		{
-			Actor->Destroy();
-		}
-	}
+	//UWorld* world = GetWorld();
+	//if (world)
+	//{
+	//	TArray<AActor*> FoundActors;
+	//	UGameplayStatics::GetAllActorsOfClass(world, ARoomTransferActor::StaticClass(), FoundActors);
+	//	UGameplayStatics::GetAllActorsOfClass(world, AGoingMyRoomActor::StaticClass(), FoundActors);
+	//
+	//	for (AActor* Actor : FoundActors)
+	//	{
+	//		Actor->Destroy();
+	//	}
+	//}
 }

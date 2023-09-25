@@ -82,7 +82,7 @@ void UGrabComponent::TargetingFurniture()
 	//맞은 액터가 FurnitureActor인지 확인한다.
 	//FurnitureActor가 맞았다면
 	bool isHit = GetWorld()->LineTraceSingleByChannel(hitInfo, startLoc, endLoc, ECC_Visibility, param);
-	DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Green, true, 1, 0, 2);
+	//DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Green, true, 1, 0, 2);
 
 	if (isHit)
 	{
@@ -100,12 +100,14 @@ void UGrabComponent::TargetingFurniture()
 				//라인을 한번 맞으면 furniture의 movable을 true로 바꾸고
 				furniture->furnitureMesh->SetRenderCustomDepth(true);
 				furniture->movable = true;
+				player->moveMode = false;
 			}
 			else
 			{
 				furniture->furnitureMesh->SetRenderCustomDepth(false);
 				furniture->movable = false;
 				HitCount = 0;
+				player->moveMode = true;
 			}
 		}
 		
@@ -114,45 +116,51 @@ void UGrabComponent::TargetingFurniture()
 
 void UGrabComponent::FurnitureMoveXY(const struct FInputActionValue& value)
 {
-	FVector2D controllerInput = value.Get<FVector2D>();
-	FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
-	FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
-	furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(),AMyFurnitureActor::StaticClass()));
-	if(furniture->movable)
+	if(!player->moveMode)
 	{
-		if (hitObject)
+		FVector2D controllerInput = value.Get<FVector2D>();
+		FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
+		FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
+		furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AMyFurnitureActor::StaticClass()));
+		if (furniture->movable)
 		{
-			FVector moveDirection = (forwardVec * controllerInput.X + rightVec * controllerInput.Y).GetSafeNormal();
-			moveDirection.Z = 0.0f;
-			if (FMath::Abs(moveDirection.X) > FMath::Abs(moveDirection.Y))
+			if (hitObject)
 			{
-				moveDirection.Y = 0.0f;
+				FVector moveDirection = (forwardVec * controllerInput.X + rightVec * controllerInput.Y).GetSafeNormal();
+				moveDirection.Z = 0.0f;
+				if (FMath::Abs(moveDirection.X) > FMath::Abs(moveDirection.Y))
+				{
+					moveDirection.Y = 0.0f;
+				}
+				else
+				{
+					moveDirection.X = 0.0f;
+				}
+				moveDirection.Normalize();
+				hitObject->AddActorWorldOffset(moveDirection * 5.f);
 			}
-			else
-			{
-				moveDirection.X = 0.0f;
-			}
-			moveDirection.Normalize();
-			hitObject->AddActorWorldOffset(moveDirection * 5.f);
 		}
 	}
 }
 
 void UGrabComponent::FurnitureMoveUpDown(const struct FInputActionValue& value)
 {
-	FVector2D controllerInput = value.Get<FVector2D>();
-	FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
-	FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
-	furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AMyFurnitureActor::StaticClass()));
-	if(furniture->movable)
+	if(!player->moveMode)
 	{
-		if (hitObject)
+		FVector2D controllerInput = value.Get<FVector2D>();
+		FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
+		FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
+		furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AMyFurnitureActor::StaticClass()));
+		if (furniture->movable)
 		{
-			//FVector moveDirection = forwardVec * controllerInput.Y;
-			//moveDirection.Z = 0.0f;
-			//FVector perPendicularDirection = FVector::CrossProduct(moveDirection, hitObject->GetActorForwardVector()).GetSafeNormal();
-			FVector moveDirection = FVector(0.0f,0.0f,-controllerInput.Y);
-			hitObject->AddActorWorldOffset(moveDirection * 5.f);
+			if (hitObject)
+			{
+				//FVector moveDirection = forwardVec * controllerInput.Y;
+				//moveDirection.Z = 0.0f;
+				//FVector perPendicularDirection = FVector::CrossProduct(moveDirection, hitObject->GetActorForwardVector()).GetSafeNormal();
+				FVector moveDirection = FVector(0.0f, 0.0f, -controllerInput.Y);
+				hitObject->AddActorWorldOffset(moveDirection * 5.f);
+			}
 		}
 	}
 }
@@ -162,6 +170,7 @@ void UGrabComponent::FurnitureRotate(const struct FInputActionValue& value)
 	furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AMyFurnitureActor::StaticClass()));
 	if (furniture->movable)
 	{
+		
 		if (hitObject)
 		{
 			FRotator currnetRotation = hitObject->GetActorRotation();
