@@ -31,7 +31,8 @@ void UMoveComponent::BeginPlay()
 
 	player = GetOwner<AVRCharacter>();
 	furniture = Cast<AMyFurnitureActor>(UGameplayStatics::GetActorOfClass(GetWorld(),AMyFurnitureActor::StaticClass()));
-
+	house = Cast<ARoomTransferActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ARoomTransferActor::StaticClass()));
+	goingroom = Cast<AGoingMyRoomActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AGoingMyRoomActor::StaticClass()));
 }
 
 
@@ -112,6 +113,7 @@ void UMoveComponent::GoingInteriorSpawn(const struct FInputActionValue& value)
 	{
 		house = World->SpawnActor<ARoomTransferActor>(room, spawnPoint1, FRotator::ZeroRotator, Param);
 		goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, spawnPoint2, FRotator::ZeroRotator, Param);
+		alreadySpawn = true;
 	}
 	else if(alreadySpawn)
 	{

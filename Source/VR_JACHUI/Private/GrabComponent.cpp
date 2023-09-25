@@ -19,7 +19,7 @@ UGrabComponent::UGrabComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
-
+	
 }
 
 
