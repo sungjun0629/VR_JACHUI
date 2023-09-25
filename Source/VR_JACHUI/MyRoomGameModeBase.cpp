@@ -98,7 +98,7 @@ void AMyRoomGameModeBase::SaveLevelData()
 	FString slotName = UGameplayStatics::GetCurrentLevelName(GetWorld());
 	for (AMyFurnitureActor* e : SG->FurnitureInfo)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("%s"), *e->assetDir);
+		UE_LOG(LogTemp,Warning,TEXT("Info : %s"), *SG->saveInfo.dir);
 		//SG->saveInfo.Set("", e->GetActorLocation());
 		// Furniture에 대한 정보를 입력해준다. 
 		SG->LevelSaveStorage.Add(SG->saveInfo);
