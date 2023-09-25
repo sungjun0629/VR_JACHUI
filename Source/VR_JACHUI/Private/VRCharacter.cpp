@@ -215,7 +215,7 @@ void AVRCharacter::SetLoc()
 		cameraPawn = Cast<ACameraPawn>(pc->GetPawn());
 		if (cameraPawn)
 		{
-			FVector newLoc = cameraPawn->spawnActor->GetActorLocation();
+			FVector newLoc = cameraPawn->spawnActor->GetActorLocation() + FVector(0,0,100);
 			SetActorLocation(newLoc);
 			cameraPawn->spawnActor->Destroy();
 			cameraPawn->spawnActor = nullptr;

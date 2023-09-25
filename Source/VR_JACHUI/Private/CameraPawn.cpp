@@ -87,8 +87,10 @@ void ACameraPawn::DragNDrop()
 			if (havingObject)
 			{
 				// DropÇÑ´Ù. 
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation(), FRotator(0, 1, 180), FVector(15));
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation()+ FVector(0,0,10), FRotator(0, 1, 200), FVector(15));
 				havingObject->furnitureMesh->SetRenderCustomDepth(false);
+				havingObject->RotateWidget->SetVisibility(false);
+				havingObject->isRotate = false;
 			}
 			havingObject = nullptr;
 			isGetFurniture = false;
@@ -107,10 +109,13 @@ void ACameraPawn::DragNDrop()
 		{
 			havingObject->belayed =false;
 			havingObject->furnitureMesh->SetRenderCustomDepth(true);
+			havingObject->RotateWidget->SetVisibility(false);
+			havingObject->isRotate = false;
 		}
 
 		isGetFurniture = true;
 		isRotate = false;
+
 	
 	}
 	UE_LOG(LogTemp,Warning,TEXT("Drop"));
