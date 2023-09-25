@@ -82,7 +82,7 @@ void UGrabComponent::TargetingFurniture()
 	//맞은 액터가 FurnitureActor인지 확인한다.
 	//FurnitureActor가 맞았다면
 	bool isHit = GetWorld()->LineTraceSingleByChannel(hitInfo, startLoc, endLoc, ECC_Visibility, param);
-	DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Green, true, 1, 0, 2);
+	//DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Green, true, 1, 0, 2);
 
 	if (isHit)
 	{
