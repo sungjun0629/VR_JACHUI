@@ -24,6 +24,10 @@
 				"Android",
 				"HoloLens"
 			]
+		},
+		{
+			"Name": "SunPosition",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
