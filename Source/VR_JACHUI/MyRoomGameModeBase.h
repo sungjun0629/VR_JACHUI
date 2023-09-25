@@ -24,13 +24,20 @@ public:
 	TSubclassOf<class UFavoriteCategoryWidget> FAVFurnitureWidget;
 	UPROPERTY(EditAnywhere, Category=MySettings)
 	TSubclassOf<class UFurnitureList_Bed> FAVFurnitureListEntity;
+	UPROPERTY(EditAnywhere, Category=MySettings)
+	TSubclassOf<class UMapSaveGame> MapSaveGame;
 	/*UPROPERTY(EditAnywhere, Category=MySettings)
 	TSubclassOf<class UList_BedRoom> ListBedRoomWidget;*/
 
 
 	void SetFAVFurnitureList(const TArray<FFurnitureJsonType> FAVList);
 	void SetImageTexture(class UTexture2D* tex);
+	void InitLevelSaveData();
+	void SaveLevelData();
 	int32 cnt = 0; 
+
+	UPROPERTY()
+	class UMapSaveGame* SG;
 
 private:
 	UPROPERTY()
@@ -47,4 +54,5 @@ private:
 	class UFurnitureList_Bed* FAVListEntity;
 
 	TArray<class UFurnitureList_Bed*> FAVListEntities;
+
 };

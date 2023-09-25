@@ -56,7 +56,7 @@ void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 
 void UMoveComponent::Move(const FInputActionValue& value)
 {
-	if(!furniture->movable)
+	if(furniture && !furniture->movable)
 	{
 		FVector2D controllerInput = value.Get<FVector2D>();
 
@@ -71,7 +71,7 @@ void UMoveComponent::Move(const FInputActionValue& value)
 void UMoveComponent::Rotate(const FInputActionValue& value)
 {
 	FVector2D rightConInput = value.Get<FVector2D>();
-	if(!furniture->movable)
+	if(furniture && !furniture->movable)
 	{
 		if (player->pc != nullptr)
 		{

@@ -50,6 +50,8 @@ public:
 
 	FString userId; 
 
+	class AMyRoomGameModeBase* RoomGM;
+
 private:
 
 	UFUNCTION()
@@ -64,6 +66,8 @@ private:
 	void GETFavoriteLight();
 	UFUNCTION()
 	void GETFavoritePartition();
+	UFUNCTION()
+	void SaveLevel();
 
 	UPROPERTY()
 	class AMyFavoriteRequestActor* MYFavoriteRequestActor;

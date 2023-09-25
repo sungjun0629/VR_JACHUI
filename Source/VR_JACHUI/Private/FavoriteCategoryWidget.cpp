@@ -6,6 +6,7 @@
 #include "MyFavoriteRequestActor.h"
 #include "EngineUtils.h"
 #include "../MyGameInstance.h"
+#include "../MyRoomGameModeBase.h"
 
 void UFavoriteCategoryWidget::NativeConstruct()
 {
@@ -17,6 +18,7 @@ void UFavoriteCategoryWidget::NativeConstruct()
 	btn_Closet->OnClicked.AddDynamic(this, &UFavoriteCategoryWidget::GETFavoriteCloset);
 	btn_Light->OnClicked.AddDynamic(this, &UFavoriteCategoryWidget::GETFavoriteLight);
 	btn_Partition->OnClicked.AddDynamic(this, &UFavoriteCategoryWidget::GETFavoritePartition);
+	btn_Export->OnClicked.AddDynamic(this, &UFavoriteCategoryWidget::SaveLevel);
 
 	for (TActorIterator<AMyFavoriteRequestActor> it(GetWorld()); it; ++it)
 	{
@@ -24,6 +26,7 @@ void UFavoriteCategoryWidget::NativeConstruct()
 	}
 
 	GI = Cast<UMyGameInstance>(GetGameInstance());
+	RoomGM = GetWorld()->GetAuthGameMode<AMyRoomGameModeBase>();
 	userId = "sungjun1";
 	//userId = GI->userInfo.userId;
 }
@@ -57,6 +60,12 @@ void UFavoriteCategoryWidget::GETFavoriteLight()
 void UFavoriteCategoryWidget::GETFavoritePartition()
 {
 	GETFavorite(userId, 6);
+}
+
+void UFavoriteCategoryWidget::SaveLevel()
+{
+	UE_LOG(LogTemp,Warning,TEXT("Save Level"));
+	if(RoomGM) RoomGM->SaveLevelData();
 }
 
 void UFavoriteCategoryWidget::GETFavorite(const FString myID, const int32 FurnitureNo)
