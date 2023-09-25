@@ -129,6 +129,6 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class ATeleportDest_DeskRoom* DeskRoom;
 
-
+	bool moveMode = true;
 
 };

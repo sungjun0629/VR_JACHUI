@@ -11,6 +11,7 @@
 #include "RoomTransferActor.h"
 #include <Kismet/GameplayStatics.h>
 #include "MyFurnitureActor.h"
+#include "GoingMyRoomActor.h"
 
 // Sets default values for this component's properties
 UMoveComponent::UMoveComponent()
@@ -56,28 +57,28 @@ void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 
 void UMoveComponent::Move(const FInputActionValue& value)
 {
-	if(!furniture->movable)
+	if(player->moveMode)
 	{
-		FVector2D controllerInput = value.Get<FVector2D>();
+			FVector2D controllerInput = value.Get<FVector2D>();
 
-		FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
-		FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
+			FVector forwardVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::X);
+			FVector rightVec = FRotationMatrix(player->pc->GetControlRotation()).GetUnitAxis(EAxis::Y);
 
-		player->AddMovementInput(forwardVec, controllerInput.X);
-		player->AddMovementInput(rightVec, controllerInput.Y);
+			player->AddMovementInput(forwardVec, controllerInput.X);
+			player->AddMovementInput(rightVec, controllerInput.Y);
 	}
 }
 
 void UMoveComponent::Rotate(const FInputActionValue& value)
 {
-	FVector2D rightConInput = value.Get<FVector2D>();
-	if(!furniture->movable)
+	if(player->moveMode)
 	{
-		if (player->pc != nullptr)
-		{
-			player->pc->AddYawInput(rightConInput.X);
-			player->pc->AddPitchInput(rightConInput.Y);
-		}
+		FVector2D rightConInput = value.Get<FVector2D>();
+			if (player->pc != nullptr)
+			{
+				player->pc->AddYawInput(rightConInput.X);
+				player->pc->AddPitchInput(rightConInput.Y);
+			}
 	}
 }
 
@@ -107,7 +108,15 @@ void UMoveComponent::GoingInteriorSpawn(const struct FInputActionValue& value)
 	FVector spawnPoint1 = player->GetTransform().TransformPosition(player->HouseSpawnSpot->GetComponentLocation());
 	FVector spawnPoint2 = player->GetTransform().TransformPosition(player->GoingRoomWidgetSpawn->GetComponentLocation());
 
-	ARoomTransferActor* house = World->SpawnActor<ARoomTransferActor>(room,spawnPoint1, FRotator::ZeroRotator, Param);
-	AGoingMyRoomActor* goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, spawnPoint2, FRotator::ZeroRotator, Param);
+	if(!alreadySpawn)
+	{
+		house = World->SpawnActor<ARoomTransferActor>(room, spawnPoint1, FRotator::ZeroRotator, Param);
+		goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, spawnPoint2, FRotator::ZeroRotator, Param);
+	}
+	else if(alreadySpawn)
+	{
+		house->Destroy();
+		goingroom->Destroy();
+	}
 }
 
