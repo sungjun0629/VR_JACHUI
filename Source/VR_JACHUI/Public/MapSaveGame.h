@@ -13,10 +13,10 @@ struct FSaveInfo
 	GENERATED_USTRUCT_BODY()
 
 public:
-	FString dir = TEXT("");
-	FVector loc = FVector();
+	FString dir;
+	FVector loc;
 
-	FORCEINLINE void Set(FString uID, FVector uName) { dir = uID; loc = uName; }
+	/*FORCEINLINE void Set(FString uID, FVector uName) { dir = uID; loc = uName; }*/
 };
 /**
  * 
@@ -39,6 +39,14 @@ public:
 	TArray<FSaveInfo> LevelSaveStorage;
 
 	UPROPERTY(EditDefaultsOnly)
-	int32 age;
+	TArray<FString> AssetKey;
 
+	UPROPERTY(EditDefaultsOnly)
+	TArray<FVector> AssetLoc;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TArray<FString> AssetDir;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<FRotator> AssetRot;
 };

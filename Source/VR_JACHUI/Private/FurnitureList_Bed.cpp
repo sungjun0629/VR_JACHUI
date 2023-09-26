@@ -64,6 +64,8 @@ void UFurnitureList_Bed::SpawnFurniture()
 
 		if(RoomGM!=nullptr && RoomGM->SG) {
 			RoomGM->SG->FurnitureInfo.Add(spawnedActor);
+		/*	RoomGM->SG->AssetDir.Add(spawnedActor->assetDir);
+			RoomGM->SG->AssetLoc.Add(spawnedActor->GetActorLocation());*/
 			UE_LOG(LogTemp,Warning,TEXT("add SpawnedActor"))
 		}
 	}

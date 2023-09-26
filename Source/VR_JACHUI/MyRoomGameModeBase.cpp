@@ -77,12 +77,17 @@ void AMyRoomGameModeBase::InitLevelSaveData()
 	if (isSaved) 
 	{
 		SG = Cast<UMapSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName,0));
-		UE_LOG(LogTemp,Warning,TEXT("have level data size : %d "), SG->LevelSaveStorage.Num());
-		UE_LOG(LogTemp,Warning,TEXT("age: %d "), SG->age);
-		
-		for (FSaveInfo e : SG->LevelSaveStorage)
+
+		UE_LOG(LogTemp,Warning,TEXT("have level data"));
+		// 저장된 Asset을 spawn한다. 
+		for (int i = 0; i < SG->AssetDir.Num(); i++)
 		{
-			UE_LOG(LogTemp,Warning,TEXT("furniture Name : %s "), *e.dir);
+			FVector spawnLoc = SG->AssetLoc[i];
+			FRotator spawnRot = SG->AssetRot[i];
+			AMyFurnitureActor* spawnedActor =GetWorld()->SpawnActor<AMyFurnitureActor>(furnitureAsset, spawnLoc, spawnRot);
+			spawnedActor->assetDir = SG->AssetDir[i];
+			spawnedActor->belayed = true;
+			spawnedActor->changeAsset();
 		}
 	}
 	else
@@ -98,23 +103,49 @@ void AMyRoomGameModeBase::SaveLevelData()
 	FString slotName = UGameplayStatics::GetCurrentLevelName(GetWorld());
 	for (AMyFurnitureActor* e : SG->FurnitureInfo)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("Info : %s"), *SG->saveInfo.dir);
-		//SG->saveInfo.Set("", e->GetActorLocation());
-		// Furniture에 대한 정보를 입력해준다. 
-		SG->LevelSaveStorage.Add(SG->saveInfo);
+		/*FSaveInfo savetest;
+		savetest.dir = e->assetDir;
+		savetest.loc = e->GetActorLocation();*/
+		
+		// SaveGame에 현재 가구 정보를 넣어준다. 
+		SG->AssetKey.Add(e->GetName());
+		SG->AssetDir.Add(e->assetDir);
+		SG->AssetLoc.Add(e->GetActorLocation());
+		SG->AssetRot.Add(e->GetActorRotation());
+
+		// 추후 메모리 접근을 막기 위해 지운다. 
+		// 추후 end UI에 넣어준다.
+		SG->FurnitureInfo.Empty();
 	}
-	//if(SG) SG->LevelSaveStorage.Empty();
-	//SG->age = 8;
+	
 	UGameplayStatics::SaveGameToSlot(SG, slotName, 0);
 
 	
+	
+	for (FSaveInfo e : SG->LevelSaveStorage)
 	{
-		//SG = Cast<UMapSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName, 0));
-		for (FSaveInfo e : SG->LevelSaveStorage)
+		UE_LOG(LogTemp, Warning, TEXT("Array Info Loc: %f, %f, %f "), e.loc.X, e.loc.Y, e.loc.Z);
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Array Info Num: %d "), SG->LevelSaveStorage.Num());
+	
+
+}
+
+void AMyRoomGameModeBase::SaveData(FString assetName, FVector assetLoc, FRotator assetRot)
+{
+	FString slotName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+
+	for (int i = 0; i < SG->AssetKey.Num(); i++)
+	{
+		if (assetName.Contains(SG->AssetKey[i]))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Array Info : %s "), *e.dir);
+			SG->AssetLoc[i] = assetLoc;
+			SG->AssetRot[i] = assetRot;
+			UE_LOG(LogTemp,Warning,TEXT("asset Found, Change Info"))
+			UGameplayStatics::SaveGameToSlot(SG, slotName, 0);
+			return;
 		}
-			UE_LOG(LogTemp, Warning, TEXT("Array Info : %d "), SG->LevelSaveStorage.Num());
+		UE_LOG(LogTemp,Warning,TEXT("asset doesn't founded"))
 	}
 
 }

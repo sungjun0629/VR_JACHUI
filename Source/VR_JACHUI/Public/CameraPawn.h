@@ -80,5 +80,7 @@ private:
 
 	bool isRotate = false;
 
+	class AMyRoomGameModeBase* RoomGM;
+
 
 };

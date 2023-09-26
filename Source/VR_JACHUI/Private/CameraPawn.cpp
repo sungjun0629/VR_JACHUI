@@ -31,6 +31,7 @@ void ACameraPawn::BeginPlay()
 	pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	spawnActor = Cast<APlayerSpawnActor>(UGameplayStatics::GetActorOfClass(GetWorld(), playerSpawnActor));
 	player = Cast<AVRCharacter>(UGameplayStatics::GetActorOfClass(GetWorld(), VRCharacter));
+	RoomGM = GetWorld()->GetAuthGameMode<AMyRoomGameModeBase>();
 }
 
 
@@ -84,14 +85,16 @@ void ACameraPawn::DragNDrop()
 		if(!isRotate)
 		{
 			havingObject->belayed = true;
-			if (havingObject)
-			{
-				// Drop한다. 
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation()+ FVector(0,0,10), FRotator(0, 1, 200), FVector(15));
-				havingObject->furnitureMesh->SetRenderCustomDepth(false);
-				havingObject->RotateWidget->SetVisibility(false);
-				havingObject->isRotate = false;
-			}
+			
+			// Drop한다. 
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), dustEffect, havingObject->furnitureMesh->GetComponentLocation()+ FVector(0,0,10), FRotator(0, 0, 0), FVector(15));
+			havingObject->furnitureMesh->SetRenderCustomDepth(false);
+			havingObject->RotateWidget->SetVisibility(false);
+			havingObject->isRotate = false;
+			// 현재 위치를 저장해준다.
+			RoomGM->SaveData(havingObject->GetName(), havingObject->GetActorLocation(), havingObject->GetActorRotation());
+
+
 			havingObject = nullptr;
 			isGetFurniture = false;
 		}

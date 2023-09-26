@@ -28,12 +28,14 @@ public:
 	TSubclassOf<class UMapSaveGame> MapSaveGame;
 	/*UPROPERTY(EditAnywhere, Category=MySettings)
 	TSubclassOf<class UList_BedRoom> ListBedRoomWidget;*/
-
+	UPROPERTY(EditAnywhere, Category=MySettings)
+	TSubclassOf<class AMyFurnitureActor> furnitureAsset;
 
 	void SetFAVFurnitureList(const TArray<FFurnitureJsonType> FAVList);
 	void SetImageTexture(class UTexture2D* tex);
 	void InitLevelSaveData();
 	void SaveLevelData();
+	void SaveData(FString assetName , FVector assetLoc, FRotator assetRot);
 	int32 cnt = 0; 
 
 	UPROPERTY()
