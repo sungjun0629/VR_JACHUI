@@ -41,6 +41,9 @@ public:
 	UPROPERTY()
 	class UMapSaveGame* SG;
 
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	TSubclassOf<class AVRCharacter> VRCharacter;
+
 private:
 	UPROPERTY()
 	class UFavoriteCategoryWidget* FAVWidget;
@@ -57,4 +60,5 @@ private:
 
 	TArray<class UFurnitureList_Bed*> FAVListEntities;
 
+	class AVRCharacter* player;
 };
