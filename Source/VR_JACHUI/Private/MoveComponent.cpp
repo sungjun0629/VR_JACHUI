@@ -115,7 +115,7 @@ void UMoveComponent::GoingInteriorSpawn(const struct FInputActionValue& value)
 		goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, spawnPoint2, FRotator::ZeroRotator, Param);
 		alreadySpawn = true;
 	}
-	else if(alreadySpawn)
+	if(alreadySpawn)
 	{
 		house->Destroy();
 		goingroom->Destroy();
