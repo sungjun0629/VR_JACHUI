@@ -25,6 +25,7 @@
 #include <Components/ArrowComponent.h>
 #include "ItemCheckForDetailComponent.h"
 #include "RoomTransferActor.h"
+#include "RoomLight.h"
 #include "GoingMyRoomActor.h"
 #include "GoingMyRoomWidget.h"
 #include <PhysicsEngine/PhysicsHandleComponent.h>
@@ -91,6 +92,11 @@ AVRCharacter::AVRCharacter()
 	FavoriteUI->SetRelativeLocation(FVector(35,-95,60));
 	FavoriteUI->SetRelativeRotation(FRotator(0,170,0));
 	FavoriteUI->SetRelativeScale3D(FVector(0.1f));
+
+	RoomLightUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("RoomLightUI"));
+	RoomLightUI->SetupAttachment(RootComponent);
+	RoomLightUI->SetWidgetClass(URoomLight::StaticClass());
+	RoomLightUI->SetRelativeLocation(FVector(0));
 
  	//RoomChangeUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("RoomChangeUI"));
  	//RoomChangeUI->SetupAttachment(RootComponent);

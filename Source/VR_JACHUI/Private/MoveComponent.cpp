@@ -53,6 +53,7 @@ void UMoveComponent::SetupPlayerInputComponent(class UEnhancedInputComponent* en
 	enhancedInputComponent->BindAction(inputActions[4], ETriggerEvent::Started, this, &UMoveComponent::RoomChoiceUIKey);
 	enhancedInputComponent->BindAction(inputActions[5], ETriggerEvent::Started, this, &UMoveComponent::FavoriteUIKey);
 	enhancedInputComponent->BindAction(inputActions[6], ETriggerEvent::Started, this, &UMoveComponent::GoingInteriorSpawn);
+	enhancedInputComponent->BindAction(inputActions[8], ETriggerEvent::Started, this, &UMoveComponent::RoomLightUIKey);
 
 }
 
@@ -97,6 +98,14 @@ void UMoveComponent::FavoriteUIKey(const struct FInputActionValue& value)
 	bool isFUIVisible = player->FavoriteUI->IsVisible();
 
 	player->FavoriteUI->SetVisibility(!isFUIVisible);
+}
+
+//RoomLight ui 온오프 함수
+void UMoveComponent::RoomLightUIKey(const struct FInputActionValue& value)
+{
+	bool isLUIVisible = player->RoomLightUI->IsVisible();
+
+	player->RoomLightUI->SetVisibility(!isLUIVisible);
 }
 
 

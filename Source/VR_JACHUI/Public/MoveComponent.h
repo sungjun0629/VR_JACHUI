@@ -45,6 +45,7 @@ private:
 	void Rotate(const struct FInputActionValue& value);
 	void RoomChoiceUIKey(const struct FInputActionValue& value);
 	void FavoriteUIKey(const struct FInputActionValue& value);
+	void RoomLightUIKey(const struct FInputActionValue& value);
 	
 	bool alreadySpawn = false;
 	
