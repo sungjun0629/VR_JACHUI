@@ -62,11 +62,12 @@ void AMyFurnitureActor::Tick(float DeltaTime)
 	
 	//setFurnitureLoc();
 	if(CameraPawn && CameraPawn->isGetFurniture && !belayed) 
+	//if(CameraPawn)
 	{
 		setFurnitureLoc();
 	}
 	
-	if(isRotate) RotateFurniture();
+	//if(isRotate) RotateFurniture();
 
 }
 
@@ -88,7 +89,10 @@ void AMyFurnitureActor::setFurnitureLoc()
 	{
 		//pc->GetMousePosition(MouseScreenPostion.X, MouseScreenPostion.Y);
 	/*	pc->DeprojectScreenPositionToWorld(MouseScreenPostion.X , MouseScreenPostion.Y, MouseWorldLocation, MouserWorldDirection);*/
-		pc->DeprojectMousePositionToWorld(MouseWorldLocation, MouserWorldDirection);
+		//pc->DeprojectMousePositionToWorld(MouseWorldLocation, MouserWorldDirection);
+		MouseWorldLocation = CameraPawn->rightHand->GetComponentLocation();
+		MouserWorldDirection = CameraPawn ->rightHand->GetRightVector();
+
 
 		FVector startLoc = MouseWorldLocation;
 		FVector endLoc = MouseWorldLocation + MouserWorldDirection * 10000;
@@ -96,6 +100,7 @@ void AMyFurnitureActor::setFurnitureLoc()
 		FHitResult hitInfo;
 
 		bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel3), false, IgnoreActor, EDrawDebugTrace::None, hitInfo, true);
+
 
 		if (isHit)
 		{
@@ -108,13 +113,38 @@ void AMyFurnitureActor::setFurnitureLoc()
 
 void AMyFurnitureActor::RotateFurniture()
 {
-	float mouseX, mouseY;
-	UGameplayStatics::GetPlayerController(GetWorld(),0)->GetMousePosition(mouseX, mouseY);
-	FVector2D viewportSize = UWidgetLayoutLibrary::GetViewportSize(GetWorld())/2;
-	FVector Start = UKismetMathLibrary::MakeVector(mouseX, mouseY, 0);
-	FVector End = UKismetMathLibrary::MakeVector(viewportSize.X, viewportSize.Y, 0);
-	
-	FRotator newRotation = UKismetMathLibrary::FindLookAtRotation(Start, End);
-	furnitureMesh->SetWorldRotation(newRotation);
+	//float mouseX, mouseY;
+	////UGameplayStatics::GetPlayerController(GetWorld(),0)->GetMousePosition(mouseX, mouseY);
+	//mouseX = CameraPawn->hitInfo.Location.X; mouseY = CameraPawn->hitInfo.Location.Y;
+	//FVector2D viewportSize = UWidgetLayoutLibrary::GetViewportSize(GetWorld())/2;
+	//FVector Start = UKismetMathLibrary::MakeVector(mouseX, mouseY, 0);
+	//FVector End = UKismetMathLibrary::MakeVector(viewportSize.X, viewportSize.Y, 0);
+	//
+	//FRotator newRotation = UKismetMathLibrary::FindLookAtRotation(Start, End);
+	//furnitureMesh->SetWorldRotation(newRotation);
+
+	//FVector baseVector = CameraPawn->rightMotionController->GetRightVector();
+	//FVector handlingVector = (CameraPawn->rightMotionController->GetComponentLocation() - baseVector).GetSafeNormal();
+
+	//float cosRad = FVector::DotProduct(baseVector, handlingVector);
+	//float angle = FMath::RadiansToDegrees(FMath::Acos(cosRad));
+
+	//FVector result = FVector::CrossProduct(baseVector, handlingVector);
+	//float dirValue = 1;
+
+	//if (FVector::DotProduct(result, CameraPawn->rightMotionController->GetForwardVector()) >= 0)
+	//{
+	//	//bIsLeft = true;
+	//	dirValue = -1;
+	//}
+	//else
+	//{
+	//	//bIsLeft = false;
+	//	dirValue = 1;
+	//}
+
+	//FRotator newRot = GetActorRotation() + FRotator(0, angle* 0.01 * dirValue, 0);
+	//furnitureMesh->SetWorldRotation(FMath::Lerp(GetActorRotation(), newRot, 0.7f));
+
 }
 

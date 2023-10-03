@@ -9,6 +9,13 @@
 #include <../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
 #include "PlayerSpawnActor.h"
 #include "VRCharacter.h"
+#include <HeadMountedDisplay/Public/MotionControllerComponent.h>
+#include <Components/SkeletalMeshComponent.h>
+#include <UMG/Public/Components/WidgetInteractionComponent.h>
+#include <Camera/CameraComponent.h>
+#include <Components/CapsuleComponent.h>
+#include <UMG/Public/Components/WidgetComponent.h>
+#include <Engine/Engine.h>
 
 // Sets default values
 ACameraPawn::ACameraPawn()
@@ -21,6 +28,35 @@ ACameraPawn::ACameraPawn()
 	{
 		dustEffect = TempParticle.Object;
 	}
+
+	ColliComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
+	RootComponent = ColliComp;
+
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
+	CameraComp->SetupAttachment(RootComponent);
+
+	rightMotionController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("Right Motion Controller"));
+	rightMotionController->SetupAttachment(RootComponent);
+	rightMotionController->SetTrackingMotionSource(FName("Right"));
+	rightMotionController->SetRelativeLocation(FVector(50,30,-50));
+	
+
+	rightHand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Right Hand Mesh"));
+	rightHand->SetupAttachment(rightMotionController);
+	rightHand->SetRelativeLocation(FVector(20, 0, 40));
+	rightHand->SetRelativeRotation(FRotator(180, 90, 90));
+
+	rightWidgetPointer = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("Right Widget Pointer"));
+	rightWidgetPointer->SetupAttachment(rightHand);
+	rightWidgetPointer->SetRelativeRotation(FRotator(0, 90, 0));
+
+	FavoriteUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("FavoriteUI"));
+	FavoriteUI->SetupAttachment(RootComponent);
+	FavoriteUI->SetWidgetClass(UFavoriteCategoryWidget::StaticClass());
+	FavoriteUI->SetRelativeLocation(FVector(35, -95, 60));
+	FavoriteUI->SetRelativeRotation(FRotator(0, 170, 0));
+	FavoriteUI->SetRelativeScale3D(FVector(0.1f));
+
 }
 
 // Called when the game starts or when spawned
@@ -45,7 +81,7 @@ void ACameraPawn::Tick(float DeltaTime)
 	FVector P = P0 + vt;
 	SetActorLocation(P, true);
 
-
+	DebugLine();
 	//if(havingObject!=nullptr) UE_LOG(LogTemp,Warning,TEXT("%s"), *(havingObject->GetName()));
 }
 
@@ -57,9 +93,13 @@ void ACameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis(TEXT("Right"), this, &ACameraPawn::Horizontal);
 	PlayerInputComponent->BindAxis(TEXT("Forward"), this, &ACameraPawn::Vertical);
 	PlayerInputComponent->BindAxis(TEXT("Distance"), this, &ACameraPawn::MakeDistance);
+	PlayerInputComponent->BindAxis(TEXT("Rotate"), this, &ACameraPawn::MakeRotate);
 	PlayerInputComponent->BindAction(TEXT("DragNDrop"), IE_Pressed,  this, &ACameraPawn::DragNDrop);
 	PlayerInputComponent->BindAction(TEXT("Rotate"), IE_Pressed,  this, &ACameraPawn::Rotate);
 	PlayerInputComponent->BindAction(TEXT("ChangeSpawnLoc"), IE_Pressed,  this, &ACameraPawn::ChangeSpawnLoc);
+	PlayerInputComponent->BindAction(TEXT("Click"), IE_Pressed,  this, &ACameraPawn::ClickButton);
+	PlayerInputComponent->BindAction(TEXT("SpeedUP"), IE_Pressed,  this, &ACameraPawn::SpeedUP);
+	PlayerInputComponent->BindAction(TEXT("SpeedDown"), IE_Pressed,  this, &ACameraPawn::SpeedDOWN);
 }
 
 
@@ -75,7 +115,17 @@ void ACameraPawn::Vertical(float value)
 
 void ACameraPawn::MakeDistance(float value)
 {
+	if(!havingObject)
 	SetActorLocation(GetActorLocation() - (FVector(0,0,value) * distSpeed));
+}
+
+void ACameraPawn::MakeRotate(float value)
+{
+	if(havingObject)
+	{
+		FRotator newRot = havingObject->GetActorRotation() + FRotator(0, value * rotSpeed , 0);
+		havingObject->furnitureMesh->SetWorldRotation(FMath::Lerp(havingObject->GetActorRotation(), newRot, 0.7f));
+	}
 }
 
 void ACameraPawn::DragNDrop()
@@ -131,18 +181,20 @@ bool ACameraPawn::CatchFurniture()
 
 	if (pc)
 	{
-		pc->DeprojectMousePositionToWorld(MouseWorldLocation, MouserWorldDirection);
+		//pc->DeprojectMousePositionToWorld(MouseWorldLocation, MouserWorldDirection);
+		MouseWorldLocation = rightHand->GetComponentLocation();
+		MouserWorldDirection = rightHand->GetRightVector();
 
 		FVector startLoc = MouseWorldLocation;
 		FVector endLoc = MouseWorldLocation + MouserWorldDirection * 10000;
 		const TArray<AActor*> IgnoreActor;
-		FHitResult hitInfo;
+		FHitResult hitInfo2;
 
-		bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false, IgnoreActor, EDrawDebugTrace::None, hitInfo, true);
+		bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false, IgnoreActor, EDrawDebugTrace::None, hitInfo2, true);
 
 		if (isHit)
 		{
-			havingObject = Cast<AMyFurnitureActor>(hitInfo.GetActor());
+			havingObject = Cast<AMyFurnitureActor>(hitInfo2.GetActor());
 			if (havingObject)
 			{
 				return true;
@@ -214,4 +266,44 @@ bool ACameraPawn::CanDrop()
 	}
 
 	return false;
+}
+
+void ACameraPawn::ClickButton()
+{
+	rightWidgetPointer->PressPointerKey(EKeys::LeftMouseButton);
+	UE_LOG(LogTemp,Warning,TEXT("ClickButton")); 
+	/*if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "ClickButton");
+	}*/
+	/*FPlatformProcess::Sleep(0.2);
+	rightWidgetPointer->ReleasePointerKey(EKeys::LeftMouseButton);*/
+}
+
+void ACameraPawn::DebugLine()
+{
+	
+	FVector2D MouseScreenPostion;
+	FVector MouseWorldLocation, MouserWorldDirection;
+
+	MouseWorldLocation = rightHand->GetComponentLocation();
+	MouserWorldDirection = rightHand->GetRightVector();
+
+	FVector startLoc = MouseWorldLocation;
+	FVector endLoc = MouseWorldLocation + MouserWorldDirection * 10000;
+	const TArray<AActor*> IgnoreActor;
+
+	DrawDebugLine(GetWorld(), startLoc, endLoc , FColor::Red);
+
+	bool isHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), startLoc, endLoc, UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false, IgnoreActor, EDrawDebugTrace::None, hitInfo, true);
+}
+
+void ACameraPawn::SpeedDOWN()
+{
+	rotSpeed -= 0.1f;
+}
+
+void ACameraPawn::SpeedUP()
+{
+	rotSpeed += 0.1f;
 }

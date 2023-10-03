@@ -56,7 +56,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
 	class UGrabComponent* grabComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+	UPROPERTY(BlueprintReadWrite, Category = "MySettings|Components")
 	class UWidgetInteractionComponent* rightWidgetPointer;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")

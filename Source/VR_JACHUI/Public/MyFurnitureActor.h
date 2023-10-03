@@ -44,6 +44,7 @@ public:
 
 	class APlayerController* pc;
 
+
 	UPROPERTY()
 	FString assetDir = "/Game/Furniture/Bed/SM_Bed";
 
@@ -51,8 +52,12 @@ public:
 	void setFurnitureLoc();
 	void RotateFurniture();
 
+	UPROPERTY(EditDefaultsOnly, Category=MySetting)
 	bool belayed = false;
+	UPROPERTY(EditDefaultsOnly, Category=MySetting)
 	bool isRotate = false;
 
 	bool movable = false;
+
+	FVector prevLoc;
 };

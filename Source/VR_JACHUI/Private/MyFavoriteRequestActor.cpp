@@ -6,6 +6,7 @@
 #include "../JsonParseLibrary.h"
 #include "../MyRoomGameModeBase.h"
 #include "ImageUtils.h"
+#include <Engine/Engine.h>
 
 // Sets default values
 AMyFavoriteRequestActor::AMyFavoriteRequestActor()
@@ -62,6 +63,10 @@ void AMyFavoriteRequestActor::OnGETMyFavoritesFurniture(TSharedPtr<IHttpRequest>
 	if (bConnectedSuccessfully) 
 	{
 		UE_LOG(LogTemp,Warning,TEXT("SUCCESS TO GET MY FAVORITE FURNITURE"));
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "SUCCESS TO GET MY FAVORITE FURNITURE");
+		}
 		// Response 값에 대하여 Parsing을 진행한다.
 		FString response = Response->GetContentAsString();
 		TArray<FFurnitureJsonType> parsedData = UJsonParseLibrary::FavJsonParse(response);
