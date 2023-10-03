@@ -93,6 +93,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
 	class UWidgetComponent* RoomChangeUI;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+	class UWidgetComponent* RoomLightUI;
+
 // 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
 // 	class UActorComponent* HologramHouse;
 // 
