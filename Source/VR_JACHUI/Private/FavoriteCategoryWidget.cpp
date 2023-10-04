@@ -7,6 +7,7 @@
 #include "EngineUtils.h"
 #include "../MyGameInstance.h"
 #include "../MyRoomGameModeBase.h"
+#include <Engine/Engine.h>
 
 void UFavoriteCategoryWidget::NativeConstruct()
 {
@@ -19,6 +20,7 @@ void UFavoriteCategoryWidget::NativeConstruct()
 	btn_Light->OnClicked.AddDynamic(this, &UFavoriteCategoryWidget::GETFavoriteLight);
 	btn_Partition->OnClicked.AddDynamic(this, &UFavoriteCategoryWidget::GETFavoritePartition);
 	btn_Export->OnClicked.AddDynamic(this, &UFavoriteCategoryWidget::SaveLevel);
+
 
 	for (TActorIterator<AMyFavoriteRequestActor> it(GetWorld()); it; ++it)
 	{
@@ -34,6 +36,11 @@ void UFavoriteCategoryWidget::NativeConstruct()
 void UFavoriteCategoryWidget::GETFavoriteBed()
 {
 	GETFavorite(userId, 1);
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "GETFavorite");
+	}
+	
 }
 
 void UFavoriteCategoryWidget::GETFavoriteChair()
@@ -73,6 +80,10 @@ void UFavoriteCategoryWidget::GETFavorite(const FString myID, const int32 Furnit
 	if (MYFavoriteRequestActor != nullptr)
 	{
 		MYFavoriteRequestActor->GETMyFavoritesFurniture(myID, FurnitureNo);
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "GETFavorite");
+		}
 	}
 	else
 	{

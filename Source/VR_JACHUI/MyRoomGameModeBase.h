@@ -44,6 +44,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="MySettings")
 	TSubclassOf<class AVRCharacter> VRCharacter;
 
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	TSubclassOf<class ACameraPawn> CameraPawn;
+
+	UPROPERTY(BlueprintReadWrite, Category = "MySettings")
+	bool is2D = false;
+
 private:
 	UPROPERTY()
 	class UFavoriteCategoryWidget* FAVWidget;
@@ -61,4 +67,6 @@ private:
 	TArray<class UFurnitureList_Bed*> FAVListEntities;
 
 	class AVRCharacter* player;
+
+	class ACameraPawn* camera2D;
 };

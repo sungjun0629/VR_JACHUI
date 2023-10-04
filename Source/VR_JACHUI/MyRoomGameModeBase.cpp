@@ -18,17 +18,20 @@
 #include "MyFurnitureActor.h"
 #include "VRCharacter.h"
 #include <UMG/Public/Components/WidgetComponent.h>
+#include "CameraPawn.h"
+#include <Engine/Engine.h>
 
 void AMyRoomGameModeBase::BeginPlay()
 {
 	FAVWidget = CreateWidget<UFavoriteCategoryWidget>(GetWorld(), FAVFurnitureWidget);
 	//ListBedRoom = CreateWidget<UList_BedRoom>(GetWorld(), ListBedRoomWidget);
 	player = Cast<AVRCharacter>(UGameplayStatics::GetActorOfClass(GetWorld(), VRCharacter));
+	camera2D = Cast<ACameraPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), CameraPawn));
 
 	if (FAVWidget != nullptr)
 	{
-		FAVWidget->AddToViewport();
-		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		//FAVWidget->AddToViewport();
+		//GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		//GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	}
 
@@ -44,8 +47,12 @@ void AMyRoomGameModeBase::SetFAVFurnitureList(const TArray<FFurnitureJsonType> F
 {
 
 	// 3D 상황
-	if (player && player->FavoriteUI)
+	if (!is2D && player && player->FavoriteUI)
 	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(1, 3, FColor::Blue, "ADD ENTITY TO LIST");
+		}
 		class UFavoriteCategoryWidget* FAVWidget3D = Cast<UFavoriteCategoryWidget>(player->FavoriteUI->GetUserWidgetObject());
 		if (FAVWidget3D)
 		{
@@ -67,10 +74,41 @@ void AMyRoomGameModeBase::SetFAVFurnitureList(const TArray<FFurnitureJsonType> F
 			}
 		}
 		else {
-			UE_LOG(LogTemp,Warning,TEXT("failed to get widget"));
+			UE_LOG(LogTemp, Warning, TEXT("failed to get widget"));
 		}
 	}
 
+	// 2d 상황
+	if (is2D && camera2D && camera2D->FavoriteUI)
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "ADD ENTITY TO LIST");
+		}
+		class UFavoriteCategoryWidget* FAVWidget3D = Cast<UFavoriteCategoryWidget>(camera2D->FavoriteUI->GetUserWidgetObject());
+		if (FAVWidget3D)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("get FAVWidget3D"));
+			FAVWidget3D->BP_ListBed->box->ClearChildren();
+			if (FAVList.Num() > 0)
+			{
+				for (FFurnitureJsonType F : FAVList)
+				{// FAVList�� �ִ� ��ŭ Addchild�� ���Ͽ� ������ �־��ش�. 
+					FAVListEntity = CreateWidget<UFurnitureList_Bed>(GetWorld(), FAVFurnitureListEntity);
+					UE_LOG(LogTemp, Warning, TEXT("add to child"));
+					FAVWidget3D->BP_ListBed->box->AddChild(FAVListEntity);
+					FAVListEntity->text_furniture->SetText(FText::FromString(F.name));
+					FAVListEntity->text_assetDir->SetText(FText::FromString(F.assetDir));
+					FAVListEntities.Add(FAVListEntity);
+					FAVRequestActor->GETFurnitureImage(F.name);
+
+				}
+			}
+		}
+		else {
+			UE_LOG(LogTemp, Warning, TEXT("failed to get widget"));
+		}
+	}
 
 
 	// 2D 상황 -> 위젯에 띄운다. 

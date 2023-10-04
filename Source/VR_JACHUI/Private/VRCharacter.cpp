@@ -215,9 +215,9 @@ void AVRCharacter::TeleportDeskRoom()
 void AVRCharacter::SetLoc()
 {
 
-	UE_LOG(LogTemp,Warning,TEXT("SetLoc Called"))
 	if (pc != nullptr)
 	{
+		UE_LOG(LogTemp,Warning,TEXT("SetLoc Called"))
 		cameraPawn = Cast<ACameraPawn>(pc->GetPawn());
 		if (cameraPawn)
 		{

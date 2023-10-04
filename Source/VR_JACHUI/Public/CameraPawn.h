@@ -28,6 +28,8 @@ protected:
 
 	void MakeDistance(float value);
 
+	void MakeRotate(float value);
+
 	void DragNDrop();
 
 	bool CatchFurniture();
@@ -38,6 +40,14 @@ protected:
 
 	bool CanDrop();
 
+	void ClickButton();
+
+	void DebugLine();
+
+	void SpeedUP();
+
+	void SpeedDOWN();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -45,8 +55,24 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	class UCapsuleComponent* ColliComp;
+
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	class UCameraComponent* CameraComp;
+
+	UPROPERTY(EditAnywhere, Category="MySettings|Components")
+	class UMotionControllerComponent* rightMotionController;
+
+	UPROPERTY(EditAnywhere, Category="MySettings|Components")
+	class USkeletalMeshComponent* rightHand;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings|Components")
+	class UWidgetInteractionComponent* rightWidgetPointer;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+	class UWidgetComponent* FavoriteUI;
 
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	float speed = 100.0f;
@@ -58,6 +84,9 @@ public:
 	bool isGetFurniture = false;
 
 	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	float rotSpeed = 0.5f;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
 	class UNiagaraSystem* dustEffect;
 	
 	UPROPERTY(EditDefaultsOnly, Category="MySettings")
@@ -66,6 +95,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="MySettings")
 	TSubclassOf<class AVRCharacter> VRCharacter;
 
+
 	class AMyFurnitureActor* havingObject;
 
 	class APlayerController* pc;
@@ -73,6 +103,9 @@ public:
 	class APlayerSpawnActor* spawnActor; 
 
 	class AVRCharacter* player; 
+
+	FHitResult hitInfo;
+
 
 
 private:	

@@ -37,9 +37,9 @@ private:
 	class ATestPickUp* grabbedObject;
 	class AMyFurnitureActor* furniture;
 
-	FVector prevLoc;
+	//FVector prevLoc;
 	FVector deltaLoc;
-	FQuat prevRot;
+	//FQuat prevRot;
 	FQuat deltaRot;
 
 	//UFUNCTION()
