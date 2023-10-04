@@ -40,6 +40,8 @@ protected:
 
 	bool CanDrop();
 
+	void DestroyFur();
+
 	void ClickButton();
 
 	void DebugLine();

@@ -30,8 +30,8 @@ void AMyRoomGameModeBase::BeginPlay()
 
 	if (FAVWidget != nullptr)
 	{
-		//FAVWidget->AddToViewport();
-		//GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		FAVWidget->AddToViewport();
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 		//GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	}
 

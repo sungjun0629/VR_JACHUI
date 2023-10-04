@@ -137,7 +137,7 @@ void UGrabComponent::FurnitureMoveXY(const struct FInputActionValue& value)
 			}
 			moveDirection.Normalize();
 
-			furniture->AddActorWorldOffset(moveDirection * 5.f, true);
+			furniture->AddActorWorldOffset(moveDirection * 5.f);
 		
 
 		}
@@ -160,7 +160,7 @@ void UGrabComponent::FurnitureMoveUpDown(const struct FInputActionValue& value)
 				//moveDirection.Z = 0.0f;
 				//FVector perPendicularDirection = FVector::CrossProduct(moveDirection, hitObject->GetActorForwardVector()).GetSafeNormal();
 				FVector moveDirection = FVector(0.0f, 0.0f, -controllerInput.Y);
-				hitObject->AddActorWorldOffset(moveDirection * 5.f, true);
+				hitObject->AddActorWorldOffset(moveDirection * 5.f);
 			}
 		}
 	}

@@ -80,10 +80,10 @@ void UFavoriteCategoryWidget::GETFavorite(const FString myID, const int32 Furnit
 	if (MYFavoriteRequestActor != nullptr)
 	{
 		MYFavoriteRequestActor->GETMyFavoritesFurniture(myID, FurnitureNo);
-		if (GEngine)
+		/*if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "GETFavorite");
-		}
+		}*/
 	}
 	else
 	{

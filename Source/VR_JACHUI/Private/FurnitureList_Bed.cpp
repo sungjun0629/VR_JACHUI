@@ -38,7 +38,7 @@ FVector UFurnitureList_Bed::GetPlayerLocation()
 		if (PlayerPawn)
 		{
 			UE_LOG(LogTemp,Warning,TEXT("GETACTORLOCATION"))
-			return PlayerPawn->GetActorLocation() + PlayerPawn->GetActorForwardVector() * -300;
+			return PlayerPawn->GetActorLocation() + PlayerPawn->GetActorForwardVector() * 100;
 		}
 	}
 

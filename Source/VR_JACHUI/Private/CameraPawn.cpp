@@ -100,6 +100,7 @@ void ACameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction(TEXT("Click"), IE_Pressed,  this, &ACameraPawn::ClickButton);
 	PlayerInputComponent->BindAction(TEXT("SpeedUP"), IE_Pressed,  this, &ACameraPawn::SpeedUP);
 	PlayerInputComponent->BindAction(TEXT("SpeedDown"), IE_Pressed,  this, &ACameraPawn::SpeedDOWN);
+	PlayerInputComponent->BindAction(TEXT("Destroy"), IE_Pressed,  this, &ACameraPawn::DestroyFur);
 }
 
 
@@ -266,6 +267,16 @@ bool ACameraPawn::CanDrop()
 	}
 
 	return false;
+}
+
+void ACameraPawn::DestroyFur()
+{
+	if (havingObject)
+	{
+		isGetFurniture = false;
+		isRotate = false;
+		havingObject->Destroy();
+	}
 }
 
 void ACameraPawn::ClickButton()

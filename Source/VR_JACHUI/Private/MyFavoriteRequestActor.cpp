@@ -34,7 +34,7 @@ void AMyFavoriteRequestActor::Tick(float DeltaTime)
 void AMyFavoriteRequestActor::GETMyFavoritesFurniture(const FString myID, const int32 FurnitureNo)
 {
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-	FString url = "http://192.168.0.80:8181/api/furniture/favorite/";
+	FString url = "http://192.168.0.79:8181/api/furniture/favorite/";
 	url.Append(FString::Printf(TEXT("%s/%d"), *myID, FurnitureNo));
 
 	// GET처리 
@@ -47,7 +47,7 @@ void AMyFavoriteRequestActor::GETMyFavoritesFurniture(const FString myID, const 
 void AMyFavoriteRequestActor::GETFurnitureImage(const FString furnitureName)
 {
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-	FString url = "http://192.168.0.80:8181/api/furniture/showImage/";
+	FString url = "http://192.168.0.79:8181/api/furniture/showImage/";
 	url.Append(FString::Printf(TEXT("%s"), *furnitureName));
 
 	UE_LOG(LogTemp,Warning,TEXT("Trying to GetFurniture Image : %s "), *furnitureName);
@@ -63,10 +63,10 @@ void AMyFavoriteRequestActor::OnGETMyFavoritesFurniture(TSharedPtr<IHttpRequest>
 	if (bConnectedSuccessfully) 
 	{
 		UE_LOG(LogTemp,Warning,TEXT("SUCCESS TO GET MY FAVORITE FURNITURE"));
-		if (GEngine)
+		/*if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "SUCCESS TO GET MY FAVORITE FURNITURE");
-		}
+		}*/
 		// Response 값에 대하여 Parsing을 진행한다.
 		FString response = Response->GetContentAsString();
 		TArray<FFurnitureJsonType> parsedData = UJsonParseLibrary::FavJsonParse(response);

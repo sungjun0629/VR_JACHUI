@@ -35,7 +35,7 @@ void AFurnitureDetailRequestActor::Tick(float DeltaTime)
 void AFurnitureDetailRequestActor::GETFurnitureInfo(FString UUID)
 {
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-	FString url = "http://192.168.0.80:8181/api/furniture/detail/";
+	FString url = "http://192.168.0.79:8181/api/furniture/detail/";
 	url.Append(FString::Printf(TEXT("%s"), *UUID));
 
 	// GETó�� 
@@ -68,7 +68,7 @@ void AFurnitureDetailRequestActor::OnGETFunrintureInfo(TSharedPtr<IHttpRequest> 
 void AFurnitureDetailRequestActor::GETFurnitureImage(const FString furnitureName)
 {
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
-	FString url = "http://192.168.0.80:8181/api/furniture/showImage/";
+	FString url = "http://192.168.0.1:8181/api/furniture/showImage/";
 	url.Append(FString::Printf(TEXT("%s"), *furnitureName));
 
 	UE_LOG(LogTemp, Warning, TEXT("Trying to GetFurniture Image : %s "), *furnitureName);
