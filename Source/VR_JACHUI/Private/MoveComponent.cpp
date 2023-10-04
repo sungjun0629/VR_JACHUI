@@ -124,10 +124,22 @@ void UMoveComponent::GoingInteriorSpawn(const struct FInputActionValue& value)
 		goingroom = World->SpawnActor<AGoingMyRoomActor>(GoingWidget, spawnPoint2, FRotator::ZeroRotator, Param);
 		alreadySpawn = true;
 	}
-	if(alreadySpawn)
+
+	else
 	{
-		house->Destroy();
-		goingroom->Destroy();
+		if (house)
+		{
+			house->Destroy();
+			house = nullptr; // 포인터 초기화
+		}
+		if (goingroom)
+		{
+			goingroom->Destroy();
+			goingroom = nullptr; // 포인터 초기화
+		}
+
+		// 새로운 액터가 다음에 함수를 호출할 때 스폰될 수 있도록 alreadySpawn을 다시 false로 설정
+		alreadySpawn = false;
 	}
 }
 
